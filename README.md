@@ -34,3 +34,4 @@ A [Creative Day](https://github.com/Yellow-Dog-Man/Resonite-Issues/blob/main/CRE
 - [Vite Scaffolding](https://vite.dev/guide/#scaffolding-your-first-vite-project)
 - [Forms.md Theming](https://docs.forms.md/customization/theming)
 - https://grid.malven.co/
+- https://iconmonstr.com/
