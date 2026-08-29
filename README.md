@@ -23,3 +23,11 @@ A [Creative Day](https://github.com/Yellow-Dog-Man/Resonite-Issues/blob/main/CRE
 
 - [Forms MD](https://github.com/formsmd/formsmd)
 - [Clouflare Workers](https://developers.cloudflare.com/workers/)
+- [Vite](https://vite.dev/)
+
+### Scaffolding
+- `npm create vite@latest feedback.resonite.com -- --template vanilla`
+
+
+## Resources
+- [Vite Scaffolding](https://vite.dev/guide/#scaffolding-your-first-vite-project)
