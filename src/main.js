@@ -2,10 +2,6 @@ import './style.css';
 import "formsmd/dist/css/formsmd.min.css";
 import { Composer, Formsmd } from "formsmd";
 
-document.querySelector('#app').innerHTML = `
-  <div id="form">
-  </div>`;
-
 const formId ="form";
 const composer = new Composer({
   id: formId,
@@ -60,6 +56,19 @@ const formsmd = new Formsmd(
   composer.template,
   document.getElementById(formId),
   {
+    colorScheme: "dark",
+    themeLight: {
+      accent: "#353148",
+      accentForeground: "#e2d2b6",
+      backgroundColor: "#e2d2b6",
+      color: "#353148"
+    },
+    themeDark: {
+      accent: "#e1e1e0",
+      accentForeground: "#353148",
+      backgroundColor: "#11151d",
+      color: "#FFF"
+    },
     postHeaders: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
