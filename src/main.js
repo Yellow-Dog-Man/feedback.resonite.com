@@ -31,7 +31,7 @@ composer.slide({
 });
 
 composer.pictureChoice("resoniteHealthScore", {
-  question: "Did Resonite make you happy today?",
+  question: "Did you enjoy Resonite today?",
   description: "This question is always anonymous!",
   name:"happiness",
   choices: [
