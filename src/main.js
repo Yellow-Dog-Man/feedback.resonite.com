@@ -35,8 +35,8 @@ composer.pictureChoice("resoniteHealthScore", {
   description: "This question is always anonymous!",
   name:"happiness",
   choices: [
-    { label: "", value: "no", image: "/images/Icons/Kiki.png" }, // KiKi -> -1
     { label: "", value: "yes", image: "/images/Icons/Bouba.png" }, // Bouba -> 1
+    { label: "", value: "no", image: "/images/Icons/Kiki.png" }, // KiKi -> -1
 
     //TODO: make this mean "YES IT MADE ME VERY HAPPY TODAY".
     //TODO: If we make this 4 or 5 items long(memes), we can just use 1 - 5 ratings, mathematics on those is easily applied.
