@@ -3,6 +3,7 @@
 #! submit-button-text = Next
 #! post-url = /api/landing
 #! vertical-alignment = start
+#! field-size = sm
 
 # [.text-center] Want to give us feedback?
 
