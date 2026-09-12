@@ -4,6 +4,7 @@
 #! post-url = /api/landing
 #! vertical-alignment = start
 #! field-size = sm
+#! restart-button = show
 
 # [.text-center] Want to give us feedback?
 
@@ -53,12 +54,6 @@ reproduction*= TextInput(
 
 [.text-center]
 We hope to see you again soon!
-
-![](https://www.youtube.com/embed/pLtscOCyfPU)
-
-<iframe width="420" height="315"
-src="https://www.youtube.com/embed/pLtscOCyfPU">
-</iframe>
 
 
 

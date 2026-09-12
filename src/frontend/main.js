@@ -15,8 +15,17 @@ document.querySelectorAll('.formsMDTarget').forEach(async (el) => {
       DefaultFormOptions,
     );
     formsmd.init();
+    formsmd.onCompletion = handleCompletion;
   } catch (err) {
     console.error('Failed to initialize form:', err);
   }
 });
+
+function handleCompletion(result) {
+  if (!result)
+    return;
+
+  if (result.redirectTo !== undefined)
+    window.location.href = result.redirectTo;
+}
 
