@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { Eta } from 'eta'
-import layoutHtml from '../public/templates/layout.html?raw'
+import layoutHtml from '../templates/layout.html?raw'
 
 const app = new Hono()
 const eta = new Eta({ autoTrim: [false, false] })
@@ -31,6 +31,15 @@ app.get('/', (c) => {
     content: '<p>Welcome to Resonite feedback portal. Eta templating & Formsmd active.</p>'
   })
   return c.html(html)
+})
+
+// Serve static assets via Cloudflare Workers env.ASSETS binding under /public/*
+app.get('/*', async (c) => {
+  const env = c.env
+  if (env && env.ASSETS) {
+    return await env.ASSETS.fetch(c.req.raw)
+  }
+  return c.text('Static ASSETS binding not available', 404)
 })
 
 

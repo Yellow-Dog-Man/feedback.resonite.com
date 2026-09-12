@@ -1,8 +1,8 @@
 import './style.css';
 import "formsmd/dist/css/formsmd.min.css";
 import { Composer, Formsmd } from "formsmd";
-import BUG from '../public/forms/BUG.md?raw';
-import LANDING from '../public/forms/LANDING.md?raw';
+import BUG from './forms/BUG.md?raw';
+import LANDING from './forms/LANDING.md?raw';
 
 const standardFormOptions = {
   colorScheme: "dark",
