@@ -18,6 +18,12 @@ A [Creative Day](https://github.com/Yellow-Dog-Man/Resonite-Issues/blob/main/CRE
 ## Diagram
 ![Digram showing rough plan, would like help making it mermaid](docs/images/diagram.png)
 
+## Experiments
+
+### Multi-Dimensional Feedback
+<img width="1081" height="708" alt="image" src="https://github.com/user-attachments/assets/cacd8a29-3856-45e0-8506-8e6fad4e06c0" />
+
+Many platforms have removed options to apply multi-dimensional sentiment. We're exploring that with our [first question](https://github.com/Yellow-Dog-Man/feedback.resonite.com/blob/main/src/main.js#L33-L47). You can also read more about multi-dimensional sentiment on our [issue discussing it](https://github.com/Yellow-Dog-Man/feedback.resonite.com/issues/2)
 
 ## Tech Stack
 
