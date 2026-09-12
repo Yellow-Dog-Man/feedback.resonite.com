@@ -1,4 +1,5 @@
 import type { FC } from 'hono/jsx'
+import { Script, Link, ViteClient } from 'vite-ssr-components/hono'
 
 export const Layout: FC = (props) => {
   return (
@@ -9,6 +10,8 @@ export const Layout: FC = (props) => {
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <title>Submit Feedback</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css" />
+        <ViteClient />
+        <Script src="/src/frontend/main.js" />
       </head>
       <body>
         <header>
@@ -18,7 +21,6 @@ export const Layout: FC = (props) => {
         <main>
           {props.children}
         </main>
-        <script type="module" src="/src/frontend/main.js"></script>
       </body>
     </html>
   )
@@ -31,4 +33,7 @@ export const Top: FC = (props) => {
     </Layout>
   )
 }
+
+
+
 

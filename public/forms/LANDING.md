@@ -2,6 +2,7 @@
 #! slide-controls = hide
 #! submit-button-text = Next
 #! post-url = /api/landing
+#! vertical-alignment = start
 
 # [.text-center] Want to give us feedback?
 

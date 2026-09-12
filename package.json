@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "previewX": "npm run build && vite preview",
+    "previewOLD": "npm run build && vite preview",
     "preview": "npm run build && npx wrangler dev",
     "deploy": "npm run build && wrangler deploy"
   },
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "formsmd": "^1.1.3",
-    "hono": "^4.7.2"
+    "hono": "^4.7.2",
+    "vite-ssr-components": "^0.6.1"
   }
 }
