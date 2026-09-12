@@ -40,6 +40,20 @@ Many platforms have removed options to apply multi-dimensional sentiment. We're 
 - [Forms.md Theming](https://docs.forms.md/customization/theming)
 - https://grid.malven.co/
 - https://iconmonstr.com/
+- https://eta.js.org/
+- https://www.npmjs.com/package/hono - This is the recommended Cloudflare router
+
+## Resource Goals
+Sometimes, prime discovers things he wanted to use but didn't know of at the time, anyway:
+
+### Vite Templates
+Other than the usual React soup, there are some interesting Frameworks on Vite's site.
+
+Prime is logging them here in the case we need to migrate from whatever monster he's creating right now:
+
+- https://www.npmjs.com/package/lit - For really really cool no bs templating.
+- https://qwik.dev/ - Looks like a react complete, me no likey
+- https://www.solidjs.com/ - Another new one
 
 
 ## [Dog Walks](https://bsky.app/profile/probableprime.bsky.social/post/3mu4ffh4xxs2d)
@@ -47,7 +61,6 @@ Many platforms have removed options to apply multi-dimensional sentiment. We're 
 - Estimated: 20
 - Actual(so far): 3.5
 - Next Creative Day: 2026-09-18
-
 
 ## TODO
 

@@ -12,6 +12,8 @@
     "vite": "^8.2.2"
   },
   "dependencies": {
-    "formsmd": "^1.1.3"
+    "eta": "^4.6.0",
+    "formsmd": "^1.1.3",
+    "hono": "^4.7.2"
   }
 }
