@@ -1,13 +1,22 @@
 import './../style.css';
 import "formsmd/dist/css/formsmd.min.css";
 import { Formsmd } from "formsmd";
-import LANDING from '../../public/forms/LANDING.md?raw';
+import DefaultFormOptions from "../backend/helpers/DefaultFormOptions.js";
 
-//
-const formsmd = new Formsmd(
-  LANDING,
-  document.getElementById('form'),
-  standardFormOptions,
-);
+document.querySelectorAll('.formsMDTarget').forEach(async (el) => {
+  const templatePath = el.getAttribute('data-form-template');
+  if (!templatePath) return;
+  try {
+    const response = await fetch(templatePath);
+    const text = await response.text();
+    const formsmd = new Formsmd(
+      text,
+      el,
+      DefaultFormOptions,
+    );
+    formsmd.init();
+  } catch (err) {
+    console.error('Failed to initialize form:', err);
+  }
+});
 
-formsmd.init();
