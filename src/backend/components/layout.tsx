@@ -27,6 +27,8 @@ export const Layout: FC = (props) => {
 export const Top: FC = (props) => {
   return (
     <Layout>
+      {props.children}
     </Layout>
   )
 }
+
