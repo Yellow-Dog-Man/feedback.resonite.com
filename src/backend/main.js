@@ -1,11 +1,14 @@
 import { Hono } from 'hono'
 import { apiApp } from './routes/api.js'
 import { pageApp } from './routes/pages.tsx'
+import { logger } from 'hono/logger'
 
 const app = new Hono()
 
-app.route('/api', apiApp)
-app.route('/', pageApp)
+app.use(logger());
+
+app.route('/api', apiApp);
+app.route('/', pageApp);
 
 export default app;
 
