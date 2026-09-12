@@ -1,5 +1,5 @@
 name = "feedback-resonite-com"
-main = "src/backend/main.js"
+main = "./src/backend/main.js"
 compatibility_date = "2026-03-11"
 compatibility_flags = ["nodejs_compat"]
 
@@ -7,5 +7,5 @@ compatibility_flags = ["nodejs_compat"]
 ENVIRONMENT = "production"
 
 [assets]
-directory = "./public"
+directory = "./dist"
 binding = "ASSETS"
