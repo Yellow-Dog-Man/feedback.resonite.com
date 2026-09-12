@@ -35,7 +35,6 @@ Many platforms have removed options to apply multi-dimensional sentiment. We're 
 ### Scaffolding
 - `npm create vite@latest feedback.resonite.com -- --template vanilla`
 
-
 ## Resources
 - [Vite Scaffolding](https://vite.dev/guide/#scaffolding-your-first-vite-project)
 - [Forms.md Theming](https://docs.forms.md/customization/theming)
@@ -46,5 +45,13 @@ Many platforms have removed options to apply multi-dimensional sentiment. We're 
 ## [Dog Walks](https://bsky.app/profile/probableprime.bsky.social/post/3mu4ffh4xxs2d)
 
 - Estimated: 20
-- Actual(so far): 3
-- Next Creative Day: 2026-09-04
+- Actual(so far): 3.5
+- Next Creative Day: 2026-09-18
+
+
+## TODO
+
+### YouTube Videos
+- Marked the renderer here doesn't support YouTube videos: 
+- https://www.npmjs.com/package/youtube-video-element Could make this easy.
+- Or this could: https://github.com/bent10/marked-extensions/tree/main/packages/directive

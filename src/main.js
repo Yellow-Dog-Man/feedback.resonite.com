@@ -2,8 +2,7 @@ import './style.css';
 import "formsmd/dist/css/formsmd.min.css";
 import { Composer, Formsmd } from "formsmd";
 import BUG from '../public/forms/BUG.md?raw';
-
-
+import LANDING from '../public/forms/LANDING.md?raw';
 
 const standardFormOptions = {
   colorScheme: "dark",
@@ -21,15 +20,17 @@ const standardFormOptions = {
     color: "#FFF"
   },
   postHeaders: {
+    // We have A state store at home, you don't need to write your own
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   },
-  fontSize: "lg"
+  fontSize: "lg",
+  saveState: false
 };
 
-// Initialize with template, container, and options
+//
 const formsmd = new Formsmd(
-  BUG,
-  document.getElementById(formId),
+  LANDING,
+  document.getElementById('form'),
   standardFormOptions,
 );
 
