@@ -54,6 +54,7 @@ Prime is logging them here in the case we need to migrate from whatever monster 
 - https://www.npmjs.com/package/lit - For really really cool no bs templating.
 - https://qwik.dev/ - Looks like a react complete, me no likey
 - https://www.solidjs.com/ - Another new one
+- https://developers.cloudflare.com/workers/static-assets/routing/full-stack-application/ lots more here
 
 
 ## [Dog Walks](https://bsky.app/profile/probableprime.bsky.social/post/3mu4ffh4xxs2d)

@@ -1,9 +1,26 @@
 import { Hono } from 'hono'
-import { Eta } from 'eta'
-import layoutHtml from '../templates/layout.html?raw'
+import Mustache from 'mustache';
+
+// TODO: I keep writing this in Cloudflare projects, there's gotta be a better way?
+// TODO: Research Cloudflare ENV and bindings, see if there's something we can do in Wrangler?
+function checkBindings(env) {
+    const envsToCheck = ["ASSETS"];
+    for (const key of envsToCheck) {
+        if (!env[key]) {
+            console.error(`Missing environment variable: ${key}`);
+            return new Response("Server configuration error", { status: 500, headers: { "Content-Type": "text/plain" } });
+        }
+    }
+    return null;
+}
+
+async function localAsset(c, path) {
+  return c.fetch(new URL("https://assets.local/" + path));
+}
+
 
 const app = new Hono()
-const eta = new Eta({ autoTrim: [false, false] })
+
 
 // Receive formsmd posts
 app.post('/api/:formType', async (c) => {
@@ -23,25 +40,27 @@ app.post('/api/:formType', async (c) => {
   }
 })
 
-// HTML route rendering using layout.html template via Eta
-app.get('/', (c) => {
-  const html = eta.renderString(layoutHtml, {
-    title: 'Resonite Feedback - Home',
-    heading: 'Resonite Feedback System',
-    content: '<p>Welcome to Resonite feedback portal. Eta templating & Formsmd active.</p>'
-  })
-  return c.html(html)
-})
+async function localTemplate(c, path) {
+  const layoutResponse = await localAsset(c, path);
+  const template = await layoutResponse.text();
+
+  return template;
+}
+
+app.get('/', async (c) => {
+  const template = await localTemplate(c.env.ASSETS, 'templates/layout.html');
+  console.log(template);
+  const templateObject = {
+
+  };
+  const html = Mustache.render(template, templateObject);
+  return c.html(html);
+});
 
 // Serve static assets via Cloudflare Workers env.ASSETS binding under /public/*
 app.get('/*', async (c) => {
-  const env = c.env
-  if (env && env.ASSETS) {
-    return await env.ASSETS.fetch(c.req.raw)
-  }
-  return c.text('Static ASSETS binding not available', 404)
+    return await c.env.ASSETS.fetch(c.req.raw)
 })
 
 
 export default app
-
