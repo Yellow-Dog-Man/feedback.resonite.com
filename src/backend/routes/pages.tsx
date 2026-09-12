@@ -1,14 +1,20 @@
-import { Hono } from 'hono'
-import { Top } from '../components/layout'
-import { Form } from '../components/form'
+import { Hono } from 'hono';
+import { Form } from '../components/form';
+import { renderer } from '../components/renderer';
 
-export const pageApp = new Hono()
+export const pageApp = new Hono();
+
+pageApp.use(renderer);
 
 pageApp.get('/', (c) => {
-  console.log("cheese");
-  const form = {
-    id: "cheese",
-    templatePath: "/forms/LANDING.md"
-  };
-  return c.html(<Top><Form formConfig={form}/></Top>);
+  return c.redirect('/landing');
 })
+
+pageApp.get('/:form', (c) => {
+  const formId = c.req.param('form').toLowerCase();
+  const form = {
+    id: formId,
+    templatePath: "/forms/" + formId.toUpperCase() + ".md"
+  };
+  return c.render(<Form formConfig={form}/>);
+});
