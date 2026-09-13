@@ -43,7 +43,9 @@ apiApp.post('/:formType', async (c) => {
     const body = c.get('parsedBody');
     console.log(`Received form post [${formType}]:`, body)
 
-    await processBody(c, formType, body);
+    var res = await processBody(c, formType, body);
+    if (res)
+      return res;
 
     return c.json({
       success: true,
@@ -94,7 +96,7 @@ async function processBody(c, formType, body) {
 
   console.log("Submitting to GH");
   // ALL Other forms use redirects and come back here, so far no processing
-  await SubmitToGitHub(c, formType, body);
+  return await SubmitToGitHub(c, formType, body);
 }
 
 async function processLanding(c, body) {
