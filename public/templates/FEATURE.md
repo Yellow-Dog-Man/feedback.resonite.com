@@ -16,4 +16,4 @@
 
 ### Requesters
 
-{{reporter}}
+{{reporter}}{{^reporter}}The user declined to provide contact details. Close the issue if you cannot resolve it without contacting them.{{/reporter}}
