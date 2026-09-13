@@ -4,6 +4,7 @@ import { BUG, FEATURE, MODERATION, SECURITY, LANDING, TEXT, VALID_FORMS } from '
 import { saveScore } from '../services/scoreService.js';
 import { SubmitToGitHub } from '../services/githubService.js';
 import { formatIssue } from '../services/markdownTemplateService.js';
+import { formLimiter, landingLimiter } from '../helpers/RateLimits.js';
 
 export const apiApp = new Hono();
 
@@ -36,6 +37,31 @@ async function filterBody(c) {
 apiApp.get('/md', async (c) => {
   return c.body(formatIssue("bug", {description: "TEST DESCRIPTION"}));
 })
+app.use('/'+LANDING, async(c, next) => {
+  const limiter = landingLimiter();
+  return limiter(c, next);
+});
+apiApp.post('/'+LANDING, async (c) => {
+  const body = c.get('parsedBody');
+  console.log(`Received LANDING form post:`, body)
+
+  var res = await processLanding(c, body);
+  if (res)
+    return res;
+
+  return c.json({
+    success: true,
+    message: `Successfully received submission for ${formType}`,
+    receivedAt: new Date().toISOString(),
+    formResult: body,
+    ...addLandingMetadata(LANDING, body)
+  });
+});
+
+app.use('/'+LANDING, async(c, next) => {
+  const limiter = formLimiter();
+  return limiter(c, next);
+});
 
 apiApp.post('/:formType', async (c) => {
   const formType = c.req.param('formType');
@@ -43,7 +69,7 @@ apiApp.post('/:formType', async (c) => {
     const body = c.get('parsedBody');
     console.log(`Received form post [${formType}]:`, body)
 
-    var res = await processBody(c, formType, body);
+    var res = await processFormBody(c, formType, body);
     if (res)
       return res;
 
@@ -52,7 +78,6 @@ apiApp.post('/:formType', async (c) => {
       message: `Successfully received submission for ${formType}`,
       receivedAt: new Date().toISOString(),
       formResult: body,
-      ...addSuccessMetadata(formType, body)
     });
   } catch (err) {
     console.error(`Error processing form post ${formType}:`, err)
@@ -67,7 +92,7 @@ function redirectTo(location) {
   }
 }
 
-function addSuccessMetadata(formType, body) {
+function addLandingMetadata(formType, body) {
   const redirectType = body.type;
   if (formType === LANDING) {
 
@@ -83,12 +108,8 @@ function addSuccessMetadata(formType, body) {
   }
 }
 
-async function processBody(c, formType, body) {
+async function processFormBody(c, formType, body) {
   console.log("Form Type:" + formType);
-  if (formType === LANDING) {
-    await processLanding(c, body);
-    return;
-  }
 
   // Don't send Junk to GitHub
   if (!VALID_FORMS.includes(formType))

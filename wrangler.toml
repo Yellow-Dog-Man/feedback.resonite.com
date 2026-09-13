@@ -18,3 +18,7 @@ dataset = "SCORE"
 binding = "DB"
 database_name = "feedback-db"
 database_id = "51b6896f-6a4f-4f4e-94f6-c4571a0794a9"
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "your-namespace-id"
