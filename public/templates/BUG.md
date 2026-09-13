@@ -33,3 +33,5 @@ TODO
 ### Disclaimer
 
 This issue was made with [feedback.resonite.com](https://feedback.resonite.com), this is a Work In Progress project. You can read more about it [here](https://github.com/Yellow-Dog-Man/feedback.resonite.com).
+
+RecordID: {{_rid}}
