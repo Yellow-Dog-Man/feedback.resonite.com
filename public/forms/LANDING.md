@@ -13,7 +13,7 @@ We appreciate it all!
 
 ---
 
-happinessScore* = PictureChoice(
+happiness* = PictureChoice(
     | question = Did you enjoy Resonite today?
     | description = This question is always anonymous
     | choices = "yes" Yes && /images/Icons/Bouba.png, "no" No && /images/Icons/Kiki.png

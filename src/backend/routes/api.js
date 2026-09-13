@@ -1,44 +1,12 @@
 import { Hono } from 'hono'
 import { saveFeedbackText } from '../services/feedbackService.js'
-import { BUG, FEATURE, MODERATION, SECURITY, LANDING } from '../helpers/FormHelpers.js';
+import { BUG, FEATURE, MODERATION, SECURITY, LANDING, TEXT, VALID_FORMS } from '../helpers/FormHelpers.js';
+import { saveScore } from '../services/scoreService.js';
+import { SubmitToGitHub } from '../services/githubService.js';
 
 export const apiApp = new Hono();
 
-function redirectTo(location) {
-  return {
-    redirectTo: location
-  }
-}
-
-function addSuccessMetadata(formType, body) {
-  const redirectType = body.type;
-  if (formType === LANDING) {
-    if (body.more === false) return {end:true};
-
-    if (redirectType === BUG) return redirectTo("/bug");
-    if (redirectType === FEATURE) return redirectTo("/feature");
-    if (redirectType === MODERATION || redirectType === SECURITY) return redirectTo("https://moderation.resonite.com");
-  }
-}
-
-async function filterBody(c) {
-  const rawBody = await c.req.parseBody();
-  const body = {};
-  for (const [key, value] of Object.entries(rawBody)) {
-    if (value === 'yes') body[key] = true;
-    else if (value === 'no') body[key] = false;
-    else body[key] = value;
-  }
-
-  return body;
-}
-
-function boolToScore(b) {
-  if (b === true) return 1;
-  if (b === false) return -1;
-  return 0;
-}
-
+// TODO: move middleware to helper file
 // Middleware to parse body and convert yes/no to booleans
 apiApp.use('/:formType', async (c, next) => {
   if (c.req.method === 'POST') {
@@ -51,6 +19,18 @@ apiApp.use('/:formType', async (c, next) => {
   }
   await next();
 });
+
+async function filterBody(c) {
+  const rawBody = await c.req.parseBody();
+  const body = {};
+  for (const [key, value] of Object.entries(rawBody)) {
+    if (value === 'yes') body[key] = true;
+    else if (value === 'no') body[key] = false;
+    else body[key] = value;
+  }
+
+  return body;
+}
 
 apiApp.post('/:formType', async (c) => {
   const formType = c.req.param('formType');
@@ -73,26 +53,50 @@ apiApp.post('/:formType', async (c) => {
   }
 });
 
-async function processBody(c, formType, body) {
-  console.log("Form Type:" + formType);
-  if (formType === LANDING)
-  {
-    const date = new Date().toISOString();
-    c.env.SCORE.writeDataPoint({
-      "doubles": [boolToScore(body.happinessScore)],
-      "indexes": [date]
-    });
-
-    if (body.more && body.type === "text")
-    {
-      console.log("Saving feedback to DB");
-      console.log(body.feedback);
-      await saveFeedbackText(c.env.DB, body.feedback, date);
-    }
+// We need to signal to FormsMd/Frontend what to do on a completed form.
+function redirectTo(location) {
+  return {
+    redirectTo: location
   }
-
-  // ALL Other forms use redirects and come back here, so far no processing
-  // SubmitToGH(body)
 }
 
+function addSuccessMetadata(formType, body) {
+  const redirectType = body.type;
+  if (formType === LANDING) {
 
+    // This means they skipped to the end, just the +1 -1 feedback
+    if (!body.more) return {};
+    // This means we already have the feedback, we can bail as well
+    if (body.redirectType == TEXT) return {};
+
+    // For the rest, we need to redirect somewhere else.
+    if (redirectType === BUG) return redirectTo("/bug");
+    if (redirectType === FEATURE) return redirectTo("/feature");
+    if (redirectType === MODERATION || redirectType === SECURITY) return redirectTo("https://moderation.resonite.com");
+  }
+}
+
+async function processBody(c, formType, body) {
+  console.log("Form Type:" + formType);
+  if (formType === LANDING) await processLanding(c, body);
+
+  // Don't send Junk to GitHub
+  if (!VALID_FORMS.includes(formType))
+    return;
+  
+  // ALL Other forms use redirects and come back here, so far no processing
+  await SubmitToGitHub(c, formType, body);
+}
+
+async function processLanding(c, body) {
+  saveScore(c, body.happiness);
+
+  const date = new Date().toISOString();
+
+  if (body.more && body.type === "text")
+  {
+    console.log("Saving feedback to DB");
+    console.log(body.feedback);
+    await saveFeedbackText(c.env.DB, body.feedback, date);
+  }
+}
