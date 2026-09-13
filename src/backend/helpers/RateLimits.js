@@ -13,25 +13,25 @@ import { WorkersKVStore } from "@hono-rate-limiter/cloudflare";
 // id = "your-namespace-id"
 
 // 4 forms in one Hour.
-export function formLimiter() {
+export function formLimiter(cx) {
     return rateLimiter({
         windowMs: 3_600_000, // 1 Hour
         limit: 4, // 4
         keyGenerator: (c) => "form:" + c.req.header("cf-connecting-ip") ?? "",
         store: new WorkersKVStore({
-            namespace: c.env.RATE_LIMIT_KV,
+            namespace: cx.env.RATE_LIMIT_KV,
         }),
     });
 }
 
 // 4 landing in one hour
-export function landingLimiter() {
+export function landingLimiter(cx) {
     return rateLimiter({
         windowMs: 3_600_000, // 1 Hour
         limit: 4, // 4
         keyGenerator: (c) => "landing:" + c.req.header("cf-connecting-ip") ?? "",
         store: new WorkersKVStore({
-            namespace: c.env.RATE_LIMIT_KV,
+            namespace: cx.env.RATE_LIMIT_KV,
         }),
     });
 }

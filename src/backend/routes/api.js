@@ -34,12 +34,9 @@ async function filterBody(c) {
   return body;
 }
 
-apiApp.get('/md', async (c) => {
-  return c.body(formatIssue("bug", {description: "TEST DESCRIPTION"}));
-})
-app.use('/'+LANDING, async(c, next) => {
-  const limiter = landingLimiter();
-  return limiter(c, next);
+apiApp.use('/'+LANDING, async(c, next) => {
+  const limit = landingLimiter(c);
+  return limit(c, next);
 });
 apiApp.post('/'+LANDING, async (c) => {
   const body = c.get('parsedBody');
@@ -51,18 +48,17 @@ apiApp.post('/'+LANDING, async (c) => {
 
   return c.json({
     success: true,
-    message: `Successfully received submission for ${formType}`,
+    message: `Successfully received submission for ${LANDING}`,
     receivedAt: new Date().toISOString(),
     formResult: body,
     ...addLandingMetadata(LANDING, body)
   });
 });
 
-app.use('/'+LANDING, async(c, next) => {
-  const limiter = formLimiter();
-  return limiter(c, next);
+apiApp.use('/:formType', async (c, next) => {
+  const limit = formLimiter(c);
+  return limit(c, next);
 });
-
 apiApp.post('/:formType', async (c) => {
   const formType = c.req.param('formType');
   try {
@@ -83,6 +79,10 @@ apiApp.post('/:formType', async (c) => {
     console.error(`Error processing form post ${formType}:`, err)
     return c.json({ success: false, error: err.message }, 400)
   }
+});
+
+apiApp.get('/md', async (c) => {
+  return c.body(formatIssue("bug", {description: "TEST DESCRIPTION"}));
 });
 
 // We need to signal to FormsMd/Frontend what to do on a completed form.
