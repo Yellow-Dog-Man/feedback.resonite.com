@@ -1,7 +1,7 @@
 #! id= bug
 #! post-url = /api/bug
 
-#! slide-controls = hide
+#! slide-controls = show
 #! submit-button-text = Next
 #! vertical-alignment = start
 #! field-size = lg

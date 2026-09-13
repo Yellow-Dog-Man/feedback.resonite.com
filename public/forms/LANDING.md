@@ -1,6 +1,6 @@
 #! post-url = /api/landing
 
-#! slide-controls = hide
+#! slide-controls = show
 #! submit-button-text = Next
 #! vertical-alignment = start
 #! field-size = sm
