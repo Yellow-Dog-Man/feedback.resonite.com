@@ -10,3 +10,8 @@ ENVIRONMENT = "production"
 directory = "./dist"
 binding = "ASSETS"
 
+
+[[analytics_engine_datasets]]
+binding = "SCORE"
+dataset = "SCORE"
+
