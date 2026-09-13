@@ -83,11 +83,15 @@ function addSuccessMetadata(formType, body) {
 
 async function processBody(c, formType, body) {
   console.log("Form Type:" + formType);
-  if (formType === LANDING) await processLanding(c, body);
+  if (formType === LANDING) {
+    await processLanding(c, body);
+    return;
+  }
 
   // Don't send Junk to GitHub
   if (!VALID_FORMS.includes(formType))
     return;
+
   console.log("Submitting to GH");
   // ALL Other forms use redirects and come back here, so far no processing
   await SubmitToGitHub(c, formType, body);
