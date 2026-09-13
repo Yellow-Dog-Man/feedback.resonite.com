@@ -10,8 +10,11 @@ ENVIRONMENT = "production"
 directory = "./dist"
 binding = "ASSETS"
 
-
 [[analytics_engine_datasets]]
 binding = "SCORE"
 dataset = "SCORE"
 
+[[d1_databases]]
+binding = "DB"
+database_name = "feedback-db"
+database_id = "51b6896f-6a4f-4f4e-94f6-c4571a0794a9"

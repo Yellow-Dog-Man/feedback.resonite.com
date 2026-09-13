@@ -31,21 +31,20 @@ more* = ChoiceInput(
 
 type* = ChoiceInput(
     | question = What type of feedback do you have?
-    | choices = "text" Text, "bug" Bug, "featureRequest" Feature Request, "moderation" Moderation Issue
+    | choices = "text" 📝 Text, "bug" 🐞 Bug, "featureRequest" 💡 Feature Request, "moderation" 🚨 Moderation Issue, "security" 🔐 Security Issue
 )
-
-![](https://www.youtube.com/embed/pLtscOCyfPU)
 
 ---
 -> type == "text"
-reproduction*= TextInput(
+
+### ⚠️ If your feedback is regarding a Moderation issue, it will be forwarded to Moderation.
+
+feedback*= TextInput(
     | question = What's your feedback?
     | description = Tell us whatever you want, it's anonymous!"
     | multiline
     | maxlength = 1000
 )
-
-### ⚠️ If your feedback is regarding a Moderation issue, it will be forwarded to Moderation.
 
 ---
 -> end
