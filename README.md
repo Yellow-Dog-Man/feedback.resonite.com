@@ -16,7 +16,7 @@ A [Creative Day](https://github.com/Yellow-Dog-Man/Resonite-Issues/blob/main/CRE
     - This project will stay in Creative Day mode until it graduates.
 
 ## Diagram
-![Digram showing rough plan, would like help making it mermaid](docs/images/diagram.png)
+![Diagram showing rough plan, would like help making it mermaid](docs/images/diagram.png)
 
 ## Experiments
 
@@ -43,9 +43,9 @@ Many platforms have removed options to apply multi-dimensional sentiment. We're 
 TODO: Don't recommend this anymore. Will update with recommended template later
 - `npm create vite@latest feedback.resonite.com -- --template vanilla`
 
-
 ## TODO
 - [ ] Ratelimits
+    - https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
 - [ ] Turnstile
     - FormsMd, supports recapthca
     - I think we can just turnstile before the form starts though.
@@ -66,10 +66,14 @@ TODO: Don't recommend this anymore. Will update with recommended template later
     - Without this we get racist GH reports >_<
     - https://www.npmjs.com/package/obscenity looks like a good place to start
     - For anything more complex, we'd probably looking at using Cloudflare AI Workers, there's probably a model dedicated to this task. 
-- [ ] Blog Posts
+    - https://zod.dev/
+- [ ] Blog Posts on Design
     - I REALLY, like this tech stack, felt really nimble but basic enough that I dont need to google docs a lot of the time.
     - I feel like folks, would like this knowledge so if you're interested in a blog post series about how this all works.
     - Let me know, reach me in the funny papers :D.
+- [ ] https://orm.drizzle.team/
+- [ ] https://unstorage.unjs.io/
+- [ ] https://unjs.io/
 
 ## Resources
 - [Vite Scaffolding](https://vite.dev/guide/#scaffolding-your-first-vite-project)
