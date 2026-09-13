@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "previewOLD": "npm run build && vite preview",
     "preview": "npm run build && npx wrangler dev",
     "deploy": "npm run build && wrangler deploy"
   },

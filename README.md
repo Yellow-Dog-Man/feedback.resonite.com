@@ -47,15 +47,29 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 ## TODO
 - [ ] Ratelimits
 - [ ] Turnstile
+    - FormsMd, supports recapthca
+    - I think we can just turnstile before the form starts though.
+    - like: Turnstile -> PASS -> Load Form
 - [ ] Other Bot Protection, see Cloudflare docs/Panel
 - [ ] Resonite Account OAuth
 - [ ] Bans 
-    - Don't think we'll need these.
+    - I think rate limits and filtering should do enough here.
+    - But we'll need some ban functionality.
+    - I'll just keep the limits high to start
 - [ ] Reports & Outputs
+    - Need way to see score
+    - Need way to review text feedback
+    - Prime can do this in the dashboard atm
 - [ ] Filtering
     - Do some basic safety filtering for profanity etc.
     - See what Cloudflare has natively.
     - Without this we get racist GH reports >_<
+    - https://www.npmjs.com/package/obscenity looks like a good place to start
+    - For anything more complex, we'd probably looking at using Cloudflare AI Workers, there's probably a model dedicated to this task. 
+- [ ] Blog Posts
+    - I REALLY, like this tech stack, felt really nimble but basic enough that I dont need to google docs a lot of the time.
+    - I feel like folks, would like this knowledge so if you're interested in a blog post series about how this all works.
+    - Let me know, reach me in the funny papers :D.
 
 ## Resources
 - [Vite Scaffolding](https://vite.dev/guide/#scaffolding-your-first-vite-project)
@@ -79,14 +93,16 @@ Prime is logging them here in the case we need to migrate from whatever monster 
 - https://www.solidjs.com/ - Another new one
 - https://developers.cloudflare.com/workers/static-assets/routing/full-stack-application/ lots more here
 
+## Cloudflare
+- https://void.cloud/
+
+Look into an "Awesome Cloudflare" list or collection, because I keep finding cool stuff.
 
 ## [Dog Walks](https://bsky.app/profile/probableprime.bsky.social/post/3mu4ffh4xxs2d)
 
 - Estimated: 20
 - Actual(so far): 8
 - Next Creative Day: 2026-09-18
-
-## TODO
 
 ### YouTube Videos
 - Marked the renderer here doesn't support YouTube videos: 

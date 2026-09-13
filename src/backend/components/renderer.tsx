@@ -2,6 +2,7 @@ import { jsxRenderer } from 'hono/jsx-renderer'
 import { Script, Link, ViteClient } from 'vite-ssr-components/hono'
 
 export const renderer = jsxRenderer(({ children }) => {
+  // <! DOCTYPE etc, is automatically added by jsxRenderer
   return (
     <html>
       <head>

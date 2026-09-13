@@ -9,6 +9,8 @@ type FormConfig = {
 export const Form: FC<{formConfig: FormConfig}> = (props: {
     formConfig: FormConfig
 }) => {
+  // <link jumps to the top of the page, this pre-loads the markdown so that by the time the forms need it, its already in the cache :)
+  // TODO: use <Link, see renderer for example
   return (
     <Fragment>
     <link as="text" rel="modulepreload" href={props.formConfig.templatePath} id="formTemplateLink"/>
