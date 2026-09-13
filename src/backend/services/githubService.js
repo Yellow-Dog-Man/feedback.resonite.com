@@ -1,23 +1,26 @@
 // Easiest option here is their HTTP API SO....
-
 import { BUG, FEATURE } from "../helpers/FormHelpers";
+import { formatIssue } from "./markdownTemplateService.js";
 
 const OWNER = "Yellow-Dog-Man";
 const REPO = "Resonite-Issues";
-const URL = "https://api.github.com/repos/" + OWNER + "/" + REPO;
+const URL = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/issues";
 
 
 export async function SubmitToGitHub(c, formType, body) {
-    await fetch(URL, {
+    const res = await fetch(URL, {
         method: "POST",
         body: JSON.stringify(convertToGitHub(formType, body)),
         headers: {
             "Content-Type": "application/json",
             "User-Agent": "feedback.resonite.com",
             "Accept": "application/vnd.github+json",
-            "Authorization": "Bearer " + c.env.TOKEN,
+            "Authorization": "Bearer " + c.env.GITHUB_TOKEN,
         }
     });
+    console.log(res);
+    const body2 = await res.text();
+    console.log(body2);
 }
 
 // Map Us => GH labels
@@ -30,32 +33,10 @@ function getLabels(formType) {
 
 function convertToGitHub(formType, body) {
     const issue = {
-        "title": body.title,
+        "title": body.issueTitle || body.title,
         "labels": getLabels(formType), 
-        "body": formatBody(body)
+        "body": formatIssue(formType, body)
     };
 
     return issue;
 }
-
-function formatBody(formType, body) {
-    //TODO: probably MARKDOWN??
-    return JSON.stringify(body);
-}
-
-// POST https://api.github.com/repos/{owner}/{repo}/issues
-
-// Headers:
-//   Authorization: Bearer <token>
-//   Accept: application/vnd.github+json
-//   X-GitHub-Api-Version: 2022-11-28
-//   User-Agent: <something identifying your worker>
-//   Content-Type: application/json
-
-// Body (JSON):
-//   {
-//     "title": "string, required",
-//     "body": "string, optional",
-//     "labels": ["optional", "array", "of", "strings"],
-//     "assignees": ["optional", "usernames"]
-//   }

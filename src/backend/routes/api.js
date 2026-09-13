@@ -3,6 +3,7 @@ import { saveFeedbackText } from '../services/feedbackService.js'
 import { BUG, FEATURE, MODERATION, SECURITY, LANDING, TEXT, VALID_FORMS } from '../helpers/FormHelpers.js';
 import { saveScore } from '../services/scoreService.js';
 import { SubmitToGitHub } from '../services/githubService.js';
+import { formatIssue } from '../services/markdownTemplateService.js';
 
 export const apiApp = new Hono();
 
@@ -31,6 +32,10 @@ async function filterBody(c) {
 
   return body;
 }
+
+apiApp.get('/md', async (c) => {
+  return c.body(formatIssue("BUG", {}));
+})
 
 apiApp.post('/:formType', async (c) => {
   const formType = c.req.param('formType');
@@ -83,7 +88,7 @@ async function processBody(c, formType, body) {
   // Don't send Junk to GitHub
   if (!VALID_FORMS.includes(formType))
     return;
-  
+  console.log("Submitting to GH");
   // ALL Other forms use redirects and come back here, so far no processing
   await SubmitToGitHub(c, formType, body);
 }
