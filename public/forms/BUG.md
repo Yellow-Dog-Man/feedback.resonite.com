@@ -1,6 +1,12 @@
 #! id= bug
 #! post-url = /api/bug
 
+#! slide-controls = hide
+#! submit-button-text = Next
+#! vertical-alignment = start
+#! field-size = lg
+#! restart-button = show
+
 ->start
 
 # 🐞 Bug Report

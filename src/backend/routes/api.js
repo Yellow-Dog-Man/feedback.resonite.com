@@ -34,7 +34,7 @@ async function filterBody(c) {
 }
 
 apiApp.get('/md', async (c) => {
-  return c.body(formatIssue("BUG", {}));
+  return c.body(formatIssue("bug", {description: "TEST DESCRIPTION"}));
 })
 
 apiApp.post('/:formType', async (c) => {

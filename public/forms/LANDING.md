@@ -1,7 +1,7 @@
-#! button-alignment = center
+#! post-url = /api/landing
+
 #! slide-controls = hide
 #! submit-button-text = Next
-#! post-url = /api/landing
 #! vertical-alignment = start
 #! field-size = sm
 #! restart-button = show
@@ -53,7 +53,3 @@ feedback*= TextInput(
 
 [.text-center]
 We hope to see you again soon!
-
-
-
-

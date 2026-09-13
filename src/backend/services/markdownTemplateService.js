@@ -5,11 +5,12 @@ import bugTemplate from '../../../public/templates/BUG.md?raw';
 import featureTemplate from '../../../public/templates/FEATURE.md?raw';
 
 const templates = {
-    'BUG': bugTemplate,
+    'bug': bugTemplate,
+    'feature': featureTemplate
 };
 
 export function formatIssue(issueType, body) {
-    const template = templates[issueType || 'BUG'];
+    const template = templates[issueType];
     
     if (!template) {
         throw new Error(`Template not found for issue type: ${issueType}`);
