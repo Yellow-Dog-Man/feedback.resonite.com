@@ -1,5 +1,0 @@
-CREATE TABLE IF NOT EXISTS feedback (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    content TEXT NOT NULL,
-    created_at TEXT NOT NULL
-)
