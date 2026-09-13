@@ -65,16 +65,19 @@ apiApp.post('/:formType', async (c) => {
     const body = c.get('parsedBody');
     console.log(`Received form post [${formType}]:`, body)
 
-    var res = await processFormBody(c, formType, body);
-    if (res)
-      return res;
-
-    return c.json({
-      success: true,
-      message: `Successfully received submission for ${formType}`,
-      receivedAt: new Date().toISOString(),
-      formResult: body,
-    });
+    var gitHubResult = await processFormBodyForGitHub(c, formType, body);
+    if (gitHubResult) {
+      return c.json({
+        success: true,
+        message: `Successfully received submission for ${formType}`,
+        receivedAt: new Date().toISOString(),
+        formResult: body,
+        number: gitHubResult.number,
+        ...redirectTo(gitHubResult.url)
+      });
+    } else {
+      // TODO: Handle Error
+    }
   } catch (err) {
     console.error(`Error processing form post ${formType}:`, err)
     return c.json({ success: false, error: err.message }, 400)
@@ -108,7 +111,7 @@ function addLandingMetadata(formType, body) {
   }
 }
 
-async function processFormBody(c, formType, body) {
+async function processFormBodyForGitHub(c, formType, body) {
   console.log("Form Type:" + formType);
 
   // Don't send Junk to GitHub

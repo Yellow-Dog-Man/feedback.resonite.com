@@ -32,10 +32,21 @@ export async function SubmitToGitHub(c, formType, body) {
             "Authorization": "Bearer " + c.env.GITHUB_TOKEN,
         }
     });
+    
+    // return issue number and link
+    if (res.ok) {
+        const obj = await res.json();
+        return {
+            url: obj.url,
+            number: obj.number
+        }
+    }
+
+    //TODO: Not ok. Log
     console.log(res);
     const body2 = await res.text();
     console.log(body2);
-    // TODO: return the GH Issue number up the chain to immediately allow them to go see their issue.
+    
 }
 
 // Map Us => GH labels
