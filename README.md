@@ -31,9 +31,31 @@ Many platforms have removed options to apply multi-dimensional sentiment. We're 
 - [Clouflare Workers](https://developers.cloudflare.com/workers/)
 - [Vite](https://vite.dev/)
 - [Water.css](https://github.com/kognise/water.css)
+- [Hono](https://hono.dev/)
+- [Mustache](https://mustache.github.io/)
+- Cloudflare D1 for Text Feedback
+- Cloudflare Analytics Engine for +1, -1 recording
+- TODO: Explain the following two items, they are some small items of glue that really make a difference here.
+- `vite-ssr-components`
+- `@cloudflare/vite-plugin`
 
 ### Scaffolding
+TODO: Don't recommend this anymore. Will update with recommended template later
 - `npm create vite@latest feedback.resonite.com -- --template vanilla`
+
+
+## TODO
+- [ ] Ratelimits
+- [ ] Turnstile
+- [ ] Other Bot Protection, see Cloudflare docs/Panel
+- [ ] Resonite Account OAuth
+- [ ] Bans 
+    - Don't think we'll need these.
+- [ ] Reports & Outputs
+- [ ] Filtering
+    - Do some basic safety filtering for profanity etc.
+    - See what Cloudflare has natively.
+    - Without this we get racist GH reports >_<
 
 ## Resources
 - [Vite Scaffolding](https://vite.dev/guide/#scaffolding-your-first-vite-project)
@@ -42,6 +64,7 @@ Many platforms have removed options to apply multi-dimensional sentiment. We're 
 - https://iconmonstr.com/
 - https://eta.js.org/
 - https://www.npmjs.com/package/hono - This is the recommended Cloudflare router
+    - ITS AWESOME
 
 ## Resource Goals
 Sometimes, prime discovers things he wanted to use but didn't know of at the time, anyway:
@@ -60,7 +83,7 @@ Prime is logging them here in the case we need to migrate from whatever monster 
 ## [Dog Walks](https://bsky.app/profile/probableprime.bsky.social/post/3mu4ffh4xxs2d)
 
 - Estimated: 20
-- Actual(so far): 7
+- Actual(so far): 8
 - Next Creative Day: 2026-09-18
 
 ## TODO
