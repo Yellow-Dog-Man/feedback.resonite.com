@@ -47,6 +47,7 @@ logs = FileInput(
 )
 
 More information on locating your log files can be found [on our wiki](https://wiki.resonite.com/Log_files).
+Log Files are **NOT** currently anonymized, see [this issue](https://github.com/Yellow-Dog-Man/feedback.resonite.com/issues/5).
 ---
 screenshots = FileInput(
   | question = Do you have any reproduction screenshots?
@@ -61,13 +62,24 @@ reproductionItem = TextInput(
 )
 ---
 additionalContext = TextInput(
-    | question = Do you have a reproduction Item?
-    | description = Describe how to access the item. Url?, World?, Public Folder, ResRec Link?
+    | question = Additional Context
+    | description = Any additional context, you think might help us
     | multiline
     | maxlength = 500
 )
 ---
+### ⚠️ DO NOT INCLUDE E-Mail Addresses
+reporter = TextInput(
+    | question = How can we contact & credit you?
+    | description = Describe how we can contact you if we need more information or to credit you on the changelogs.
+    | multiline
+    | maxlength = 500
+)
+This question is *optional*, however if you do not fill it in, we might not be able to work on your issue and we may have to close it.
+---
 
 -> end
 
-# Thanks for providing Feedback, dingus!
+# Thanks for providing Feedback!
+
+We hope to see you again soon!
