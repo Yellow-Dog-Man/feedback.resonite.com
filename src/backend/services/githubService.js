@@ -24,7 +24,7 @@ export async function SubmitToGitHub(c, formType, body) {
 
     const res = await fetch(URL, {
         method: "POST",
-        body: JSON.stringify(convertToGitHub(formType, markdownBody)),
+        body: JSON.stringify(convertToGitHub(formType, body, markdownBody)),
         headers: {
             "Content-Type": "application/json",
             "User-Agent": USER_AGENT,
@@ -47,7 +47,7 @@ function getLabels(formType) {
 }
 
 // TODO: check for any additional items we can specify here
-function convertToGitHub(formType, markdownBody) {
+function convertToGitHub(formType, body, markdownBody) {
     const issue = {
         "title": body.issueTitle || body.title,
         "labels": getLabels(formType), 
