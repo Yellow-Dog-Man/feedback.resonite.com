@@ -18,7 +18,8 @@ const standardFormOptions = {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   },
   fontSize: "lg",
-  saveState: false
+  saveState: false,
+  errorMessageKey: "detail"
 };
 
 export default standardFormOptions;
