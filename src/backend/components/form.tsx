@@ -1,5 +1,6 @@
 import { FC, Fragment } from "hono/jsx";
 import "formsmd/dist/css/formsmd.min.css";
+import { TURNSTILE_SITE_KEY } from "../helpers/TurnstileConfig";
 
 type FormConfig = {
     id: string;
@@ -19,7 +20,9 @@ export const Form: FC<{formConfig: FormConfig}> = (props: {
       class="formsMDTarget"
       data-form-template={props.formConfig.templatePath}
     />
+    <div id="turnstile-container" data-sitekey={TURNSTILE_SITE_KEY} style="margin: 20px 0; display: flex; justify-content: center;"></div>
     </Fragment>
   )
 }
+
 
