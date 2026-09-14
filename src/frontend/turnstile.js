@@ -1,40 +1,33 @@
-let turnstileWidgetId = null;
+export const TURNSTILE_SUCCESS_EVENT = 'turnstileSuccess';
+export const TOKEN_KEY = "turnstile_token";
+export const TURNSTILE_HEADER = 'X-Turnstile-Token';
 
 const TURNSTILE_DIV = '#turnstile-container';
-export const TURNSTILE_SUCCESS_EVENT = 'turnstileSuccess';
 const turnstileEvent = new Event(TURNSTILE_SUCCESS_EVENT);
-
-export const TOKEN_KEY = "turnstile_token";
-
-export const TURNSTILE_HEADER = 'X-Turnstile-Token';
 
 export function initTurnstile() {
     const turnstileContainer = document.querySelector(TURNSTILE_DIV);
-    const TURNSTILE_SITE_KEY = turnstileContainer.dataset.sitekey || '1x00000000000000000000AA'; 
-    if (!turnstileContainer) 
-        return;
-
-    const renderWidget = () => {
-        if (window.turnstile && turnstileWidgetId === null) {
-            turnstileWidgetId = window.turnstile.render(TURNSTILE_DIV, {
-                sitekey: TURNSTILE_SITE_KEY,
-                callback: onSuccess,
-                'expired-callback': onFailure,
-                'error-callback': onFailure
-            });
-        }
-    };
+    const key = turnstileContainer.dataset.sitekey; 
 
     if (window.turnstile) {
-        renderWidget();
+        renderWidget(key);
     } else {
         const checkTurnstile = setInterval(() => {
             if (window.turnstile) {
                 clearInterval(checkTurnstile);
-                renderWidget();
+                renderWidget(key);
             }
         }, 100);
     }
+}
+
+function renderWidget() {
+    window.turnstile.render(TURNSTILE_DIV, {
+        sitekey: TURNSTILE_SITE_KEY,
+        callback: onSuccess,
+        'expired-callback': onFailure,
+        'error-callback': onFailure
+    });
 }
 
 function onFailure() {
