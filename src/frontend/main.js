@@ -1,8 +1,14 @@
 import './../style.css';
 import "formsmd/dist/css/formsmd.min.css";
 import { Formsmd } from "formsmd";
-import DefaultFormOptions from "../backend/helpers/DefaultFormOptions.js";
+import {GetDefaultFormOptions} from "../backend/helpers/DefaultFormOptions.js";
+import { initTurnstile } from "./turnstile.js";
 
+document.addEventListener('DOMContentLoaded', () => {
+  initTurnstile();
+});
+
+// TODO Wait for turnstile
 document.querySelectorAll('.formsMDTarget').forEach(async (el) => {
   const templatePath = el.getAttribute('data-form-template');
   if (!templatePath) return;
@@ -12,7 +18,7 @@ document.querySelectorAll('.formsMDTarget').forEach(async (el) => {
     const formsmd = new Formsmd(
       text,
       el,
-      DefaultFormOptions,
+      GetDefaultFormOptions(),
     );
     formsmd.init();
     formsmd.onCompletion = handleCompletion;
@@ -28,4 +34,6 @@ function handleCompletion(result) {
   if (result.redirectTo !== undefined)
     window.location.href = result.redirectTo;
 }
+
+
 

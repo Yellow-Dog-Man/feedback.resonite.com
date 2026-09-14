@@ -5,8 +5,12 @@ import { saveScore } from '../services/scoreService.js';
 import { SubmitToGitHub } from '../services/githubService.js';
 import { formatIssue } from '../services/markdownTemplateService.js';
 import { formLimiter, landingLimiter } from '../helpers/RateLimits.js';
+import { turnstileMiddleware } from '../helpers/TurnstileMiddleware.js';
 
 export const apiApp = new Hono();
+
+// Apply turnstile middleware to all API POST routes
+apiApp.use('*', turnstileMiddleware());
 
 // TODO: move middleware to helper file
 // Middleware to parse body and convert yes/no to booleans
@@ -21,6 +25,7 @@ apiApp.use('/:formType', async (c, next) => {
   }
   await next();
 });
+
 
 async function filterBody(c) {
   const rawBody = await c.req.parseBody();

@@ -1,3 +1,5 @@
+import { getTurnstileToken, TURNSTILE_HEADER } from "../../frontend/turnstile";
+
 const standardFormOptions = {
   colorScheme: "dark",
   // TODO: Want better theming? We can spend $99 per site: https://forms.md/pricing/ for the entire lifetime of this site.
@@ -15,11 +17,24 @@ const standardFormOptions = {
   },
   postHeaders: {
     // We have A state store at home, you don't need to write your own
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
+    //Authorization: `Bearer ${localStorage.getItem("token")}`,
   },
   fontSize: "lg",
   saveState: false,
   errorMessageKey: "detail"
 };
 
-export default standardFormOptions;
+export function GetDefaultFormOptions () {
+  return {
+    ...standardFormOptions,
+    ...getHydratedFormOptions(),
+  }
+}
+
+function getHydratedFormOptions() {
+  const options = {
+    postHeaders: {}
+  };
+  options.postHeaders[TURNSTILE_HEADER] = getTurnstileToken();
+  options.postHeaders['Authorization'] = "Bearer " + "" //Get Auth Token
+}
