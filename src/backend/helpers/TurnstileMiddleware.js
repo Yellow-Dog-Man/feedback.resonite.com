@@ -7,17 +7,18 @@ export function turnstileMiddleware() {
     if (c.req.method !== 'POST') {
       return await next();
     }
-    const secretKey = c.env.TURNSTILE_SECRET_KEY;
-    const token = c.req.header(TURNSTILE_HEADER);
+    
+    const verification = await verifyTurnstileToken(
+      c.env.TURNSTILE_SECRET_KEY, 
+      c.req.header(TURNSTILE_HEADER), 
+      c.req.header('CF-Connecting-IP')
+    );
 
-    const remoteIp = c.req.header('cf-connecting-ip') || '';
-    const verification = await verifyTurnstileToken(secretKey, token, remoteIp);
-
+    //TODO Problem details
     if (!verification.success) {
       return c.json({
         success: false,
         error: 'Cloudflare Turnstile verification failed. Please complete the verification challenge.',
-        errorCodes: verification['error-codes']
       }, 403);
     }
 
