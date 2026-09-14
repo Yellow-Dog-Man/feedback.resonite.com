@@ -49,12 +49,14 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 - [X] Ratelimits
     - Not this:https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
     - This: https://honohub.dev/docs/rate-limiter/stores/cloudflare
-- [ ] Turnstile
+- [X] Turnstile
     - FormsMd, supports recapthca
     - I think we can just turnstile before the form starts though.
     - like: Turnstile -> PASS -> Load Form
 - [ ] Other Bot Protection, see Cloudflare docs/Panel
+    - Will wait for Deploy
 - [ ] Resonite Account OAuth
+    - Use the OAuth Middleware: https://github.com/honojs/middleware/tree/main/packages/oauth-providers
 - [ ] Bans 
     - https://hono.dev/docs/middleware/builtin/ip-restriction
     - I think rate limits and filtering should do enough here.
@@ -72,18 +74,20 @@ TODO: Don't recommend this anymore. Will update with recommended template later
     - For anything more complex, we'd probably looking at using Cloudflare AI Workers, there's probably a model dedicated to this task. 
 - [ ] Validation
     - https://zod.dev/
+    - Probably overkill for now
 - [ ] Blog Posts on Design
     - I REALLY, like this tech stack, felt really nimble but basic enough that I dont need to google docs a lot of the time.
     - I feel like folks, would like this knowledge so if you're interested in a blog post series about how this all works.
     - Let me know, reach me in the funny papers :D.
-- [ ] https://orm.drizzle.team/
-- [ ] https://unstorage.unjs.io/
-- [ ] https://unjs.io/
 - [ ] Success Screen
     - Right now, we redirect to github.
     - I want to instead make a success screen that shows "CREATED CLICK HERE TO GO" etc.
-- [ ] Resonite Auth
-    - https://github.com/honojs/middleware/tree/main/packages/oauth-providers
+- [ ] R2 Stuff
+    - We'll be putting these into an R2 Bucket, people sometimes struggle to upload them to Github
+    - Our upload will have a better experience
+    - We can link to the files in the GH markdown, so the log scanner wont scream at us.
+    - [ ] Screenshots
+    - [ ] Log Files
 
 ## Resources
 - [Vite Scaffolding](https://vite.dev/guide/#scaffolding-your-first-vite-project)
@@ -99,7 +103,10 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 - https://github.com/honojs/middleware/tree/main/packages/session
 - https://github.com/honojs/middleware/tree/main/packages/otel
 - https://github.com/irazasyed/awesome-cloudflare
-- https://github.com/konamgil/mandu    
+- https://github.com/konamgil/mandu
+- https://orm.drizzle.team/
+- https://unstorage.unjs.io/
+- https://unjs.io/
 
 ## Resource Goals
 Sometimes, prime discovers things he wanted to use but didn't know of at the time, anyway:
