@@ -1,22 +1,26 @@
-export async function verifyTurnstileToken(c, token) {
+import { sha256Hex } from "./hashService";
+
+export async function verifyTurnstileToken(secret, token) {
   try {
-    return await submitTurnstileToken(c, token);
+    return await submitTurnstileToken(secret, token);
   } catch (err) {
+    console.log(err);
     return turnstileFail();
   }
 }
 
 async function submitTurnstileToken(secret, turnstileToken, ip) {
   const formData = new FormData();
-  formData.append('secret', );
+  formData.append('secret', secret);
   formData.append('response', turnstileToken);
-  formData.append('remoteip', );
+  formData.append('remoteip', ip);
 
   const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
       body: formData,
   });
   const verifyOutcome = await verifyRes.json();
+  console.log(verifyOutcome);
   if (!verifyOutcome.success) {
       return turnstileFail();
   }
@@ -24,12 +28,11 @@ async function submitTurnstileToken(secret, turnstileToken, ip) {
   // I think I need to use Cloudflare, https://developers.cloudflare.com/turnstile/tutorials/fraud-detection-with-ephemeral-ids/
   // But this is an enterprise feature.
   // Instead we stamp some items together.
-  const challengeStamp = verifyOutcome.challenge_ts ? Date.parse(verifyOutcome.challenge_ts) : Date.now();
+  const challengeTimeStamp = verifyOutcome.challenge_ts ? Date.parse(verifyOutcome.challenge_ts) : Date.now();
 
-  //TODO: probably should hash this
-  attestationId = `cf_${challengeStamp}_${turnstileToken.slice(-6)}`;
+  const hash = await sha256Hex(`cf_${challengeTimeStamp}_${turnstileToken}_${ip}`);
 
-  return turnstilePassed(attestationId);
+  return turnstilePassed(hash);
 }
 
 

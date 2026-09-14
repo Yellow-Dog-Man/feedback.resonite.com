@@ -13,7 +13,7 @@ export function turnstileMiddleware() {
       c.req.header(TURNSTILE_HEADER), 
       c.req.header('CF-Connecting-IP')
     );
-
+    console.log(verification);
     //TODO Problem details
     if (!verification.success) {
       return c.json({
