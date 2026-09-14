@@ -26,7 +26,6 @@ export function formLimiter(cx) {
 
 // 4 landing in one hour
 export function landingLimiter(cx) {
-    const isDev = cx.env.ENVIRONMENT === "development" || cx.env.ENVIRONMENT === "dev" || !cx.env.ENVIRONMENT;
     return rateLimiter({
         windowMs: 3_600_000, // 1 Hour
         limit: isDev(cx.env) ? 100 : 4, // 4 (100 in DEV)
