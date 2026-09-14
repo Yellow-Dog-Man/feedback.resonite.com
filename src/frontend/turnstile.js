@@ -43,3 +43,9 @@ function onSuccess(token) {
 export function getTurnstileToken() {
     return sessionStorage.getItem(TOKEN_KEY) ?? "";
 }
+
+export function getTurnstileHeader() {
+    return {
+        TURNSTILE_HEADER: getTurnstileToken()
+    }
+}

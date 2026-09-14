@@ -1,4 +1,4 @@
-import { getTurnstileToken, TURNSTILE_HEADER } from "../../frontend/turnstile";
+import { getTurnstileHeader } from "../../frontend/turnstile";
 
 const standardFormOptions = {
   colorScheme: "dark",
@@ -33,9 +33,10 @@ export function GetDefaultFormOptions () {
 
 function getHydratedFormOptions() {
   const options = {
-    postHeaders: {}
+    postHeaders: {
+      ...getTurnstileHeader()
+    }
   };
-  options.postHeaders[TURNSTILE_HEADER] = getTurnstileToken();
   options.postHeaders['Authorization'] = "Bearer " + "" //Get Auth Token
 
   return options;
