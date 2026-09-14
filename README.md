@@ -10,6 +10,8 @@ A [Creative Day](https://github.com/Yellow-Dog-Man/Resonite-Issues/blob/main/CRE
 - Fun
 - Simple
 - Minimal
+- No React
+    - We do use JSX/TSX, but... its cool and so much simpler than React.
 
 ## Non-Goals
 - Be released
@@ -44,8 +46,9 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 - `npm create vite@latest feedback.resonite.com -- --template vanilla`
 
 ## TODO
-- [ ] Ratelimits
-    - https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
+- [X] Ratelimits
+    - Not this:https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
+    - This: https://honohub.dev/docs/rate-limiter/stores/cloudflare
 - [ ] Turnstile
     - FormsMd, supports recapthca
     - I think we can just turnstile before the form starts though.
@@ -53,6 +56,7 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 - [ ] Other Bot Protection, see Cloudflare docs/Panel
 - [ ] Resonite Account OAuth
 - [ ] Bans 
+    - https://hono.dev/docs/middleware/builtin/ip-restriction
     - I think rate limits and filtering should do enough here.
     - But we'll need some ban functionality.
     - I'll just keep the limits high to start
@@ -60,12 +64,13 @@ TODO: Don't recommend this anymore. Will update with recommended template later
     - Need way to see score
     - Need way to review text feedback
     - Prime can do this in the dashboard atm
-- [ ] Filtering
+- [X] Filtering
     - Do some basic safety filtering for profanity etc.
     - See what Cloudflare has natively.
     - Without this we get racist GH reports >_<
     - https://www.npmjs.com/package/obscenity looks like a good place to start
     - For anything more complex, we'd probably looking at using Cloudflare AI Workers, there's probably a model dedicated to this task. 
+- [ ] Validation
     - https://zod.dev/
 - [ ] Blog Posts on Design
     - I REALLY, like this tech stack, felt really nimble but basic enough that I dont need to google docs a lot of the time.
@@ -74,6 +79,9 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 - [ ] https://orm.drizzle.team/
 - [ ] https://unstorage.unjs.io/
 - [ ] https://unjs.io/
+- [ ] Success Screen
+    - Right now, we redirect to github.
+    - I want to instead make a success screen that shows "CREATED CLICK HERE TO GO" etc.
 
 ## Resources
 - [Vite Scaffolding](https://vite.dev/guide/#scaffolding-your-first-vite-project)
