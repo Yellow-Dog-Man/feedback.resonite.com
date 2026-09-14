@@ -16,7 +16,7 @@ import { WorkersKVStore } from "@hono-rate-limiter/cloudflare";
 export function formLimiter(cx) {
     return rateLimiter({
         windowMs: 3_600_000, // 1 Hour
-        limit: 4, // 4
+        limit: isDev(cx.env) ? 100 : 4, // 4 (100 in DEV)
         keyGenerator: (c) => "form:" + c.req.header("cf-connecting-ip") ?? "",
         store: new WorkersKVStore({
             namespace: cx.env.RATE_LIMIT_KV,
@@ -26,12 +26,26 @@ export function formLimiter(cx) {
 
 // 4 landing in one hour
 export function landingLimiter(cx) {
+    const isDev = cx.env.ENVIRONMENT === "development" || cx.env.ENVIRONMENT === "dev" || !cx.env.ENVIRONMENT;
     return rateLimiter({
         windowMs: 3_600_000, // 1 Hour
-        limit: 4, // 4
+        limit: isDev(cx.env) ? 100 : 4, // 4 (100 in DEV)
         keyGenerator: (c) => "landing:" + c.req.header("cf-connecting-ip") ?? "",
         store: new WorkersKVStore({
             namespace: cx.env.RATE_LIMIT_KV,
         }),
     });
 }
+
+// This shouldn't change in between environments.
+// I mean it might
+// TODO: rethink this, it was late and I wanted more limits lol
+let cachedDev = null;
+function isDev(env) {
+    if (cachedDev == null)
+    {
+        cachedDev = env.ENVIRONMENT === "development" || env.ENVIRONMENT === "dev" || !env.ENVIRONMENT;
+    }
+    return cachedDev;
+}
+
