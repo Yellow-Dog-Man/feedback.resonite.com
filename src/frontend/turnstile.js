@@ -2,8 +2,6 @@ export const TURNSTILE_SUCCESS_EVENT = 'turnstileSuccess';
 export const TOKEN_KEY = "turnstile_token";
 export const TURNSTILE_HEADER = 'X-Turnstile-Token';
 
-const TURNSTILE_SITE_KEY = '1x00000000000000000000AA';
-
 const TURNSTILE_DIV = '#turnstile-container';
 const turnstileEvent = new Event(TURNSTILE_SUCCESS_EVENT);
 
@@ -23,9 +21,9 @@ export function initTurnstile() {
     }
 }
 
-function renderWidget() {
+function renderWidget(key) {
     window.turnstile.render(TURNSTILE_DIV, {
-        sitekey: TURNSTILE_SITE_KEY,
+        sitekey: key,
         callback: onSuccess,
         'expired-callback': onFailure,
         'error-callback': onFailure

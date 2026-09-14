@@ -1,5 +1,6 @@
 import { verifyTurnstileToken } from '../services/turnstileService.js';
 import { TURNSTILE_HEADER } from '../../frontend/turnstile.js';
+import { getTurnstileSecretKey } from '../helpers/TurnstileConfig.js';
 
 export function turnstileMiddleware() {
   return async (c, next) => {
@@ -9,12 +10,10 @@ export function turnstileMiddleware() {
     }
     
     const verification = await verifyTurnstileToken(
-      c.env.TURNSTILE_SECRET_KEY, 
-      c.req.header(TURNSTILE_HEADER), 
+      getTurnstileSecretKey(c),
+      c.req.header(TURNSTILE_HEADER),
       c.req.header('CF-Connecting-IP')
     );
-    console.log(verification);
-    //TODO Problem details
     if (!verification.success) {
       return c.json({
         success: false,
@@ -22,6 +21,8 @@ export function turnstileMiddleware() {
       }, 403);
     }
 
+    c.set('turnstile', true);
+    c.set('attestation', verification.attestation);
     await next();
   };
 }

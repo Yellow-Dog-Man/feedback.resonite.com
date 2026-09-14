@@ -9,6 +9,8 @@ import { turnstileMiddleware } from '../helpers/TurnstileMiddleware.js';
 
 export const apiApp = new Hono();
 
+const PARSED_BODY_KEY = "parsedBody";
+
 // Apply turnstile middleware to all API POST routes
 apiApp.use('*', turnstileMiddleware());
 
@@ -18,9 +20,9 @@ apiApp.use('/:formType', async (c, next) => {
   if (c.req.method === 'POST') {
     try {
       const body = await filterBody(c);
-      c.set('parsedBody', body);
+      c.set(PARSED_BODY_KEY, body);
     } catch (err) {
-      c.set('parsedBody', {});
+      c.set(PARSED_BODY_KEY, {});
     }
   }
   await next();

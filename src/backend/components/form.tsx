@@ -1,6 +1,6 @@
 import { FC, Fragment } from "hono/jsx";
 import "formsmd/dist/css/formsmd.min.css";
-import { TURNSTILE_SITE_KEY } from "../helpers/TurnstileConfig";
+import { TURNSTILE_SITE_KEY } from "../helpers/TurnstileConfig.js";
 
 type FormConfig = {
     id: string;

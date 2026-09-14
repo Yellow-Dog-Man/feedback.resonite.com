@@ -1,4 +1,7 @@
-export const TURNSTILE_SITE_KEY = '1x00000000000000000000AA'; // Default Cloudflare testing site key (always passes)
+const DEMO_TURNSTILE_KEY = '1x00000000000000000000AA'
 
-// USE ENV
-//export const TURNSTILE_SECRET_KEY = '1x0000000000000000000000000000000AA'; // Default Cloudflare testing secret key (always passes)
+export const TURNSTILE_SITE_KEY = DEMO_TURNSTILE_KEY;
+
+export function getTurnstileSecretKey(c) {
+  return c.env.TURNSTILE_SECRET_KEY ?? DEMO_TURNSTILE_KEY;
+}
