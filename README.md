@@ -82,6 +82,8 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 - [ ] Success Screen
     - Right now, we redirect to github.
     - I want to instead make a success screen that shows "CREATED CLICK HERE TO GO" etc.
+- [ ] Resonite Auth
+    - https://github.com/honojs/middleware/tree/main/packages/oauth-providers
 
 ## Resources
 - [Vite Scaffolding](https://vite.dev/guide/#scaffolding-your-first-vite-project)
@@ -91,6 +93,13 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 - https://eta.js.org/
 - https://www.npmjs.com/package/hono - This is the recommended Cloudflare router
     - ITS AWESOME
+- https://github.com/paveg/hono-problem-details
+- https://trycap.dev/
+- https://stitchapi.dev/
+- https://github.com/honojs/middleware/tree/main/packages/session
+- https://github.com/honojs/middleware/tree/main/packages/otel
+- https://github.com/irazasyed/awesome-cloudflare
+- https://github.com/konamgil/mandu    
 
 ## Resource Goals
 Sometimes, prime discovers things he wanted to use but didn't know of at the time, anyway:
