@@ -10,15 +10,19 @@ const REPO = "Resonite-Issues";
 
 const URL = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/issues";
 
+const ISSUE_LABEL = "feedback.resonite.com";
+
 export async function SubmitToGitHub(c, formType, body) {
     const markdownBody = formatIssue(formType, body); // Create Markdown representation of issue
 
+    // TODO: filter should not be in this method or file.
     if (containsProfanity(markdownBody)) {
-        console.log("Watch your profanity");
+        console.log("Rejecting issue because it contains profanity");
         return BadRequest(c, "Issue contains profanity");
     }
 
     if (containsEmail(markdownBody)) {
+        console.log("Rejecting issue because it contains an email address");
         return BadRequest(c, "Issue contains an email address");
     }
 
@@ -32,7 +36,7 @@ export async function SubmitToGitHub(c, formType, body) {
             "Authorization": "Bearer " + c.env.GITHUB_TOKEN,
         }
     });
-    
+
     // return issue number and link
     if (res.ok) {
         const obj = await res.json();
@@ -46,7 +50,6 @@ export async function SubmitToGitHub(c, formType, body) {
     console.log(res);
     const body2 = await res.text();
     console.log(body2);
-    
 }
 
 // Map Us => GH labels
@@ -61,7 +64,7 @@ function getLabels(formType) {
 function convertToGitHub(formType, body, markdownBody) {
     const issue = {
         "title": body.issueTitle || body.title,
-        "labels": getLabels(formType), 
+        "labels": [...getLabels(formType), ISSUE_LABEL],
         "body": markdownBody
     };
 
