@@ -37,4 +37,6 @@ function getHydratedFormOptions() {
   };
   options.postHeaders[TURNSTILE_HEADER] = getTurnstileToken();
   options.postHeaders['Authorization'] = "Bearer " + "" //Get Auth Token
+
+  return options;
 }
