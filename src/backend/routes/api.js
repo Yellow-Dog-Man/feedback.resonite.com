@@ -67,14 +67,16 @@ apiApp.post('/:formType', async (c) => {
 
     var gitHubResult = await processFormBodyForGitHub(c, formType, body);
     if (gitHubResult) {
-      return c.json({
+      var finalResult = {
         success: true,
         message: `Successfully received submission for ${formType}`,
         receivedAt: new Date().toISOString(),
         formResult: body,
         number: gitHubResult.number,
         ...redirectTo(gitHubResult.url)
-      });
+      };
+      console.log(finalResult);
+      return c.json(finalResult);
     } else {
       // TODO: Handle Error
     }

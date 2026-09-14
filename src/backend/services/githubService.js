@@ -37,7 +37,7 @@ export async function SubmitToGitHub(c, formType, body) {
     if (res.ok) {
         const obj = await res.json();
         return {
-            url: obj.url,
+            url: obj.html_url,
             number: obj.number
         }
     }
