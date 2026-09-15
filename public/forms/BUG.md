@@ -68,6 +68,13 @@ additionalContext = TextInput(
     | maxlength = 500
 )
 ---
+favoriteCheese = TextInput(
+    | question = FavoriteCheese?
+    | description = Any additional context, you think might help us
+    | multiline
+    | maxlength = 500
+)
+---
 ### ⚠️ DO NOT INCLUDE E-Mail Addresses
 reporter = TextInput(
     | question = How can we contact & credit you?
