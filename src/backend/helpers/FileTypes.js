@@ -1,4 +1,4 @@
-function isLog() {
+export function isLog(originalName, file) {
     const lowerName = originalName.toLowerCase();
     const mimeType = (file.type || '').toLowerCase();
     // Must be a .log extension and text file type
@@ -11,7 +11,9 @@ function isLog() {
     return true;
 }
 
-function isImage() {
+export function isImage(originalName, file) {
+    const lowerName = originalName.toLowerCase();
+    const mimeType = (file.type || '').toLowerCase();
     // Must be png or jpg/jpeg
     const isImageExt = lowerName.endsWith('.png') || lowerName.endsWith('.jpg') || lowerName.endsWith('.jpeg');
     const isImageMime = mimeType.startsWith('image/png') || mimeType.startsWith('image/jpeg') || mimeType === '';

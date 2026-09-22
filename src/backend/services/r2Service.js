@@ -1,3 +1,5 @@
+import { isImage, isLog } from "../helpers/FileTypes";
+
 //TODO: config
 const BLOB_DOMAIN = "https://blob.feedback.resonite.com/";
 
@@ -11,6 +13,10 @@ export async function uploadFileToR2(bucket, filePrefix, file) {
 
     const uniqueId = filePrefix =="" ? crypto.randomUUID() : filePrefix;
     const originalName = file.name || 'attachment';
+
+    if (!isLog(file, originalName) && !isImage(file, originalName))
+        throw new Error("Invalid file: " + file);
+
     const key = processKey(`${new Date().toISOString().split('T')[0]}/${uniqueId}/${originalName}`);
 
     const res = await bucket.put(key, file.stream(), {
