@@ -27,4 +27,6 @@ id = "a3e2dc40a0bd43c38615caec4b6e8ab9"
 [[r2_buckets]]
 binding = "BUCKET"
 bucket_name = "feedback-resonite-files"
+jurisdiction = "eu"
+
 
