@@ -1,12 +1,10 @@
 name = "feedback-resonite-com"
 main = "./src/backend/main.js"
 compatibility_date = "2026-03-11"
-compatibility_flags = ["nodejs_compat"]
+compatibility_flags = [ "nodejs_compat" ]
 
 [vars]
 ENVIRONMENT = "production"
-ACCOUNT_ID = ""
-
 
 [assets]
 directory = "./dist"
@@ -20,12 +18,12 @@ dataset = "SCORE"
 binding = "DB"
 database_name = "feedback-db"
 database_id = "51b6896f-6a4f-4f4e-94f6-c4571a0794a9"
+migrations_dir = "../../migrations"
 
 [[kv_namespaces]]
 binding = "RATE_LIMIT_KV"
-id = "your-namespace-id"
+id = "a3e2dc40a0bd43c38615caec4b6e8ab9"
 
 [[r2_buckets]]
 binding = "BUCKET"
 bucket_name = "feedback-resonite-files"
-
