@@ -5,6 +5,8 @@ compatibility_flags = ["nodejs_compat"]
 
 [vars]
 ENVIRONMENT = "production"
+ACCOUNT_ID = ""
+
 
 [assets]
 directory = "./dist"

@@ -23,4 +23,3 @@ export async function saveFeedbackText(db, body, date) {
     console.error(`Error saving text to D1 database:`, dbErr);
   }
 }
-

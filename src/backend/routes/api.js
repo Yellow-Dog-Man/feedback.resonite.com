@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { saveFeedbackText } from '../services/feedbackService.js'
 import { BUG, FEATURE, MODERATION, SECURITY, LANDING, TEXT, VALID_FORMS } from '../helpers/FormHelpers.js';
-import { saveScore } from '../services/scoreService.js';
+import { getScore, saveScore } from '../services/scoreService.js';
 import { SubmitToGitHub } from '../services/githubService.js';
 import { formatIssue } from '../services/markdownTemplateService.js';
 import { formLimiter, landingLimiter } from '../helpers/RateLimits.js';
@@ -53,8 +53,6 @@ async function preProcessBody(c) {
 
   return body;
 }
-
-
 
 async function processFile(c, body, key, value, filePrefix) {
   if (c.env.BUCKET && value.size > 0) {
@@ -125,6 +123,11 @@ apiApp.post('/:formType', async (c) => {
 
 apiApp.get('/md', async (c) => {
   return c.body(formatIssue("bug", {description: "TEST DESCRIPTION"}));
+});
+
+apiApp.get('/stats/happiness', async (c) => {
+  const score = await getScore(c);
+  return c.json(score);
 });
 
 // We need to signal to FormsMd/Frontend what to do on a completed form.

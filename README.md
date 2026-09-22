@@ -29,6 +29,29 @@ Many platforms have removed options to apply multi-dimensional sentiment. We're 
 
 ## Tech Stack
 
+## Environment Variables & Configuration
+
+This project uses several Cloudflare environment variables, bindings, and secrets depending on the services being used. Here is the full list of required and optional environment variables:
+
+### 1. Wrangler Variables (`[vars]` in `wrangler.toml`)
+* **`ENVIRONMENT`**: The environment mode (e.g., `"production"` or `"development"`).
+* **`ACCOUNT_ID`**: Your Cloudflare Account ID. Required if you are querying the Workers Analytics Engine SQL API (used in `scoreService.js`).
+
+### 2. Secrets (Configured via Wrangler or `.dev.vars` for local dev)
+Set these using `npx wrangler secret put <NAME>` or inside your local `.dev.vars` file:
+* **`GITHUB_TOKEN`**: A GitHub Personal Access Token with repo/issue creation permissions (used to submit feedback issues via `githubService.js`).
+* **`API_TOKEN`**: A Cloudflare API Token with **Account Analytics Read** permissions (required for querying the Workers Analytics Engine SQL API).
+* **`TURNSTILE_SECRET_KEY`**: Cloudflare Turnstile secret key used for validating bot protection challenges on form submissions. (Falls back to a test key if not provided).
+
+### 3. Cloudflare Bindings (`wrangler.toml`)
+* **`ASSETS`**: Static assets binding for serving frontend files from `./dist`.
+* **`SCORE`**: Workers Analytics Engine dataset binding (`dataset = "SCORE"`).
+* **`DB`**: Cloudflare D1 database binding (`feedback-db`) for storing text feedback.
+* **`RATE_LIMIT_KV`**: KV namespace binding for handling rate limits.
+* **`BUCKET`**: R2 bucket binding (`feedback-resonite-files`) for storing user-uploaded screenshots and log files.
+
+---
+
 - [Forms MD](https://github.com/formsmd/formsmd)
 - [Clouflare Workers](https://developers.cloudflare.com/workers/)
 - [Vite](https://vite.dev/)
@@ -82,12 +105,13 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 - [ ] Success Screen
     - Right now, we redirect to github.
     - I want to instead make a success screen that shows "CREATED CLICK HERE TO GO" etc.
-- [ ] R2 Stuff
+- [ ] Files via R2
+    - [X] Screenshots
+    - [X] Log Files
+    - [ ] I need to test this when its deployed, right now its storing them locally
     - We'll be putting these into an R2 Bucket, people sometimes struggle to upload them to Github
     - Our upload will have a better experience
     - We can link to the files in the GH markdown, so the log scanner wont scream at us.
-    - [ ] Screenshots
-    - [ ] Log Files
 
 ## Resources
 - [Vite Scaffolding](https://vite.dev/guide/#scaffolding-your-first-vite-project)
