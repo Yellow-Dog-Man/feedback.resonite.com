@@ -19,6 +19,16 @@ function isFile(value){
   return value instanceof File || value instanceof Blob;
 }
 
+function handleValidationError(result, c) {
+  if (!result.success) {
+    return c.json({
+      success: false,
+      error: "Validation failed",
+      details: result.error.format()
+    }, 400);
+  }
+}
+
 const RECORD_ID_KEY = "_rid";
 
 async function processFile(c, body, key, value, filePrefix) {
@@ -63,13 +73,7 @@ apiApp.use('/'+LANDING, async(c, next) => {
 apiApp.post(
   '/' + LANDING,
   zValidator('form', getFormSchema(LANDING), (result, c) => {
-    if (!result.success) {
-      return c.json({
-        success: false,
-        error: "Validation failed",
-        details: result.error.format()
-      }, 400);
-    }
+    if (!result.success) return handleValidationError(result, c);
   }),
   async (c) => {
     const rawValidated = c.req.valid('form');
@@ -105,13 +109,7 @@ apiApp.post(
       return next();
     }
     const validator = zValidator('form', schema, (result, c) => {
-      if (!result.success) {
-        return c.json({
-          success: false,
-          error: "Validation failed",
-          details: result.error.format()
-        }, 400);
-      }
+      if (!result.success) return handleValidationError(result, c);
     });
     return validator(c, next);
   },
