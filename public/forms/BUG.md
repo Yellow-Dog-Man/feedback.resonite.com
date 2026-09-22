@@ -42,7 +42,6 @@ expectation*= TextInput(
 )
 ---
 
-[multiple="true"]
 logs* = FileInput(
   | question = Upload your Log File
   | description = We'll need a Log File to file this bug report.
@@ -53,7 +52,6 @@ Log Files are **NOT** currently anonymized, see [this issue](https://github.com/
 
 ---
 
-[multiple="true"]
 screenshots = FileInput(
   | question = Do you have any reproduction screenshots?
   | description = If they help explain your bug upload them please!
