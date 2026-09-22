@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { zValidator } from '@hono/zod-validator'
 import { saveFeedbackText } from '../services/feedbackService.js'
 import { BUG, FEATURE, MODERATION, SECURITY, LANDING, TEXT, VALID_FORMS } from '../helpers/FormHelpers.js';
 import { dumpScore, getScore, saveScore } from '../services/scoreService.js';
@@ -7,27 +8,12 @@ import { formatIssue } from '../services/markdownTemplateService.js';
 import { formLimiter, landingLimiter } from '../helpers/RateLimits.js';
 import { uploadFileToR2 } from '../services/r2Service.js';
 import { turnstileMiddleware } from '../helpers/TurnstileMiddleware.js';
+import { getFormSchema } from '../helpers/ValidationSchemas.js';
 
 export const apiApp = new Hono();
 
-const PARSED_BODY_KEY = "parsedBody";
-
 // Apply turnstile middleware to all API POST routes
 apiApp.use('*', turnstileMiddleware());
-
-// TODO: move middleware to helper file
-// Middleware to parse body and convert yes/no to booleans
-apiApp.use('/:formType', async (c, next) => {
-  if (c.req.method === 'POST') {
-    try {
-      const body = await preProcessBody(c);
-      c.set(PARSED_BODY_KEY, body);
-    } catch (err) {
-      c.set(PARSED_BODY_KEY, {});
-    }
-  }
-  await next();
-});
 
 function isFile(value){
   return value instanceof File || value instanceof Blob;
@@ -50,8 +36,8 @@ async function processFile(c, body, key, value, filePrefix) {
   }
 }
 
-async function preProcessBody(c) {
-  const rawBody = await c.req.parseBody({ all: true });
+// Helper to pre-process parsed form body values (booleans, files)
+async function transformFormBody(rawBody, c) {
   const body = {};
   const files = [];
   for (const [key, value] of Object.entries(rawBody)) {
@@ -66,7 +52,6 @@ async function preProcessBody(c) {
   for (const key of files) {
     await processFile(c, body, key, rawBody[key], body[RECORD_ID_KEY] ?? "");
   }
-
   return body;
 }
 
@@ -74,53 +59,92 @@ apiApp.use('/'+LANDING, async(c, next) => {
   const limit = landingLimiter(c);
   return limit(c, next);
 });
-apiApp.post('/'+LANDING, async (c) => {
-  const body = c.get(PARSED_BODY_KEY);
-  console.log(`Received LANDING form post:`, body)
 
-  var res = await processLanding(c, body);
-  if (res)
-    return res;
+apiApp.post(
+  '/' + LANDING,
+  zValidator('form', getFormSchema(LANDING), (result, c) => {
+    if (!result.success) {
+      return c.json({
+        success: false,
+        error: "Validation failed",
+        details: result.error.format()
+      }, 400);
+    }
+  }),
+  async (c) => {
+    const rawValidated = c.req.valid('form');
+    const body = await transformFormBody(rawValidated, c);
+    console.log(`Received LANDING form post:`, body);
 
-  return c.json({
-    success: true,
-    message: `Successfully received submission for ${LANDING}`,
-    receivedAt: new Date().toISOString(),
-    formResult: body,
-    ...addLandingMetadata(body)
-  });
-});
+    var res = await processLanding(c, body);
+    if (res)
+      return res;
+
+    return c.json({
+      success: true,
+      message: `Successfully received submission for ${LANDING}`,
+      receivedAt: new Date().toISOString(),
+      formResult: body,
+      ...addLandingMetadata(body)
+    });
+  }
+);
+
 
 apiApp.use('/:formType', async (c, next) => {
   const limit = formLimiter(c);
   return limit(c, next);
 });
-apiApp.post('/:formType', async (c) => {
-  const formType = c.req.param('formType');
-  try {
-    const body = c.get(PARSED_BODY_KEY);
-    console.log(`Received form post [${formType}]:`, body)
 
-    var gitHubResult = await processFormBodyForGitHub(c, formType, body);
-    if (gitHubResult) {
-      var finalResult = {
-        success: true,
-        message: `Successfully received submission for ${formType}`,
-        receivedAt: new Date().toISOString(),
-        formResult: body,
-        number: gitHubResult.number,
-        ...redirectTo(gitHubResult.url)
-      };
-      console.log(finalResult);
-      return c.json(finalResult);
-    } else {
-      // TODO: Handle Error
+apiApp.post(
+  '/:formType',
+  async (c, next) => {
+    const formType = c.req.param('formType');
+    const schema = getFormSchema(formType);
+    if (!schema) {
+      return next();
     }
-  } catch (err) {
-    console.error(`Error processing form post ${formType}:`, err)
-    return c.json({ success: false, error: err.message }, 400)
+    const validator = zValidator('form', schema, (result, c) => {
+      if (!result.success) {
+        return c.json({
+          success: false,
+          error: "Validation failed",
+          details: result.error.format()
+        }, 400);
+      }
+    });
+    return validator(c, next);
+  },
+  async (c) => {
+    const formType = c.req.param('formType');
+    try {
+      const schema = getFormSchema(formType);
+      const rawValidated = schema ? c.req.valid('form') : await c.req.parseBody({ all: true });
+      const body = await transformFormBody(rawValidated, c);
+      console.log(`Received form post [${formType}]:`, body);
+
+      var gitHubResult = await processFormBodyForGitHub(c, formType, body);
+      if (gitHubResult) {
+        var finalResult = {
+          success: true,
+          message: `Successfully received submission for ${formType}`,
+          receivedAt: new Date().toISOString(),
+          formResult: body,
+          number: gitHubResult.number,
+          ...redirectTo(gitHubResult.url)
+        };
+        console.log(finalResult);
+        return c.json(finalResult);
+      } else {
+        // TODO: Handle Error
+      }
+    } catch (err) {
+      console.error(`Error processing form post ${formType}:`, err);
+      return c.json({ success: false, error: err.message }, 400);
+    }
   }
-});
+);
+
 
 apiApp.get('/md', async (c) => {
   return c.body(formatIssue("bug", {description: "TEST DESCRIPTION"}));
