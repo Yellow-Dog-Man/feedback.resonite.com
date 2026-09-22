@@ -17,7 +17,7 @@
 ### Screenshots
 
 {{#screenshots}}
-- R2 File Key: `{{{screenshots}}}` (Original name: `{{{screenshots_name}}}`)
+![{{{screenshots_name}}}]({{{screenshots}}})
 {{/screenshots}}
 {{^screenshots}}
 No screenshots provided.
@@ -26,7 +26,7 @@ No screenshots provided.
 ### Log Files
 
 {{#logs}}
-- R2 File Key: `{{{logs}}}` (Original name: `{{{logs_name}}}`)
+- [{{{logs_name}}}]({{{logs}}})
 {{/logs}}
 {{^logs}}
 No log files provided.

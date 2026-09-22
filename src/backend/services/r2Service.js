@@ -1,4 +1,6 @@
+//TODO: config
 const BLOB_DOMAIN = "https://blob.feedback.resonite.com/";
+
 export async function uploadFileToR2(bucket, filePrefix, file) {
     if (!file || typeof file === 'string' || !(file instanceof File || file instanceof Blob))
         throw new Error("Invalid file: " + file);
