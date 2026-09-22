@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { saveFeedbackText } from '../services/feedbackService.js'
 import { BUG, FEATURE, MODERATION, SECURITY, LANDING, TEXT, VALID_FORMS } from '../helpers/FormHelpers.js';
-import { getScore, saveScore } from '../services/scoreService.js';
+import { dumpScore, getScore, saveScore } from '../services/scoreService.js';
 import { SubmitToGitHub } from '../services/githubService.js';
 import { formatIssue } from '../services/markdownTemplateService.js';
 import { formLimiter, landingLimiter } from '../helpers/RateLimits.js';
@@ -127,6 +127,11 @@ apiApp.get('/md', async (c) => {
 
 apiApp.get('/stats/happiness', async (c) => {
   const score = await getScore(c);
+  return c.json(score);
+});
+
+apiApp.get('/stats/dump', async (c) => {
+  const score = await dumpScore(c);
   return c.json(score);
 });
 
