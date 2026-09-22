@@ -34,6 +34,22 @@ function isFile(value){
 }
 
 const RECORD_ID_KEY = "_rid";
+
+async function processFile(c, body, key, value, filePrefix) {
+  if (c.env.BUCKET && value.size > 0) {
+      try {
+        const r2Key = await uploadFileToR2(c.env.BUCKET, filePrefix, value);
+        body[key] = r2Key;
+        body[`${key}_name`] = value.name;
+      } catch (uploadErr) {
+        console.error(`Failed to upload file for ${key}:`, uploadErr);
+        body[key] = null;
+      }
+  } else {
+    body[key] = null;
+  }
+}
+
 async function preProcessBody(c) {
   const rawBody = await c.req.parseBody({ all: true });
   const body = {};
@@ -54,27 +70,12 @@ async function preProcessBody(c) {
   return body;
 }
 
-async function processFile(c, body, key, value, filePrefix) {
-  if (c.env.BUCKET && value.size > 0) {
-      try {
-        const r2Key = await uploadFileToR2(c.env.BUCKET, filePrefix, value);
-        body[key] = r2Key;
-        body[`${key}_name`] = value.name;
-      } catch (uploadErr) {
-        console.error(`Failed to upload file for ${key}:`, uploadErr);
-        body[key] = null;
-      }
-  } else {
-    body[key] = null;
-  }
-}
-
 apiApp.use('/'+LANDING, async(c, next) => {
   const limit = landingLimiter(c);
   return limit(c, next);
 });
 apiApp.post('/'+LANDING, async (c) => {
-  const body = c.get('parsedBody');
+  const body = c.get(PARSED_BODY_KEY);
   console.log(`Received LANDING form post:`, body)
 
   var res = await processLanding(c, body);
@@ -86,7 +87,7 @@ apiApp.post('/'+LANDING, async (c) => {
     message: `Successfully received submission for ${LANDING}`,
     receivedAt: new Date().toISOString(),
     formResult: body,
-    ...addLandingMetadata(LANDING, body)
+    ...addLandingMetadata(body)
   });
 });
 
@@ -97,7 +98,7 @@ apiApp.use('/:formType', async (c, next) => {
 apiApp.post('/:formType', async (c) => {
   const formType = c.req.param('formType');
   try {
-    const body = c.get('parsedBody');
+    const body = c.get(PARSED_BODY_KEY);
     console.log(`Received form post [${formType}]:`, body)
 
     var gitHubResult = await processFormBodyForGitHub(c, formType, body);
@@ -125,8 +126,19 @@ apiApp.get('/md', async (c) => {
   return c.body(formatIssue("bug", {description: "TEST DESCRIPTION"}));
 });
 
+// TOTAL
 apiApp.get('/stats/happiness', async (c) => {
   const score = await getScore(c);
+  return c.json(score);
+});
+
+apiApp.get('/stats/happiness/daily', async (c) => {
+  const score = await getScore(c, "'1' DAY");
+  return c.json(score);
+});
+
+apiApp.get('/stats/happiness/hourly', async (c) => {
+  const score = await getScore(c, "'1' HOUR");
   return c.json(score);
 });
 
@@ -142,32 +154,20 @@ function redirectTo(location) {
   }
 }
 
-function addLandingMetadata(formType, body) {
+function addLandingMetadata(body) {
   const redirectType = body.type;
-  if (formType === LANDING) {
 
-    // This means they skipped to the end, just the +1 -1 feedback
-    if (!body.more) return {};
-    // This means we already have the feedback, we can bail as well
-    if (body.redirectType == TEXT) return {};
+  // This means they skipped to the end, just the +1 -1 feedback
+  if (!body.more) return {};
+  // This means we already have the feedback, we can bail as well
+  if (body.redirectType == TEXT) return {};
 
-    // For the rest, we need to redirect somewhere else.
-    if (redirectType === BUG) return redirectTo("/bug");
-    if (redirectType === FEATURE) return redirectTo("/feature");
-    if (redirectType === MODERATION || redirectType === SECURITY) return redirectTo("https://moderation.resonite.com");
-  }
-}
+  // For the rest, we need to redirect somewhere else.
+  if (redirectType === BUG) return redirectTo("/bug");
+  if (redirectType === FEATURE) return redirectTo("/feature");
 
-async function processFormBodyForGitHub(c, formType, body) {
-  console.log("Form Type:" + formType);
-
-  // Don't send Junk to GitHub
-  if (!VALID_FORMS.includes(formType))
-    return;
-
-  console.log("Submitting to GH");
-  // ALL Other forms use redirects and come back here, so far no processing
-  return await SubmitToGitHub(c, formType, body);
+  // TODO: Config
+  if (redirectType === MODERATION || redirectType === SECURITY) return redirectTo("https://moderation.resonite.com");
 }
 
 async function processLanding(c, body) {
@@ -181,4 +181,16 @@ async function processLanding(c, body) {
     console.log(body.feedback);
     await saveFeedbackText(c.env.DB, body.feedback, date);
   }
+}
+
+async function processFormBodyForGitHub(c, formType, body) {
+  console.log("Form Type:" + formType);
+
+  // Don't send Junk to GitHub
+  if (!VALID_FORMS.includes(formType))
+    return;
+
+  console.log("Submitting to GH");
+  // ALL Other forms use redirects and come back here, so far no processing
+  return await SubmitToGitHub(c, formType, body);
 }

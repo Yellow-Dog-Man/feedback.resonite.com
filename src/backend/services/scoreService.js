@@ -19,15 +19,18 @@ function boolToScore(b) {
   if (b === false) return -1;
   return 0;
 }
-
-export async function getScore(c) {
-    const query = `
+const SCORE_QUERY = `
         SELECT 
             SUM(_sample_interval) AS total_events,
             SUM(_sample_interval * double1) / SUM(_sample_interval) AS average_score
-        FROM SCORE
-    `;
-
+        FROM SCORE`;
+// '1' DAY
+//WHERE timestamp > NOW() - INTERVAL '1' DAY
+export async function getScore(c, interval) {
+    let query = SCORE_QUERY;
+    if (interval !== undefined) {
+        query = query + ` WHERE timestamp > NOW() - INTERVAL ${interval}`;
+    }
     const API = `https://api.cloudflare.com/client/v4/accounts/${c.env.ACCOUNT_ID}/analytics_engine/sql`;
     
     const response = await fetch(API, {
