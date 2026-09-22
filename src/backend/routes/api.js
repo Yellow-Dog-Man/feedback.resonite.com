@@ -5,6 +5,7 @@ import { saveScore } from '../services/scoreService.js';
 import { SubmitToGitHub } from '../services/githubService.js';
 import { formatIssue } from '../services/markdownTemplateService.js';
 import { formLimiter, landingLimiter } from '../helpers/RateLimits.js';
+import { uploadFileToR2 } from '../services/r2Service.js';
 import { turnstileMiddleware } from '../helpers/TurnstileMiddleware.js';
 
 export const apiApp = new Hono();
@@ -19,7 +20,7 @@ apiApp.use('*', turnstileMiddleware());
 apiApp.use('/:formType', async (c, next) => {
   if (c.req.method === 'POST') {
     try {
-      const body = await filterBody(c);
+      const body = await preProcessBody(c);
       c.set(PARSED_BODY_KEY, body);
     } catch (err) {
       c.set(PARSED_BODY_KEY, {});
@@ -28,17 +29,46 @@ apiApp.use('/:formType', async (c, next) => {
   await next();
 });
 
+function isFile(value){
+  return value instanceof File || value instanceof Blob;
+}
 
-async function filterBody(c) {
-  const rawBody = await c.req.parseBody();
+const RECORD_ID_KEY = "_rid";
+async function preProcessBody(c) {
+  const rawBody = await c.req.parseBody({ all: true });
   const body = {};
+  const files = [];
   for (const [key, value] of Object.entries(rawBody)) {
     if (value === 'yes') body[key] = true;
     else if (value === 'no') body[key] = false;
-    else body[key] = value;
+    else if (isFile(value)) {
+      files.push(key);
+    } else {
+      body[key] = value;
+    }
+  }
+  for (const key of files) {
+    await processFile(c, body, key, rawBody[key], body[RECORD_ID_KEY] ?? "");
   }
 
   return body;
+}
+
+
+
+async function processFile(c, body, key, value, filePrefix) {
+  if (c.env.BUCKET && value.size > 0) {
+      try {
+        const r2Key = await uploadFileToR2(c.env.BUCKET, filePrefix, value);
+        body[key] = r2Key;
+        body[`${key}_name`] = value.name;
+      } catch (uploadErr) {
+        console.error(`Failed to upload file for ${key}:`, uploadErr);
+        body[key] = null;
+      }
+  } else {
+    body[key] = null;
+  }
 }
 
 apiApp.use('/'+LANDING, async(c, next) => {

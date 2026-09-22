@@ -16,11 +16,21 @@
 
 ### Screenshots
 
-TODO
+{{#screenshots}}
+- R2 File Key: `{{{screenshots}}}` (Original name: `{{{screenshots_name}}}`)
+{{/screenshots}}
+{{^screenshots}}
+No screenshots provided.
+{{/screenshots}}
 
 ### Log Files
 
-TODO
+{{#logs}}
+- R2 File Key: `{{{logs}}}` (Original name: `{{{logs_name}}}`)
+{{/logs}}
+{{^logs}}
+No log files provided.
+{{/logs}}
 
 ### Additional Context
 
