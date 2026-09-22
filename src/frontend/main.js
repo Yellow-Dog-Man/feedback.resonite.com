@@ -23,11 +23,34 @@ document.addEventListener(TURNSTILE_SUCCESS_EVENT, function() {
       );
       formsmd.init();
       formsmd.onCompletion = handleCompletion;
+      formsmd.getSubmissionErrors = getSubmissionErrors;
     } catch (err) {
       console.error('Failed to initialize form:', err);
     }
   });
 });
+
+function unwrapZodErrors(details) {
+  const messages = [];
+  for (const [field, errObj] of Object.entries(details)) {
+    if (errObj && Array.isArray(errObj._errors) && errObj._errors.length > 0) {
+      for (const errMessage of errObj._errors) {
+        messages.push(`${field}: ${errMessage}`);
+      }
+    }
+  }
+}
+
+function getSubmissionErrors(json) {
+  let messages = [];
+  if (json.details) {
+    messages = messages.concat(unwrapZodErrors(json.details));
+  }
+  if (messages.length === 0 && json.error) {
+    messages.push(json.error);
+  }
+  return messages;
+}
 
 function handleCompletion(result) {
   if (!result)
