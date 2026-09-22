@@ -52,6 +52,7 @@ Log Files are **NOT** currently anonymized, see [this issue](https://github.com/
 screenshots = FileInput(
   | question = Do you have any reproduction screenshots?
   | description = If they help explain your bug upload them please!
+  | imageonly
 )
 ---
 reproductionItem = TextInput(
