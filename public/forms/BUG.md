@@ -41,19 +41,25 @@ expectation*= TextInput(
     | maxlength = 500
 )
 ---
-logs = FileInput(
+
+[multiple="true"]
+logs* = FileInput(
   | question = Upload your Log File
   | description = We'll need a Log File to file this bug report.
 )
 
 More information on locating your log files can be found [on our wiki](https://wiki.resonite.com/Log_files).
 Log Files are **NOT** currently anonymized, see [this issue](https://github.com/Yellow-Dog-Man/feedback.resonite.com/issues/5).
+
 ---
+
+[multiple="true"]
 screenshots = FileInput(
   | question = Do you have any reproduction screenshots?
   | description = If they help explain your bug upload them please!
   | imageonly
 )
+
 ---
 reproductionItem = TextInput(
     | question = Do you have a reproduction Item?
