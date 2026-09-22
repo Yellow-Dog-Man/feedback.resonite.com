@@ -48,8 +48,31 @@ export async function getScore(c, interval) {
 
     const result = await response.json();
 
+    const row = result.data && result.data.length > 0 ? result.data[0] : {};
+
     return {
-        score: result.data.average_score ?? 0,
-        totalEvents: result.data.total_events ?? 0
+        score: row.average_score ?? 0,
+        totalEvents: row.total_events ?? 0
     }
 }
+
+export async function dumpScore(c) {
+    const query = `SELECT * FROM SCORE`;
+    const API = `https://api.cloudflare.com/client/v4/accounts/${c.env.ACCOUNT_ID}/analytics_engine/sql`;
+    
+    const response = await fetch(API, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${c.env.API_TOKEN}`,
+            "Content-Type": "text/plain"
+        },
+        body: query
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to query analytics engine: ${await response.text()}`);
+    }
+
+    return await response.json();
+}
+
