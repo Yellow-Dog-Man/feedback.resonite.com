@@ -19,7 +19,6 @@
     "formsmd": "^1.1.3",
     "hono": "^4.7.2",
     "hono-rate-limiter": "^0.5.4",
-    "knex": "^3.3.0",
     "mustache": "^4.2.0",
     "obscenity": "^0.4.6",
     "vite-ssr-components": "^0.6.1"
