@@ -39,6 +39,7 @@ function unwrapZodErrors(details) {
       }
     }
   }
+  return messages;
 }
 
 function getSubmissionErrors(json) {

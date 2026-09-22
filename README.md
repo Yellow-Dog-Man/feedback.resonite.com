@@ -95,7 +95,7 @@ TODO: Don't recommend this anymore. Will update with recommended template later
     - Without this we get racist GH reports >_<
     - https://www.npmjs.com/package/obscenity looks like a good place to start
     - For anything more complex, we'd probably looking at using Cloudflare AI Workers, there's probably a model dedicated to this task. 
-- [ ] Validation
+- [X] Validation
     - https://zod.dev/
     - Probably overkill for now
 - [ ] Blog Posts on Design

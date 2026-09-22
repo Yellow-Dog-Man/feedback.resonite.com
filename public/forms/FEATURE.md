@@ -48,13 +48,13 @@ additionalContext = TextInput(
     | maxlength = 500
 )
 ---
-### ⚠️ DO NOT INCLUDE E-Mail Addresses
 reporter = TextInput(
     | question = How can we contact & credit you?
     | description = Describe how we can contact you if we need more information and how to credit you on the changelogs.
     | multiline
     | maxlength = 500
 )
+⚠️ DO NOT INCLUDE E-Mail Addresses
 This question is *optional*, however if you do not fill it in, we might not be able to work on your issue and we may have to close it.
 ---
 
