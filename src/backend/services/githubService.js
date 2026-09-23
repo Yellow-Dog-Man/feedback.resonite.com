@@ -3,7 +3,7 @@ import { BUG, FEATURE } from "../helpers/FormHelpers";
 import { formatIssue } from "./markdownTemplateService.js";
 import { containsEmail, containsProfanity } from "./filterService.js";
 import { BadRequest } from "../helpers/HttpHelpers.js";
-import { FEEDBACK_DOMAIN } from "../../config/index.js";
+import { FEEDBACK_DOMAIN, REPO, REPO_OWNER } from "../../config/index.js";
 
 const USER_AGENT = FEEDBACK_DOMAIN;
 
