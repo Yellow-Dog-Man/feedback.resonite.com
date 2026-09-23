@@ -4,7 +4,6 @@ export async function verifyTurnstileToken(secret, token) {
   try {
     return await submitTurnstileToken(secret, token);
   } catch (err) {
-    console.log(err);
     return turnstileFail();
   }
 }

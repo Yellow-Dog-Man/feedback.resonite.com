@@ -1,7 +1,6 @@
 export async function saveFeedbackText(db, body, date) {
   try {
     if (db) {
-      console.log("inserting feedback");
       // Automatically create the table if it doesn't exist yet
       // Keep this in sync with the schema folder.
       // TODO: ORM, like Drizzle or something?

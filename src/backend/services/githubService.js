@@ -17,12 +17,10 @@ export async function SubmitToGitHub(c, formType, body) {
 
     // TODO: filter should not be in this method or file.
     if (containsProfanity(markdownBody)) {
-        console.log("Rejecting issue because it contains profanity");
         return BadRequest(c, "Issue contains profanity");
     }
 
     if (containsEmail(markdownBody)) {
-        console.log("Rejecting issue because it contains an email address");
         return BadRequest(c, "Issue contains an email address");
     }
 
