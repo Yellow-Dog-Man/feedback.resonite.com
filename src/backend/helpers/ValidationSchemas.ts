@@ -16,9 +16,11 @@ const imageMimes = ['image/png', 'image/jpg', 'image/jpeg'];
 const logFile = z.file().refine((file) => file.type.startsWith('text/'));
 const imageFile = z.file().refine((file) => imageMimes.includes(file.type));
 
+const yesNo = z.enum(['yes', 'no']);
+
 export const landingSchema = z.object({
-  happiness: z.enum(['yes', 'no']),
-  more: z.enum(['yes', 'no']),
+  happiness: yesNo,
+  more: yesNo,
   type: z.enum(['text', 'bug', 'featureRequest', 'moderation', 'security']).optional(),
   feedback: optionalText,
 });
@@ -44,7 +46,7 @@ export const featureSchema = z.object({
   reporter: shortText.optional().nullable(),
 });
 
-export function getFormSchema(formType) {
+export function getFormSchema(formType: string) {
   switch (formType) {
     case LANDING:
       return landingSchema;
