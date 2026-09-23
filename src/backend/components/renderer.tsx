@@ -1,6 +1,7 @@
 import { jsxRenderer } from 'hono/jsx-renderer'
 import { Script, Link, ViteClient } from 'vite-ssr-components/hono'
 import { TURNSTILE_SITE_KEY } from '../helpers/TurnstileConfig'
+import { MessageDialog } from './MessageDialog'
 
 export const renderer = jsxRenderer(({ children }) => {
   // <! DOCTYPE etc, is automatically added by jsxRenderer
@@ -26,6 +27,7 @@ export const renderer = jsxRenderer(({ children }) => {
         <main>
             {children}
         </main>
+        <MessageDialog />
       </body>
     </html>
   )

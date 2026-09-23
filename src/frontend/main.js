@@ -59,4 +59,8 @@ function handleCompletion(result) {
 
   if (result.redirectTo !== undefined)
     window.location.href = result.redirectTo;
+
+  if (!result.success)
+    if (result.message)
+      window.showModal(result.message);
 }
