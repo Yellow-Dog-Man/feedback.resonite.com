@@ -21,7 +21,7 @@ const yesNo = z.enum(['yes', 'no']);
 export const landingSchema = z.object({
   happiness: yesNo,
   more: yesNo,
-  type: z.enum(['text', 'bug', 'featureRequest', 'moderation', 'security']).optional(),
+  type: z.enum(['text', 'bug', 'featureRequest', 'moderation', 'security']).optional().nullable(),
   feedback: optionalText,
 });
 
@@ -31,7 +31,7 @@ export const bugSchema = z.object({
   reproduction: longText,
   expectation: longText,
   logs: logFile,
-  screenshots: imageFile.optional(),
+  screenshots: imageFile.optional().nullable(),
   reproductionItem: longText.optional().nullable(),
   additionalContext: longText.optional().nullable(),
   reporter: shortText.optional().nullable(),
@@ -55,7 +55,7 @@ export function getFormSchema(formType: string) {
     case FEATURE:
       return featureSchema;
     default:
-      return null;
+      return z.object();
   }
 }
 
