@@ -10,8 +10,8 @@ export function getTurnstileSecretKey(c) {
   return c.env.TURNSTILE_SECRET_KEY ?? DEMO_TURNSTILE_KEY;
 }
 
-export function getTurnstileSiteKey(c) {
-  if(isDev(c.env))
+export function getTurnstileSiteKey(env) {
+  if(isDev(env))
     return DEMO_TURNSTILE_KEY;
   return TURNSTILE_SITE_KEY;
 }
