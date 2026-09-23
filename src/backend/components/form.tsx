@@ -1,6 +1,7 @@
 import { FC, Fragment } from "hono/jsx";
 import "formsmd/dist/css/formsmd.min.css";
-import { TURNSTILE_SITE_KEY } from "../helpers/TurnstileConfig.js";
+import { getTurnstileSiteKey } from "../helpers/TurnstileConfig.js";
+import { useRequestContext } from "hono/jsx-renderer";
 
 type FormConfig = {
     id: string;
@@ -12,6 +13,8 @@ export const Form: FC<{formConfig: FormConfig}> = (props: {
 }) => {
   // <link jumps to the top of the page, this pre-loads the markdown so that by the time the forms need it, its already in the cache :)
   // TODO: use <Link, see renderer for example
+  const c = useRequestContext();
+  const key = getTurnstileSiteKey(c.env);
   return (
     <Fragment>
     <link as="text" rel="modulepreload" href={props.formConfig.templatePath} id="formTemplateLink"/>
@@ -20,7 +23,7 @@ export const Form: FC<{formConfig: FormConfig}> = (props: {
       class="formsMDTarget"
       data-form-template={props.formConfig.templatePath}
     />
-    <div id="turnstile-container" data-sitekey={TURNSTILE_SITE_KEY} style="margin: 20px 0; display: flex; justify-content: center;"></div>
+    <div id="turnstile-container" data-sitekey={key} style="margin: 20px 0; display: flex; justify-content: center;"></div>
     </Fragment>
   )
 }

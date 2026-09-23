@@ -10,6 +10,7 @@ import { uploadFileToR2 } from '../services/r2Service.js';
 import { turnstileMiddleware } from '../helpers/TurnstileMiddleware.js';
 import { getFormSchema } from '../helpers/ValidationSchemas.js';
 import { MODERATION_URL } from '../../config/index.js';
+import { isDev } from '../helpers/EnvHelpers.js';
 
 export const apiApp = new Hono();
 
@@ -204,7 +205,11 @@ async function processFormBodyForGitHub(c, formType, body) {
   // Don't send Junk to GitHub
   if (!VALID_FORMS.includes(formType))
     return;
-
-  // ALL Other forms use redirects and come back here, so far no processing
-  return await SubmitToGitHub(c, formType, body);
+  
+  // TMP: Prevent GH spam
+  if (isDev(c.env))
+    // ALL Other forms use redirects and come back here, so far no processing
+    return await SubmitToGitHub(c, formType, body);
+  else  
+    return redirectTo("/cheese");
 }
