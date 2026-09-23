@@ -11,6 +11,7 @@ import { turnstileMiddleware } from '../helpers/TurnstileMiddleware.js';
 import { getFormSchema } from '../helpers/ValidationSchemas.js';
 import { MODERATION_URL } from '../../config/index.js';
 import { isDev } from '../helpers/EnvHelpers.js';
+import { BadRequest } from '../helpers/HttpHelpers.js';
 
 export const apiApp = new Hono();
 
@@ -120,20 +121,28 @@ apiApp.post(
       const schema = getFormSchema(formType);
       const rawValidated = schema ? c.req.valid('form') : await c.req.parseBody({ all: true });
       const body = await transformFormBody(rawValidated, c);
-
-      var gitHubResult = await processFormBodyForGitHub(c, formType, body);
-      if (gitHubResult) {
-        var finalResult = {
-          success: true,
-          message: `Successfully received submission for ${formType}`,
-          receivedAt: new Date().toISOString(),
-          formResult: body,
-          number: gitHubResult.number,
-          ...redirectTo(gitHubResult.url)
-        };
-        return c.json(finalResult);
+      const SUBMIT_TO_GITHUB = isDev(c.env);
+      if (SUBMIT_TO_GITHUB) {
+        var gitHubResult = await processFormBodyForGitHub(c, formType, body);
+        if (gitHubResult) {
+          var finalResult = {
+            success: true,
+            message: `Successfully received submission for ${formType}`,
+            receivedAt: new Date().toISOString(),
+            formResult: body,
+            number: gitHubResult.number,
+            ...redirectTo(gitHubResult.url)
+          };
+          return c.json(finalResult);
+        } else {
+          return BadRequest(c, "Github was unhappy, check logs");
+        }
       } else {
-        // TODO: Handle Error
+        return c.json({
+          success:true,
+          message: "In testing mode",
+          ...redirectTo('/cheese');
+        });
       }
     } catch (err) {
       console.error(`Error processing form post ${formType}:`, err);
@@ -141,7 +150,6 @@ apiApp.post(
     }
   }
 );
-
 
 apiApp.get('/md', async (c) => {
   return c.body(formatIssue("bug", {description: "TEST DESCRIPTION"}));
@@ -205,10 +213,7 @@ async function processFormBodyForGitHub(c, formType, body) {
   // Don't send Junk to GitHub
   if (!VALID_FORMS.includes(formType))
     return;
-  // TMP: Prevent GH spam
-  if (isDev(c.env))
-    // ALL Other forms use redirects and come back here, so far no processing
-    return await SubmitToGitHub(c, formType, body);
-  else  
-    return redirectTo("/cheese");
+  
+  // ALL Other forms use redirects and come back here, so far no processing
+  return await SubmitToGitHub(c, formType, body);
 }
