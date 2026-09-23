@@ -9,6 +9,7 @@ import { formLimiter, landingLimiter } from '../helpers/RateLimits.js';
 import { uploadFileToR2 } from '../services/r2Service.js';
 import { turnstileMiddleware } from '../helpers/TurnstileMiddleware.js';
 import { getFormSchema } from '../helpers/ValidationSchemas.js';
+import { MODERATION_URL } from '../../config/index.js';
 
 export const apiApp = new Hono();
 
@@ -173,9 +174,6 @@ function redirectTo(location) {
   }
 }
 
-// TODO: Config
-const moderationUrl = "https://moderation.resonite.com"
-
 function addLandingMetadata(body) {
   const redirectType = body.type;
 
@@ -188,7 +186,7 @@ function addLandingMetadata(body) {
   if (redirectType === BUG) return redirectTo("/bug");
   if (redirectType === FEATURE) return redirectTo("/feature");
 
-  if (redirectType === MODERATION || redirectType === SECURITY) return redirectTo(moderationUrl);
+  if (redirectType === MODERATION || redirectType === SECURITY) return redirectTo(MODERATION_URL);
 }
 
 async function processLanding(c, body) {

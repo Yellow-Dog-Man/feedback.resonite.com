@@ -3,14 +3,14 @@ import { BUG, FEATURE } from "../helpers/FormHelpers";
 import { formatIssue } from "./markdownTemplateService.js";
 import { containsEmail, containsProfanity } from "./filterService.js";
 import { BadRequest } from "../helpers/HttpHelpers.js";
+import { FEEDBACK_DOMAIN } from "../../config/index.js";
 
-const USER_AGENT = "feedback.resonite.com"
-const OWNER = "Yellow-Dog-Man";
-const REPO = "Resonite-Issues";
+const USER_AGENT = FEEDBACK_DOMAIN;
 
-const URL = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/issues";
 
-const ISSUE_LABEL = "feedback.resonite.com";
+const URL = "https://api.github.com/repos/" + REPO_OWNER + "/" + REPO + "/issues";
+
+const ISSUE_LABEL = FEEDBACK_DOMAIN;
 
 export async function SubmitToGitHub(c, formType, body) {
     const markdownBody = formatIssue(formType, body); // Create Markdown representation of issue

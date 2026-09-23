@@ -1,6 +1,5 @@
+import {BLOB_URL} from "../../config";
 //TODO: config
-const BLOB_DOMAIN = "https://blob.feedback.resonite.com/";
-
 function processKey(key) {
     return key.replaceAll(" ", "");
 }
@@ -20,5 +19,5 @@ export async function uploadFileToR2(bucket, filePrefix, file) {
         },
     });
 
-    return BLOB_DOMAIN + key;
+    return BLOB_URL + key;
 }
