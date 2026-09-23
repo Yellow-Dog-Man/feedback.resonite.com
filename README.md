@@ -153,9 +153,10 @@ Look into an "Awesome Cloudflare" list or collection, because I keep finding coo
 
 ## [Dog Walks](https://bsky.app/profile/probableprime.bsky.social/post/3mu4ffh4xxs2d)
 
-- Estimated: 20
-- Actual(so far): 10
-- Next Creative Day: 2026-09-18
+- Originally Estimated Dog Walks: 20
+- Actual(so far): 16
+- Revised Estimate of Dog Walks(2026-09-22): 40
+
 
 ### YouTube Videos
 - Marked the renderer here doesn't support YouTube videos: 
