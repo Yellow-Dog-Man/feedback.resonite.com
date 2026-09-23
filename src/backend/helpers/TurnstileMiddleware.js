@@ -1,6 +1,7 @@
 import { verifyTurnstileToken } from '../services/turnstileService.js';
 import { TURNSTILE_HEADER } from '../../frontend/turnstile.js';
 import { getTurnstileSecretKey } from '../helpers/TurnstileConfig.js';
+import { isDev } from './EnvHelpers.js';
 
 export function turnstileMiddleware() {
   return async (c, next) => {
@@ -8,6 +9,9 @@ export function turnstileMiddleware() {
     if (c.req.method !== 'POST') {
       return await next();
     }
+
+    if (isDev(c.env))
+      await next();
     
     const verification = await verifyTurnstileToken(
       getTurnstileSecretKey(c),

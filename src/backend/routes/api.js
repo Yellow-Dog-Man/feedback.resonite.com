@@ -205,7 +205,6 @@ async function processFormBodyForGitHub(c, formType, body) {
   // Don't send Junk to GitHub
   if (!VALID_FORMS.includes(formType))
     return;
-  
   // TMP: Prevent GH spam
   if (isDev(c.env))
     // ALL Other forms use redirects and come back here, so far no processing
