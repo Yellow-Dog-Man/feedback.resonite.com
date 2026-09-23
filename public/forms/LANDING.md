@@ -12,6 +12,8 @@ happiness* = PictureChoice(
     | choices = "yes" Yes && /images/Icons/Bouba.png, "no" No && /images/Icons/Kiki.png
 )
 
+⚠️ WE ARE IN TESTING MODE, THIS FORM INPUT WILL NOT BE SAVED.
+
 ---
 
 more* = ChoiceInput(
