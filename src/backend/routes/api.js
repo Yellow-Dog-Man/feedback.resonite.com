@@ -141,7 +141,7 @@ apiApp.post(
         return c.json({
           success:true,
           message: "In testing mode",
-          ...redirectTo('/cheese');
+          ...redirectTo('/cheese')
         });
       }
     } catch (err) {
