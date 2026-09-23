@@ -4,7 +4,7 @@
 #! submit-button-text = Next
 #! vertical-alignment = start
 #! field-size = sm
-#! restart-button = show
+#! restart-button = hide
 
 happiness* = PictureChoice(
     | question = Did you enjoy Resonite today?
@@ -46,5 +46,13 @@ feedback*= TextInput(
 
 # [.text-center] Thank you for your Feedback!
 
+{% if type != "text" %}
+[.text-center]
+We are redirecting you!
+{% endif %}
+{% if type == "text" %}
 [.text-center]
 We hope to see you again soon!
+{% endif %}
+
+
