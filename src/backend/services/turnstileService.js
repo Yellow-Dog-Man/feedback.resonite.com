@@ -20,7 +20,6 @@ async function submitTurnstileToken(secret, turnstileToken, ip) {
       body: formData,
   });
   const verifyOutcome = await verifyRes.json();
-  console.log(verifyOutcome);
   if (!verifyOutcome.success) {
       return turnstileFail();
   }

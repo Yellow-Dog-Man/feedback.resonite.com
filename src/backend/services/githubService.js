@@ -46,10 +46,7 @@ export async function SubmitToGitHub(c, formType, body) {
         }
     }
 
-    //TODO: Not ok. Log
-    console.log(res);
     const body2 = await res.text();
-    console.log(body2);
 }
 
 // Map Us => GH labels

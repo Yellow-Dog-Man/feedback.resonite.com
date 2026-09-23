@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { BUG, FEATURE, LANDING, SURVEY } from './FormHelpers.js';
+import { BUG, FEATURE, LANDING, VALID_FEEDBACK_TYPES } from './FormHelpers.js';
 
 const MIN_TEXT = 5;
 const SHORT_LENGTH = 120;
@@ -21,7 +21,7 @@ const yesNo = z.enum(['yes', 'no']);
 export const landingSchema = z.object({
   happiness: yesNo,
   more: yesNo,
-  type: z.enum(['text', 'bug', 'featureRequest', 'moderation', 'security']).optional().nullable(),
+  type: z.union([z.string(), z.enum(VALID_FEEDBACK_TYPES)]).optional().nullable(),
   feedback: optionalText,
 });
 

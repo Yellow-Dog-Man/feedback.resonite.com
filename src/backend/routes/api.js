@@ -78,7 +78,6 @@ apiApp.post(
   async (c) => {
     const rawValidated = c.req.valid('form');
     const body = await transformFormBody(rawValidated, c);
-    console.log(`Received LANDING form post:`, body);
 
     var res = await processLanding(c, body);
     if (res)
@@ -119,7 +118,6 @@ apiApp.post(
       const schema = getFormSchema(formType);
       const rawValidated = schema ? c.req.valid('form') : await c.req.parseBody({ all: true });
       const body = await transformFormBody(rawValidated, c);
-      console.log(`Received form post [${formType}]:`, body);
 
       var gitHubResult = await processFormBodyForGitHub(c, formType, body);
       if (gitHubResult) {
@@ -131,7 +129,6 @@ apiApp.post(
           number: gitHubResult.number,
           ...redirectTo(gitHubResult.url)
         };
-        console.log(finalResult);
         return c.json(finalResult);
       } else {
         // TODO: Handle Error
@@ -176,6 +173,9 @@ function redirectTo(location) {
   }
 }
 
+// TODO: Config
+const moderationUrl = "https://moderation.resonite.com"
+
 function addLandingMetadata(body) {
   const redirectType = body.type;
 
@@ -188,8 +188,7 @@ function addLandingMetadata(body) {
   if (redirectType === BUG) return redirectTo("/bug");
   if (redirectType === FEATURE) return redirectTo("/feature");
 
-  // TODO: Config
-  if (redirectType === MODERATION || redirectType === SECURITY) return redirectTo("https://moderation.resonite.com");
+  if (redirectType === MODERATION || redirectType === SECURITY) return redirectTo(moderationUrl);
 }
 
 async function processLanding(c, body) {
@@ -199,20 +198,15 @@ async function processLanding(c, body) {
 
   if (body.more && body.type === "text")
   {
-    console.log("Saving feedback to DB");
-    console.log(body.feedback);
     await saveFeedbackText(c.env.DB, body.feedback, date);
   }
 }
 
 async function processFormBodyForGitHub(c, formType, body) {
-  console.log("Form Type:" + formType);
-
   // Don't send Junk to GitHub
   if (!VALID_FORMS.includes(formType))
     return;
 
-  console.log("Submitting to GH");
   // ALL Other forms use redirects and come back here, so far no processing
   return await SubmitToGitHub(c, formType, body);
 }

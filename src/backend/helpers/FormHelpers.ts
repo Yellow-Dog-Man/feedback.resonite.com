@@ -6,6 +6,7 @@ export const SECURITY = "security";
 
 export const TEXT = "text";
 export const SURVEY = "survey";
-
-export const VALID_FORMS = [BUG, LANDING, FEATURE, SURVEY];
 export const FORM = "form";
+
+export const VALID_FEEDBACK_TYPES = [TEXT, BUG, FEATURE, MODERATION, SECURITY];
+export const VALID_FORMS = [BUG, LANDING, FEATURE, SURVEY];
