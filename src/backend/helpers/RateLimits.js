@@ -15,12 +15,12 @@ import { FORM, LANDING } from "./FormHelpers";
 
 // 4 forms in one Hour.
 export function formLimiter(cx) {
-    return createLimiter(cx, keyMaker(FORM), getLimitSettings(FORM));
+    return createLimiter(cx, keyMaker(FORM), getLimitSettings(cx, FORM));
 }
 
 // 4 landing in one hour
 export function landingLimiter(cx) {
-    return createLimiter(cx, keyMaker(LANDING), getLimitSettings(LANDING));
+    return createLimiter(cx, keyMaker(LANDING), getLimitSettings(cx, LANDING));
 }
 
 const keyMaker = (key) => {
@@ -34,7 +34,7 @@ const rateLimitMessage = {
     "message": "Rate Limit exceeded"
 }
 
-function getLimitSettings(key) {
+function getLimitSettings(cx, key) {
     return {
         windowMs: 3_600_000, // 1 Hour
         limit: isDev(cx.env) ? 100 : 4, // 4 (100 in DEV)
