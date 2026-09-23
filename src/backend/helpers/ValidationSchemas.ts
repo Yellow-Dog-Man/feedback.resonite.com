@@ -8,11 +8,19 @@ const LONG_LENGTH = 500;
 const shortText = z.string().min(MIN_TEXT).max(SHORT_LENGTH);
 const longText = z.string().min(MIN_TEXT).max(LONG_LENGTH);
 
+// Having issues with form validation
+const optionalText = z.union([longText,z.string()]).optional().nullable();
+
+const imageMimes = ['image/png', 'image/jpg', 'image/jpeg'];
+
+const logFile = z.file().refine((file) => file.type.startsWith('text/'));
+const imageFile = z.file().refine((file) => imageMimes.includes(file.type));
+
 export const landingSchema = z.object({
   happiness: z.enum(['yes', 'no']),
   more: z.enum(['yes', 'no']),
   type: z.enum(['text', 'bug', 'featureRequest', 'moderation', 'security']).optional(),
-  feedback: longText.optional(),
+  feedback: optionalText,
 });
 
 export const bugSchema = z.object({
@@ -20,8 +28,8 @@ export const bugSchema = z.object({
   description: longText,
   reproduction: longText,
   expectation: longText,
-  logs: longText.endsWith(".log"),
-  screenshots: z.union([longText.endsWith('.png'), longText.endsWith('.jpg')]).optional(),
+  logs: logFile,
+  screenshots: imageFile.optional(),
   reproductionItem: longText.optional().nullable(),
   additionalContext: longText.optional().nullable(),
   reporter: shortText.optional().nullable(),
@@ -48,3 +56,4 @@ export function getFormSchema(formType) {
       return null;
   }
 }
+

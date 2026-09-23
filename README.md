@@ -131,6 +131,7 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 - https://orm.drizzle.team/
 - https://unstorage.unjs.io/
 - https://unjs.io/
+- https://dev.to/drprime01/how-to-validate-a-file-input-with-zod-5739
 
 ## Resource Goals
 Sometimes, prime discovers things he wanted to use but didn't know of at the time, anyway:
