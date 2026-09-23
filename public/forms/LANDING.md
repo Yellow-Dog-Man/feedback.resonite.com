@@ -6,13 +6,6 @@
 #! field-size = sm
 #! restart-button = show
 
-# [.text-center] Want to give us feedback?
-
-[.text-center]
-We appreciate it all!
-
----
-
 happiness* = PictureChoice(
     | question = Did you enjoy Resonite today?
     | description = This question is always anonymous
