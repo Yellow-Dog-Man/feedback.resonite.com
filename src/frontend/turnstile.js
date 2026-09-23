@@ -25,9 +25,13 @@ function renderWidget(key) {
     window.turnstile.render(TURNSTILE_DIV, {
         sitekey: key,
         callback: onSuccess,
-        'expired-callback': onFailure,
+        'expired-callback': onExpired,
         'error-callback': onFailure
     });
+}
+
+function onExpired() {
+    sessionStorage.removeItem(TOKEN_KEY);
 }
 
 function onFailure() {
