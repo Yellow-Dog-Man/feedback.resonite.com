@@ -1,5 +1,3 @@
-import { isImage, isLog } from "../helpers/FileTypes";
-
 //TODO: config
 const BLOB_DOMAIN = "https://blob.feedback.resonite.com/";
 
