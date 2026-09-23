@@ -13,6 +13,8 @@
 
 Use this when you want to request a feature for consideration.
 
+⚠️ WE ARE IN TESTING MODE, THIS FORM INPUT WILL NOT BE SAVED.
+
 ---
 issueTitle*= TextInput(
     | question = Title?
@@ -54,8 +56,10 @@ reporter = TextInput(
     | multiline
     | maxlength = 500
 )
+
 ⚠️ DO NOT INCLUDE E-Mail Addresses
 This question is *optional*, however if you do not fill it in, we might not be able to work on your issue and we may have to close it.
+
 ---
 
 -> end
