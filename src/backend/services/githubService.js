@@ -13,6 +13,9 @@ const URL = "https://api.github.com/repos/" + REPO_OWNER + "/" + REPO + "/issues
 const ISSUE_LABEL = FEEDBACK_DOMAIN;
 
 export async function SubmitToGitHub(c, formType, body) {
+    if (c.env.GITHUB_TOKEN === undefined)
+        return TemporaryError("Github Not Setup");
+
     const markdownBody = formatIssue(formType, body); // Create Markdown representation of issue
 
     // TODO: filter should not be in this method or file.
@@ -44,7 +47,9 @@ export async function SubmitToGitHub(c, formType, body) {
         }
     }
 
-    const body2 = await res.text();
+    const githubJson = await res.json();
+    if (githubJson.status === 401)
+        return TemporaryError("Github Not Setup");
 }
 
 // Map Us => GH labels

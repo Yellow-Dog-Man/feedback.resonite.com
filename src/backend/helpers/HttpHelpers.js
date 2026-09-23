@@ -3,8 +3,13 @@
 
 
 const BAD_REQUEST = 400;
+const SERVER_TEMPORARY_ERROR = 503;
 const STATUS_BASE_URL = "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/";
 
+
+export function TemporaryError(c, message) {
+    return FormatAsProblemDetails(c, SERVER_TEMPORARY_ERROR, message, "Bad Request");
+}
 export function BadRequest(c, message) {
     return FormatAsProblemDetails(c, BAD_REQUEST, message, "Bad Request");
 }
