@@ -46,13 +46,17 @@ feedback*= TextInput(
 
 # [.text-center] Thank you for your Feedback!
 
+{% if more == "yes" %}
 {% if type != "text" %}
 [.text-center]
 We are redirecting you!
 {% endif %}
+{% endif %}
+{% if more == "no" %}
 {% if type == "text" %}
 [.text-center]
 We hope to see you again soon!
+{% endif %}
 {% endif %}
 
 
