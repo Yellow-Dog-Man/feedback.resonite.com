@@ -21,9 +21,11 @@ export const Form: FC<{formConfig: FormConfig}> = (props: {
     <div 
       id={props.formConfig.id} 
       class="formsMDTarget"
-      data-form-template={props.formConfig.templatePath}
-    />
+      data-form-template={props.formConfig.templatePath}>
+        Loading...
+    </div>
     <div id="turnstile-container" data-sitekey={key} style="margin: 20px 0; display: flex; justify-content: center;"></div>
+    <div id="success-container" class="center hidden"><button id="restart">Restart</button></div>
     </Fragment>
   )
 }

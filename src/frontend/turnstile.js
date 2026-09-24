@@ -1,9 +1,13 @@
-export const TURNSTILE_SUCCESS_EVENT = 'turnstileSuccess';
 export const TOKEN_KEY = "turnstile_token";
 export const TURNSTILE_HEADER = 'X-Turnstile-Token';
 
 const TURNSTILE_DIV = '#turnstile-container';
-const turnstileEvent = new Event(TURNSTILE_SUCCESS_EVENT);
+
+export const TURNSTILE_SUCCESS_EVENT = 'turnstileSuccess';
+const turnstileSuccessEvent = new Event(TURNSTILE_SUCCESS_EVENT);
+
+export const TURNSTILE_FAILURE_EVENT = 'turnstileFailure';
+const turnstileFailureEvent = new Event(TURNSTILE_FAILURE_EVENT);
 
 export function initTurnstile() {
     const turnstileContainer = document.querySelector(TURNSTILE_DIV);
@@ -32,15 +36,20 @@ function renderWidget(key) {
 
 function onExpired() {
     sessionStorage.removeItem(TOKEN_KEY);
+    // Re-init
+    initTurnstile();
 }
 
 function onFailure() {
     sessionStorage.removeItem(TOKEN_KEY);
+    document.dispatchEvent(turnstileFailureEvent);
+    // Re-init
+    initTurnstile();
 }
 
 function onSuccess(token) {
     sessionStorage.setItem(TOKEN_KEY, token)
-    document.dispatchEvent(turnstileEvent);
+    document.dispatchEvent(turnstileSuccessEvent);
     document.querySelector(TURNSTILE_DIV).style.display = 'none';
 }
 

@@ -53,6 +53,14 @@ function getSubmissionErrors(json) {
   return messages;
 }
 
+function showResetButton() {
+  var element = document.getElementById('success-container');
+  element.classList.remove('hidden');
+  document.getElementById('restart').addEventListener('click', function() {
+    window.location ="/landing";
+  });
+}
+
 function handleCompletion(result) {
   if (!result)
     return;
@@ -63,4 +71,6 @@ function handleCompletion(result) {
   if (!result.success)
     if (result.message)
       window.showModal(result.message);
+
+  showResetButton();
 }
