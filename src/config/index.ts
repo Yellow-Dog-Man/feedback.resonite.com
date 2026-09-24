@@ -13,15 +13,15 @@ export const envSchema = z.object({
   SCORE: z.any().optional(),
 });
 
-export type Env = z.infer<typeof envSchema>;
+export type Bindings = z.infer<typeof envSchema>;
 
-export function parseEnv(env: unknown): Env {
+export function parseEnv(env: unknown): Bindings {
   const result = envSchema.safeParse(env);
   if (!result.success) {
     console.error('Invalid environment variables/bindings:', result.error.format());
     throw new Error('Invalid environment configuration');
   }
-  return result.data;
+  return result.data as Bindings;
 }
 
 //!IMPORTANT: No secrets here, use ENV!
@@ -37,4 +37,6 @@ export const BLOB_URL  = "https://" + BLOB_DOMAIN + "/";
 
 export const REPO_OWNER = "Yellow-Dog-Man";
 export const REPO = "Resonite-Issues";
+
+
 
