@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { saveFeedbackText } from '../services/feedbackService.js'
 import { BUG, FEATURE, MODERATION, SECURITY, LANDING, TEXT, VALID_FORMS } from '../helpers/FormHelpers.js';
-import { dumpScore, getScore, saveScore } from '../services/scoreService.js';
+import { getScore, saveScore } from '../services/scoreService.js';
 import { SubmitToGitHub } from '../services/githubService.js';
 import { formatIssue } from '../services/markdownTemplateService.js';
 import { checkLimitsApp } from './checkLimits.js';
@@ -12,6 +12,7 @@ import { getFormSchema } from '../helpers/ValidationSchemas.js';
 import { MODERATION_URL } from '../../config/index.js';
 import { isDev } from '../helpers/EnvHelpers.js';
 import { BadRequest } from '../helpers/HttpHelpers.js';
+import { formLimiter, landingLimiter } from '../helpers/RateLimits.js';
 
 export const apiApp = new Hono();
 
