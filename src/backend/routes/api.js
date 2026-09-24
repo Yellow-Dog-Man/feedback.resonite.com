@@ -4,7 +4,6 @@ import { saveFeedbackText } from '../services/feedbackService.js'
 import { BUG, FEATURE, MODERATION, SECURITY, LANDING, TEXT, VALID_FORMS } from '../helpers/FormHelpers.js';
 import { saveScore } from '../services/scoreService.js';
 import { SubmitToGitHub } from '../services/githubService.js';
-import { formatIssue } from '../services/markdownTemplateService.js';
 import { checkLimitsApp } from './checkLimits.js';
 import { statsApp } from './stats.js';
 import { uploadFileToR2 } from '../services/r2Service.js';
