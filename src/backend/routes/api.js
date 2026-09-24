@@ -155,25 +155,18 @@ apiApp.get('/md', async (c) => {
   return c.body(formatIssue("bug", {description: "TEST DESCRIPTION"}));
 });
 
-// TOTAL
+// TODO: cache this
 apiApp.get('/stats/happiness', async (c) => {
-  const score = await getScore(c);
-  return c.json(score);
-});
+  const scoreOverall = await getScore(c);
+  const scoreDaily = await getScore(c, "'1' DAY");
+  const scoreHour = await getScore(c, "'1' HOUR");
 
-apiApp.get('/stats/happiness/daily', async (c) => {
-  const score = await getScore(c, "'1' DAY");
-  return c.json(score);
-});
-
-apiApp.get('/stats/happiness/hourly', async (c) => {
-  const score = await getScore(c, "'1' HOUR");
-  return c.json(score);
-});
-
-apiApp.get('/stats/dump', async (c) => {
-  const score = await dumpScore(c);
-  return c.json(score);
+  var res = {
+    overall: scoreOverall,
+    daily: scoreDaily,
+    hourly: scoreHour
+  }
+  return c.json(res);
 });
 
 // We need to signal to FormsMd/Frontend what to do on a completed form.

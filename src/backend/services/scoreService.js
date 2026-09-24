@@ -52,7 +52,8 @@ export async function getScore(c, interval) {
 
     return {
         score: row.average_score ?? 0,
-        totalEvents: row.total_events ?? 0
+        totalEvents: row.total_events ?? 0,
+        timestamp: row.timestamp ?? new Date().toISOString()
     }
 }
 
