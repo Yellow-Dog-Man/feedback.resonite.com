@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { cache } from 'hono/cache'
 import { zValidator } from '@hono/zod-validator'
 import { saveFeedbackText } from '../services/feedbackService.js'
 import { BUG, FEATURE, MODERATION, SECURITY, LANDING, TEXT, VALID_FORMS } from '../helpers/FormHelpers.js';
@@ -160,19 +161,26 @@ apiApp.get('/md', async (c) => {
   return c.body(formatIssue("bug", {description: "TEST DESCRIPTION"}));
 });
 
-// TODO: cache this
-apiApp.get('/stats/happiness', async (c) => {
-  const scoreOverall = await getScore(c);
-  const scoreDaily = await getScore(c, "'1' DAY");
-  const scoreHour = await getScore(c, "'1' HOUR");
+// Cache happiness stats for 3 minutes (180 seconds) to prevent analytics query thrashing
+apiApp.get(
+  '/stats/happiness',
+  cache({
+    cacheName: 'feedback-happiness-stats',
+    cacheControl: 'max-age=180',
+  }),
+  async (c) => {
+    const scoreOverall = await getScore(c);
+    const scoreDaily = await getScore(c, "'1' DAY");
+    const scoreHour = await getScore(c, "'1' HOUR");
 
-  var res = {
-    overall: scoreOverall,
-    daily: scoreDaily,
-    hourly: scoreHour
+    var res = {
+      overall: scoreOverall,
+      daily: scoreDaily,
+      hourly: scoreHour
+    }
+    return c.json(res);
   }
-  return c.json(res);
-});
+);
 
 // We need to signal to FormsMd/Frontend what to do on a completed form.
 function redirectTo(location) {
