@@ -7,7 +7,7 @@ import { SubmitToGitHub } from '../services/githubService.js';
 import { formatIssue } from '../services/markdownTemplateService.js';
 import { checkLimitsApp } from './checkLimits.js';
 import { uploadFileToR2 } from '../services/r2Service.js';
-import { turnstileMiddleware } from '../helpers/TurnstileMiddleware.js';
+import { turnstileMiddleware } from '../middleware/TurnstileMiddleware.js';
 import { getFormSchema } from '../helpers/ValidationSchemas.js';
 import { MODERATION_URL } from '../../config/index.js';
 import { isDev } from '../helpers/EnvHelpers.js';

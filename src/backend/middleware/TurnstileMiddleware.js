@@ -1,7 +1,7 @@
 import { verifyTurnstileToken } from '../services/turnstileService.js';
 import { TURNSTILE_HEADER } from '../../frontend/turnstile.js';
 import { getTurnstileSecretKey } from '../helpers/TurnstileConfig.js';
-import { isDev } from './EnvHelpers.js';
+import { isDev } from '../helpers/EnvHelpers.js';
 
 export function turnstileMiddleware() {
   return async (c, next) => {
