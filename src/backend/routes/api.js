@@ -1,12 +1,12 @@
 import { Hono } from 'hono'
-import { cache } from 'hono/cache'
 import { zValidator } from '@hono/zod-validator'
 import { saveFeedbackText } from '../services/feedbackService.js'
 import { BUG, FEATURE, MODERATION, SECURITY, LANDING, TEXT, VALID_FORMS } from '../helpers/FormHelpers.js';
-import { getScore, saveScore } from '../services/scoreService.js';
+import { saveScore } from '../services/scoreService.js';
 import { SubmitToGitHub } from '../services/githubService.js';
 import { formatIssue } from '../services/markdownTemplateService.js';
 import { checkLimitsApp } from './checkLimits.js';
+import { statsApp } from './stats.js';
 import { uploadFileToR2 } from '../services/r2Service.js';
 import { turnstileMiddleware } from '../middleware/TurnstileMiddleware.js';
 import { getFormSchema } from '../helpers/ValidationSchemas.js';
@@ -156,31 +156,8 @@ apiApp.post(
 // Endpoint to check if the current user/IP is rate limited for forms or landing
 apiApp.route('/checklimits', checkLimitsApp);
 
-
-apiApp.get('/md', async (c) => {
-  return c.body(formatIssue("bug", {description: "TEST DESCRIPTION"}));
-});
-
-// Cache happiness stats for 3 minutes (180 seconds) to prevent analytics query thrashing
-apiApp.get(
-  '/stats/happiness',
-  cache({
-    cacheName: 'feedback-happiness-stats',
-    cacheControl: 'max-age=180',
-  }),
-  async (c) => {
-    const scoreOverall = await getScore(c);
-    const scoreDaily = await getScore(c, "'1' DAY");
-    const scoreHour = await getScore(c, "'1' HOUR");
-
-    var res = {
-      overall: scoreOverall,
-      daily: scoreDaily,
-      hourly: scoreHour
-    }
-    return c.json(res);
-  }
-);
+// Stats endpoints
+apiApp.route('/stats', statsApp);
 
 // We need to signal to FormsMd/Frontend what to do on a completed form.
 function redirectTo(location) {
