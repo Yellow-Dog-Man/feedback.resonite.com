@@ -86,9 +86,10 @@ TODO: Don't recommend this anymore. Will update with recommended template later
     - But we'll need some ban functionality.
     - I'll just keep the limits high to start
 - [ ] Reports & Outputs
-    - Need way to see score
+    - [x] Need way to see score
     - Need way to review text feedback
-    - Prime can do this in the dashboard atm
+        - Hmm, take each new entry and send it to Discord/Mattermost?
+    - You can access the feedback via D1 Dashboard atm
 - [X] Filtering
     - Do some basic safety filtering for profanity etc.
     - See what Cloudflare has natively.
@@ -105,13 +106,14 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 - [ ] Success Screen
     - Right now, we redirect to github.
     - I want to instead make a success screen that shows "CREATED CLICK HERE TO GO" etc.
-- [ ] Files via R2
+- [X] Files via R2
     - [X] Screenshots
     - [X] Log Files
-    - [ ] I need to test this when its deployed, right now its storing them locally
+    - [X] I need to test this when its deployed, right now its storing them locally
     - We'll be putting these into an R2 Bucket, people sometimes struggle to upload them to Github
     - Our upload will have a better experience
     - We can link to the files in the GH markdown, so the log scanner wont scream at us.
+- [ ] Anonymized Log Files
 
 ## Resources
 - [Vite Scaffolding](https://vite.dev/guide/#scaffolding-your-first-vite-project)
