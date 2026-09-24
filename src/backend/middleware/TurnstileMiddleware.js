@@ -2,6 +2,7 @@ import { verifyTurnstileToken } from '../services/turnstileService.js';
 import { TURNSTILE_HEADER } from '../../frontend/turnstile.js';
 import { getTurnstileSecretKey } from '../helpers/TurnstileConfig.js';
 import { isDev } from '../helpers/EnvHelpers.js';
+import { IP_HEADER } from '../helpers/CloudflareHelpers.js';
 
 export function turnstileMiddleware() {
   return async (c, next) => {
@@ -16,7 +17,7 @@ export function turnstileMiddleware() {
     const verification = await verifyTurnstileToken(
       getTurnstileSecretKey(c),
       c.req.header(TURNSTILE_HEADER),
-      c.req.header('CF-Connecting-IP')
+      c.req.header(IP_HEADER)
     );
     if (!verification.success) {
       return c.json({
