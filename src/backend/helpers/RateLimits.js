@@ -2,6 +2,7 @@ import { rateLimiter } from "hono-rate-limiter";
 import { WorkersKVStore } from "@hono-rate-limiter/cloudflare";
 import { FORM, LANDING } from "./FormHelpers";
 import { isDev } from "./EnvHelpers";
+import { GetClientIp } from "./CloudflareHelpers";
 
 //TODO: we should be using Cloudflares built-in rate limits, but this only supports windows of 10 or 60 seconds right now.
 // This is great for Bots and DDOS, but it is not ok for limits that have longer windows, which... filing a form does.
@@ -24,9 +25,13 @@ export function landingLimiter(cx) {
     return createLimiter(cx, keyMaker(LANDING), getLimitSettings(cx, LANDING));
 }
 
+export function GetRateLimitKey(c, key) {
+    return key + ":" + GetClientIp(c);
+}
+
 const keyMaker = (key) => {
     return function keyGenerator(c) {
-        return key + ":" + c.req.header("cf-connecting-ip") ?? ""
+        return GetRateLimitKey(c, key);
     }
 }
 
@@ -35,7 +40,7 @@ const rateLimitMessage = {
     "message": "Rate Limit exceeded"
 }
 
-function getLimitSettings(cx, key) {
+export function getLimitSettings(cx, key) {
     return {
         windowMs: 3_600_000, // 1 Hour
         limit: isDev(cx.env) ? 100 : 4, // 4 (100 in DEV)

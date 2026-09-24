@@ -5,7 +5,7 @@ import { BUG, FEATURE, MODERATION, SECURITY, LANDING, TEXT, VALID_FORMS } from '
 import { dumpScore, getScore, saveScore } from '../services/scoreService.js';
 import { SubmitToGitHub } from '../services/githubService.js';
 import { formatIssue } from '../services/markdownTemplateService.js';
-import { formLimiter, landingLimiter } from '../helpers/RateLimits.js';
+import { checkLimitsApp } from './checkLimits.js';
 import { uploadFileToR2 } from '../services/r2Service.js';
 import { turnstileMiddleware } from '../helpers/TurnstileMiddleware.js';
 import { getFormSchema } from '../helpers/ValidationSchemas.js';
@@ -150,6 +150,10 @@ apiApp.post(
     }
   }
 );
+
+// Endpoint to check if the current user/IP is rate limited for forms or landing
+apiApp.route('/checklimits', checkLimitsApp);
+
 
 apiApp.get('/md', async (c) => {
   return c.body(formatIssue("bug", {description: "TEST DESCRIPTION"}));
