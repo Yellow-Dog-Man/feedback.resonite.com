@@ -1,23 +1,29 @@
-import {BLOB_URL} from "../../config";
+import { BLOB_URL } from "../../config";
 //TODO: config
 function processKey(key) {
-    return key.replaceAll(" ", "");
+	return key.replaceAll(" ", "");
 }
 
 export async function uploadFileToR2(bucket, filePrefix, file) {
-    if (!file || typeof file === 'string' || !(file instanceof File || file instanceof Blob))
-        throw new Error("Invalid file: " + file);
+	if (
+		!file ||
+		typeof file === "string" ||
+		!(file instanceof File || file instanceof Blob)
+	)
+		throw new Error("Invalid file: " + file);
 
-    const uniqueId = filePrefix =="" ? crypto.randomUUID() : filePrefix;
-    const originalName = file.name || 'attachment';
+	const uniqueId = filePrefix == "" ? crypto.randomUUID() : filePrefix;
+	const originalName = file.name || "attachment";
 
-    const key = processKey(`${new Date().toISOString().split('T')[0]}/${uniqueId}/${originalName}`);
+	const key = processKey(
+		`${new Date().toISOString().split("T")[0]}/${uniqueId}/${originalName}`,
+	);
 
-    const res = await bucket.put(key, file.stream(), {
-        httpMetadata: {
-            contentType: file.type || 'application/octet-stream',
-        },
-    });
+	const res = await bucket.put(key, file.stream(), {
+		httpMetadata: {
+			contentType: file.type || "application/octet-stream",
+		},
+	});
 
-    return BLOB_URL + key;
+	return BLOB_URL + key;
 }

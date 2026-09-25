@@ -1,83 +1,82 @@
 :root {
-  --color-neutrals-dark: #11151d;
-  --color-neutrals-mid: #2b2f35;
-  --color-neutrals-sub: #86888b;
-  --color-neutrals-light: #e1e1e0;
-  --color-hero-yellow: #f8f770;
-  --color-mid-yellow: #a0a14e;
-  --color-sub-yellow: #484a2c;
-  --color-dark-yellow: #2b2e26;
-  --color-hero-green: #59eb5c;
-  --color-mid-green: #3f9e44;
-  --color-sub-green: #24512c;
-  --color-dark-green: #192d24;
-  --color-hero-red: #ff7676;
-  --color-mid-red: #ae5458;
-  --color-sub-red: #5d323a;
-  --color-dark-red: #1a1318;
-  --color-hero-purple: #ba64f2;
-  --color-mid-purple: #824aab;
-  --color-sub-purple: #492f64;
-  --color-dark-purple: #241e35;
-  --color-hero-cyan: #61d1fa;
-  --color-mid-cyan: #458fab;
-  --color-sub-cyan: #284c5d;
-  --color-dark-cyan: #1a2a36;
-  --color-hero-orange: #e69e50;
-  --color-mid-orange: #976c3d;
-  --color-sub-orange: #48392a;
-  --color-dark-orange: #292423;
-  --color-hero-mmc: #ff93fb;
-  --color-mid-mmc: #ab44a8;
-  --color-sub-mmc: #8f0089;
-  --color-dark-mmc: #292329;
-  --background-body: #11151d;
-  --border-radius: 8px;
-  --btn--icon-only-size: 36px;
-  --badge-content-gap: 5px;
-  --badge-image-size: 1.4em;
+	--color-neutrals-dark: #11151d;
+	--color-neutrals-mid: #2b2f35;
+	--color-neutrals-sub: #86888b;
+	--color-neutrals-light: #e1e1e0;
+	--color-hero-yellow: #f8f770;
+	--color-mid-yellow: #a0a14e;
+	--color-sub-yellow: #484a2c;
+	--color-dark-yellow: #2b2e26;
+	--color-hero-green: #59eb5c;
+	--color-mid-green: #3f9e44;
+	--color-sub-green: #24512c;
+	--color-dark-green: #192d24;
+	--color-hero-red: #ff7676;
+	--color-mid-red: #ae5458;
+	--color-sub-red: #5d323a;
+	--color-dark-red: #1a1318;
+	--color-hero-purple: #ba64f2;
+	--color-mid-purple: #824aab;
+	--color-sub-purple: #492f64;
+	--color-dark-purple: #241e35;
+	--color-hero-cyan: #61d1fa;
+	--color-mid-cyan: #458fab;
+	--color-sub-cyan: #284c5d;
+	--color-dark-cyan: #1a2a36;
+	--color-hero-orange: #e69e50;
+	--color-mid-orange: #976c3d;
+	--color-sub-orange: #48392a;
+	--color-dark-orange: #292423;
+	--color-hero-mmc: #ff93fb;
+	--color-mid-mmc: #ab44a8;
+	--color-sub-mmc: #8f0089;
+	--color-dark-mmc: #292329;
+	--background-body: #11151d;
+	--border-radius: 8px;
+	--btn--icon-only-size: 36px;
+	--badge-content-gap: 5px;
+	--badge-image-size: 1.4em;
 
-  /* overriding water.css */
-  --background-body: var(--color-neutrals-dark);
-  --button-base: var(--color-neutrals-mid);
-  --button-hover: color-mix(in srgb, var(--color-neutrals-mid) 80%, white);
+	/* overriding water.css */
+	--background-body: var(--color-neutrals-dark);
+	--button-base: var(--color-neutrals-mid);
+	--button-hover: color-mix(in srgb, var(--color-neutrals-mid) 80%, white);
 }
 
 /* Default colors from https://github.com/kognise/water.css/blob/master/src/variables-dark.css*/
 .defaultColors {
-  --background-body: #202b38;
-  --background: #161f27;
-  --background-alt: #1a242f;
-  --selection: #1c76c5;
-  --text-main: #dbdbdb;
-  --text-bright: #fff;
-  --text-muted: #a9b1ba;
-  --links: #41adff;
-  --focus: #0096bfab;
-  --border: #526980;
-  --code: #ffbe85;
-  --animation-duration: 0.1s;
-  --button-base: #0c151c;
-  --button-hover: #040a0f;
-  --scrollbar-thumb: var(--button-hover);
-  --scrollbar-thumb-hover: color-mod(var(--scrollbar-thumb) lightness(-30%));
-  --form-placeholder: #a9a9a9;
-  --form-text: #fff;
-  --variable: #d941e2;
-  --highlight: #efdb43;
-  --select-arrow: svg-load('./assets/select-arrow.svg', fill: #efefef);
+	--background-body: #202b38;
+	--background: #161f27;
+	--background-alt: #1a242f;
+	--selection: #1c76c5;
+	--text-main: #dbdbdb;
+	--text-bright: #fff;
+	--text-muted: #a9b1ba;
+	--links: #41adff;
+	--focus: #0096bfab;
+	--border: #526980;
+	--code: #ffbe85;
+	--animation-duration: 0.1s;
+	--button-base: #0c151c;
+	--button-hover: #040a0f;
+	--scrollbar-thumb: var(--button-hover);
+	--scrollbar-thumb-hover: color-mod(var(--scrollbar-thumb) lightness(-30%));
+	--form-placeholder: #a9a9a9;
+	--form-text: #fff;
+	--variable: #d941e2;
+	--highlight: #efdb43;
 }
 
 header {
-  display: grid;
-  justify-items: center;
+	display: grid;
+	justify-items: center;
 }
 
 .center {
-  margin: 20px 0;
-  display: flex;
-  justify-content: center;
+	margin: 20px 0;
+	display: flex;
+	justify-content: center;
 }
 .hidden {
-  display: none;
+	display: none;
 }

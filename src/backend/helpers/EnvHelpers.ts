@@ -1,5 +1,9 @@
 import { Bindings } from "../../config";
 
 export function isDev(env: Bindings) {
-    return env.ENVIRONMENT === "development" || env.ENVIRONMENT === "dev" || !env.ENVIRONMENT;
+	return (
+		env.ENVIRONMENT === "development" ||
+		env.ENVIRONMENT === "dev" ||
+		!env.ENVIRONMENT
+	);
 }
