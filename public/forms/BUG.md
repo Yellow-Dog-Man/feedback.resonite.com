@@ -20,6 +20,7 @@ issueTitle*= TextInput(
     | question = Title?
     | description = What's the title of your bug report?
     | maxlength = 120
+    | autofocus
 )
 ---
 description*= TextInput(
@@ -27,6 +28,7 @@ description*= TextInput(
     | description = A clear and concise description of what the bug is
     | multiline
     | maxlength = 500
+    | autofocus
 )
 ---
 reproduction*= TextInput(
@@ -34,6 +36,7 @@ reproduction*= TextInput(
     | description = Simple steps to make the bug happen again.
     | multiline
     | maxlength = 500
+    | autofocus
 )
 ---
 expectation*= TextInput(
@@ -41,6 +44,7 @@ expectation*= TextInput(
     | description = A clear and concise description of what you expected to happen..
     | multiline
     | maxlength = 500
+    | autofocus
 )
 ---
 
@@ -76,6 +80,7 @@ reproductionItem = TextInput(
     | description = Describe how to access the item. Url?, World?, Public Folder, ResRec Link?
     | multiline
     | maxlength = 500
+    | autofocus
 )
 ---
 additionalContext = TextInput(
@@ -83,6 +88,7 @@ additionalContext = TextInput(
     | description = Any additional context, you think might help us
     | multiline
     | maxlength = 500
+    | autofocus
 )
 ---
 reporter = TextInput(
@@ -90,6 +96,7 @@ reporter = TextInput(
     | description = Describe how we can contact you if we need more information or to credit you on the changelogs.
     | multiline
     | maxlength = 120
+    | autofocus
 )
 
 ⚠️ DO NOT INCLUDE E-Mail Addresses
