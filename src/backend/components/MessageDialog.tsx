@@ -1,5 +1,5 @@
 import type { FC } from "hono/jsx";
-import "formsmd/dist/css/formsmd.min.css";
+import { Script } from "vite-ssr-components/hono";
 
 export const MessageDialog: FC = () => {
 	return (
@@ -14,10 +14,10 @@ export const MessageDialog: FC = () => {
 					<button type="button">OK</button>
 				</form>
 			</dialog>
-			<script
+			<Script
 				type="module"
 				src="/src/frontend/components/MessageDialog.js"
-			></script>
+			/>
 		</>
 	);
 };
