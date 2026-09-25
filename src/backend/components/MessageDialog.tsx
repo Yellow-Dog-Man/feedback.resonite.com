@@ -9,9 +9,9 @@ export const MessageDialog: FC = () => {
 				<p id="message-dialog-text" style="white-space: pre-wrap;"></p>
 				<form
 					method="dialog"
-					style="display: flex; justify-content: flex-end; margin-top: 1rem;"
+					style="display: flex; justify-content: center; margin-top: 1rem;"
 				>
-					<button type="button">OK</button>
+					<button commandfor="message-dialog" command="close" type="button">OK</button>
 				</form>
 			</dialog>
 			<Script
