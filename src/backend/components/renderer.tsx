@@ -11,7 +11,7 @@ export const renderer = jsxRenderer(({ children }) => {
 				<meta charset="UTF-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<meta name="turnstile-site-key" content={TURNSTILE_SITE_KEY} />
-				<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+				{/* <link rel="icon" type="image/svg+xml" href="/favicon.svg" /> */}
 				<title>Submit Feedback</title>
 				<link
 					rel="stylesheet"
