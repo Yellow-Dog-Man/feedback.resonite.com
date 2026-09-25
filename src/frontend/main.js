@@ -59,8 +59,8 @@ document.addEventListener(TURNSTILE_SUCCESS_EVENT, () => {
 function limited() {
 	window.showModal(
 		"You have filled this in too many times and are rate limited. Please try again in 1 hour",
+		() => window.location = "/limited"
 	);
-	window.location = "/limited";
 }
 
 function unwrapZodErrors(details) {
