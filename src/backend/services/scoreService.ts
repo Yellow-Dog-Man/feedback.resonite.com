@@ -6,12 +6,15 @@
 
 import type { Context } from "hono";
 
-export function saveScore(c: Context, bool: boolean) {
+export function saveScore(
+	c: Context,
+	bool: boolean,
+	question: string = "happiness",
+) {
 	const score = boolToScore(bool);
-	const date = new Date().toISOString();
 	c.env.SCORE.writeDataPoint({
 		doubles: [score],
-		indexes: [date],
+		indexes: [question], //TODO: see Survey.md
 	});
 }
 
