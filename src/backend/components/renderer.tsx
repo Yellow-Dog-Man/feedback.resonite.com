@@ -13,16 +13,16 @@ export const renderer = jsxRenderer(({ children }) => {
 				<meta name="turnstile-site-key" content={TURNSTILE_SITE_KEY} />
 				{/* <link rel="icon" type="image/svg+xml" href="/favicon.svg" /> */}
 				<title>Submit Feedback</title>
-				<script
-					src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-					async
-					defer
-				></script>
 				<link
 					rel="stylesheet"
 					href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css"
 				/>
 				<Link href="/src/style.css" rel="stylesheet" />
+				<script
+					src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+					async
+					defer
+				></script>
 				<ViteClient />
 				<Script src="/src/frontend/main.js" />
 			</head>
