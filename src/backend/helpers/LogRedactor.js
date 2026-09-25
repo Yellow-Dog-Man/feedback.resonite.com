@@ -7,7 +7,7 @@ const redactionString = "<Redacted>";
 //
 function locateUsersInfo(lines) {
 	const allNames = new Set();
-	
+
 	const patterns = [
 		//Catches usernames as well as some user/machine ids
 		/User (?:Joined|Left).*Username:\s*([^,]*),\s*UserID:\s([^,]*),.*?MachineID:\s*(\S+)/i,
@@ -19,7 +19,7 @@ function locateUsersInfo(lines) {
 		/\b([UM]-[A-Za-z0-9-]+)\b/i,
 
 		//Capture usernames from User Exmaple Role:
-		/User ([^,]+) Role:/i
+		/User ([^,]+) Role:/i,
 	];
 	for (const line of lines) {
 		for (const pattern of patterns) {
@@ -56,19 +56,14 @@ function redactPaths(lines) {
 
 	for (let i = 0; i < lines.length; i++) {
 		for (const pattern of patterns) {
-			lines[i] = lines[i].replace(
-				pattern,
-				redactionString
-			);
+			lines[i] = lines[i].replace(pattern, redactionString);
 		}
 	}
 	return lines;
 }
 
 function redactNames(lines, allNames) {
-
-	return lines.map(line => {
-
+	return lines.map((line) => {
 		for (const name of allNames) {
 			//Skip empty
 			if (!name) {
@@ -97,7 +92,6 @@ export function processLog(text) {
 
 	return {
 		text: lines.join("\n"),
-		names: [...allNames]
+		names: [...allNames],
 	};
 }
-

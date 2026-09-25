@@ -17,10 +17,13 @@ import { getFormSchema } from "../helpers/ValidationSchemas.js";
 import { turnstileMiddleware } from "../middleware/TurnstileMiddleware.js";
 import { saveFeedbackText } from "../services/feedbackService.js";
 import { SubmitToGitHub } from "../services/githubService.js";
+import {
+	anonymizeLogs,
+	shouldAnonymizeLog,
+} from "../services/logFilterService";
 import { uploadFileToR2 } from "../services/r2Service.js";
 import { saveScore } from "../services/scoreService.js";
 import { checkLimitsApp } from "./checkLimits.js";
-import {anonymizeLogs, shouldAnonymizeLog} from "../services/logFilterService";
 import { statsApp } from "./stats.js";
 
 export const apiApp = new Hono();
