@@ -113,7 +113,9 @@ TODO: Don't recommend this anymore. Will update with recommended template later
     - We'll be putting these into an R2 Bucket, people sometimes struggle to upload them to Github
     - Our upload will have a better experience
     - We can link to the files in the GH markdown, so the log scanner wont scream at us.
-- [ ] Anonymized Log Files
+- [X] Anonymized Log Files
+    - Might need: https://github.com/XDelta/LogRedactor/issues/1 to help
+    - Needs testing to see what else we can handle
 
 ## Resources
 - [Vite Scaffolding](https://vite.dev/guide/#scaffolding-your-first-vite-project)
@@ -135,10 +137,10 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 - https://unjs.io/
 - https://dev.to/drprime01/how-to-validate-a-file-input-with-zod-5739
 
-## Resource Goals
+### Resource Goals
 Sometimes, prime discovers things he wanted to use but didn't know of at the time, anyway:
 
-### Vite Templates
+#### Vite Templates
 Other than the usual React soup, there are some interesting Frameworks on Vite's site.
 
 Prime is logging them here in the case we need to migrate from whatever monster he's creating right now:
@@ -148,19 +150,18 @@ Prime is logging them here in the case we need to migrate from whatever monster 
 - https://www.solidjs.com/ - Another new one
 - https://developers.cloudflare.com/workers/static-assets/routing/full-stack-application/ lots more here
 
-## Cloudflare
+### Cloudflare
 - https://void.cloud/
 
 Look into an "Awesome Cloudflare" list or collection, because I keep finding cool stuff.
-
-## [Dog Walks](https://bsky.app/profile/probableprime.bsky.social/post/3mu4ffh4xxs2d)
-
-- Originally Estimated Dog Walks: 20
-- Actual(so far): 16
-- Revised Estimate of Dog Walks(2026-09-22): 40
-
 
 ### YouTube Videos
 - Marked the renderer here doesn't support YouTube videos: 
 - https://www.npmjs.com/package/youtube-video-element Could make this easy.
 - Or this could: https://github.com/bent10/marked-extensions/tree/main/packages/directive
+
+## [Dog Walks](https://bsky.app/profile/probableprime.bsky.social/post/3mu4ffh4xxs2d)
+
+- Originally Estimated Dog Walks: 20
+- Actual(so far): 18
+- Revised Estimate of Dog Walks(2026-09-22): 40
