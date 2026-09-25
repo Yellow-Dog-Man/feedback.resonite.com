@@ -1,9 +1,9 @@
-import { verifyTurnstileToken } from "../services/turnstileService.js";
-import { TURNSTILE_HEADER } from "../../frontend/turnstile.js";
-import { getTurnstileSecretKey } from "../helpers/TurnstileConfig.js";
-import { isDev } from "../helpers/EnvHelpers.js";
-import { IP_HEADER } from "../helpers/CloudflareHelpers.js";
 import type { Context, Next } from "hono";
+import { TURNSTILE_HEADER } from "../../frontend/turnstile.js";
+import { IP_HEADER } from "../helpers/CloudflareHelpers.js";
+import { isDev } from "../helpers/EnvHelpers.js";
+import { getTurnstileSecretKey } from "../helpers/TurnstileConfig.js";
+import { verifyTurnstileToken } from "../services/turnstileService.js";
 
 export function turnstileMiddleware() {
 	return async (c: Context, next: Next) => {

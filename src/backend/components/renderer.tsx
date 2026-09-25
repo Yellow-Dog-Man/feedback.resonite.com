@@ -1,5 +1,5 @@
 import { jsxRenderer } from "hono/jsx-renderer";
-import { Script, Link, ViteClient } from "vite-ssr-components/hono";
+import { Link, Script, ViteClient } from "vite-ssr-components/hono";
 import { TURNSTILE_SITE_KEY } from "../helpers/TurnstileConfig";
 import { MessageDialog } from "./MessageDialog";
 
@@ -28,7 +28,7 @@ export const renderer = jsxRenderer(({ children }) => {
 			</head>
 			<body>
 				<header>
-					<img src="/images/resonite.png" alt="Resonite logo"/>
+					<img src="/images/resonite.png" alt="Resonite logo" />
 					<h1>Submit Feedback</h1>
 				</header>
 				<main>{children}</main>

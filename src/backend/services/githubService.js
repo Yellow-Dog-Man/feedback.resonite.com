@@ -1,9 +1,10 @@
 // Easiest option here is their HTTP API SO....
-import { BUG, FEATURE } from "../helpers/FormHelpers";
-import { formatIssue } from "./markdownTemplateService.js";
-import { containsEmail, containsProfanity } from "./filterService.js";
-import { BadRequest } from "../helpers/HttpHelpers.js";
+
 import { FEEDBACK_DOMAIN, REPO, REPO_OWNER } from "../../config/index.js";
+import { BUG, FEATURE } from "../helpers/FormHelpers";
+import { BadRequest } from "../helpers/HttpHelpers.js";
+import { containsEmail, containsProfanity } from "./filterService.js";
+import { formatIssue } from "./markdownTemplateService.js";
 
 const USER_AGENT = FEEDBACK_DOMAIN;
 

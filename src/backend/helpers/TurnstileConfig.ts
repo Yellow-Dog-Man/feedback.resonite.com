@@ -1,6 +1,6 @@
 import type { Context } from "hono";
-import { isDev } from "./EnvHelpers";
 import type { Bindings } from "../../config";
+import { isDev } from "./EnvHelpers";
 
 const DEMO_TURNSTILE_KEY = "1x00000000000000000000AA";
 export const TURNSTILE_SITE_KEY = "0x4AAAAAAE_ffmknZb7xGGEe"; // NOT a secret

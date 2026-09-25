@@ -1,7 +1,7 @@
 import { type FC, Fragment } from "hono/jsx";
 import "formsmd/dist/css/formsmd.min.css";
-import { getTurnstileSiteKey } from "../helpers/TurnstileConfig.js";
 import { useRequestContext } from "hono/jsx-renderer";
+import { getTurnstileSiteKey } from "../helpers/TurnstileConfig.js";
 
 type FormConfig = {
 	id: string;
@@ -37,7 +37,9 @@ export const Form: FC<{ formConfig: FormConfig }> = (props: {
 				style="margin: 20px 0; display: flex; justify-content: center;"
 			></div>
 			<div id="success-container" class="center hidden">
-				<button id="restart" type="button">Restart</button>
+				<button id="restart" type="button">
+					Restart
+				</button>
 			</div>
 		</Fragment>
 	);

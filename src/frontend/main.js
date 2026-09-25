@@ -2,8 +2,8 @@ import "./../style.css";
 import "formsmd/dist/css/formsmd.min.css";
 import { Formsmd } from "formsmd";
 import { GetDefaultFormOptions } from "../backend/helpers/DefaultFormOptions.js";
-import { initTurnstile, TURNSTILE_SUCCESS_EVENT } from "./turnstile.js";
 import { LANDING } from "../backend/helpers/FormHelpers.js";
+import { initTurnstile, TURNSTILE_SUCCESS_EVENT } from "./turnstile.js";
 
 //TODO: Move this to the form component, ideally it shouldn't be here
 

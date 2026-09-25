@@ -1,4 +1,5 @@
 import { BLOB_URL } from "../../config";
+
 //TODO: config
 function processKey(key) {
 	return key.replaceAll(" ", "");

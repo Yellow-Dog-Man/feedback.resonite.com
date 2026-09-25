@@ -37,7 +37,7 @@ function getHydratedFormOptions() {
 			...getTurnstileHeader(),
 		},
 	};
-	options.postHeaders.Authorization = `Bearer `;//Get·Auth·Token
+	options.postHeaders.Authorization = `Bearer `; //Get·Auth·Token
 
 	return options;
 }

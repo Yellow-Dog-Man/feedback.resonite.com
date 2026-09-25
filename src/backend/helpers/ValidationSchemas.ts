@@ -19,7 +19,8 @@ const optionalText = z.union([longText, z.string()]).optional().nullable();
 
 // TODO: as we use formdata, everything comes in as stream, so we can't do any filtering, we can max the sizes though
 const stream = "application/octet-stream";
-const imageMimes = ["image/png", "image/jpg", "image/jpeg"];
+
+//const imageMimes = ["image/png", "image/jpg", "image/jpeg"];
 const logFile = z.file().mime(stream).max(MAX_LOG_FILE_BYTES);
 const imageFile = z.file().max(MAX_IMAGE_FILE_BYTES);
 
