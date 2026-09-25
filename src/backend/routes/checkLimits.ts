@@ -1,4 +1,4 @@
-import { Context, Hono } from "hono";
+import { type Context, Hono } from "hono";
 import { WorkersKVStore } from "@hono-rate-limiter/cloudflare";
 import {
 	getLimitSettings,
@@ -7,7 +7,7 @@ import {
 } from "../helpers/RateLimits.js";
 import { FORM, LANDING } from "../helpers/FormHelpers.js";
 import { GetClientIp } from "../helpers/CloudflareHelpers.js";
-import { ClientRateLimitInfo } from "hono-rate-limiter";
+import type { ClientRateLimitInfo } from "hono-rate-limiter";
 
 export const checkLimitsApp = new Hono();
 

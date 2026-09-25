@@ -4,7 +4,7 @@
 - index1/index[0] => date
 */
 
-import { Context } from "hono";
+import type { Context } from "hono";
 
 export function saveScore(c: Context, bool: boolean) {
 	const score = boolToScore(bool);

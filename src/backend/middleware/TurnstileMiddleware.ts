@@ -3,7 +3,7 @@ import { TURNSTILE_HEADER } from "../../frontend/turnstile.js";
 import { getTurnstileSecretKey } from "../helpers/TurnstileConfig.js";
 import { isDev } from "../helpers/EnvHelpers.js";
 import { IP_HEADER } from "../helpers/CloudflareHelpers.js";
-import { Context, Next } from "hono";
+import type { Context, Next } from "hono";
 
 export function turnstileMiddleware() {
 	return async (c: Context, next: Next) => {

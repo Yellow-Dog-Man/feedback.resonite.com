@@ -1,4 +1,4 @@
-import { Context } from "hono";
+import type { Context } from "hono";
 
 export const IP_HEADER = "cf-connecting-ip";
 

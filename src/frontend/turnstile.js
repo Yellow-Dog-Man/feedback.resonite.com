@@ -58,7 +58,7 @@ export function getTurnstileToken() {
 }
 
 export function getTurnstileHeader() {
-	let obj = {};
+	const obj = {};
 	obj[TURNSTILE_HEADER] = getTurnstileToken();
 	return obj;
 }

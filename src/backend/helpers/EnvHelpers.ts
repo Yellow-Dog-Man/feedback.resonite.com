@@ -1,4 +1,4 @@
-import { Bindings } from "../../config";
+import type { Bindings } from "../../config";
 
 export function isDev(env: Bindings) {
 	return (

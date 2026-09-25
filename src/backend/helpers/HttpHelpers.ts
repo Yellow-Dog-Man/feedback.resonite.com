@@ -1,8 +1,8 @@
 // Trying to make problem details here: https://jsonic.io/guides/json-api-error-handling
 //TODO: Swap to: https://github.com/paveg/hono-problem-details
 
-import { Context } from "hono";
-import { StatusCode } from "hono/utils/http-status";
+import type { Context } from "hono";
+import type { StatusCode } from "hono/utils/http-status";
 
 const BAD_REQUEST = 400;
 const SERVER_TEMPORARY_ERROR = 503;

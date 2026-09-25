@@ -1,4 +1,4 @@
-window.showModal = function (content) {
+window.showModal = (content) => {
 	const dialog = document.getElementById("message-dialog");
 	const textEl = document.getElementById("message-dialog-text");
 	if (!dialog || !textEl) return;

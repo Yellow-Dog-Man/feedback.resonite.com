@@ -23,7 +23,7 @@ async function checkLimit(id) {
 	}
 }
 
-document.addEventListener(TURNSTILE_SUCCESS_EVENT, function () {
+document.addEventListener(TURNSTILE_SUCCESS_EVENT, () => {
 	document.querySelectorAll(".formsMDTarget").forEach(async (el) => {
 		const templatePath = el.getAttribute("data-form-template");
 		const id = el.getAttribute("data-form-type");
@@ -81,7 +81,7 @@ function getSubmissionErrors(json) {
 	return messages;
 }
 
-document.getElementById("restart").addEventListener("click", function () {
+document.getElementById("restart").addEventListener("click", () => {
 	window.location = "/" + LANDING;
 });
 

@@ -1,4 +1,4 @@
-import { FC, Fragment } from "hono/jsx";
+import { type FC, Fragment } from "hono/jsx";
 import "formsmd/dist/css/formsmd.min.css";
 import { getTurnstileSiteKey } from "../helpers/TurnstileConfig.js";
 import { useRequestContext } from "hono/jsx-renderer";

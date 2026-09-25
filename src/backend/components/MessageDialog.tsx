@@ -1,4 +1,4 @@
-import { FC } from "hono/jsx";
+import type { FC } from "hono/jsx";
 import "formsmd/dist/css/formsmd.min.css";
 
 export const MessageDialog: FC = () => {
