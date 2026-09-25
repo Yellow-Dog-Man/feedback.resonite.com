@@ -56,6 +56,8 @@ anonymizeLogs* = ChoiceInput(
   | description = Anonymization of Log Files is in BETA, and **may not** anonymize all details.
   | checked = yes
   | required
+  | subfield
+  | fieldSize = "sm"
 )
 
 More information on locating your log files can be found [on our wiki](https://wiki.resonite.com/Log_files).
