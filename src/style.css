@@ -42,6 +42,18 @@
 	--button-hover: color-mix(in srgb, var(--color-neutrals-mid) 80%, white);
 }
 
+.fmd-root p a {
+	color: var(--color-hero-purple) !important;
+}
+
+.fmd-root p a:hover {
+	color: var(--color-mid-purple) !important;
+}
+
+footer span {
+	padding-right: 4px;
+}
+
 /* Default colors from https://github.com/kognise/water.css/blob/master/src/variables-dark.css*/
 .defaultColors {
 	--background-body: #202b38;

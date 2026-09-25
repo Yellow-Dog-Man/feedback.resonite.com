@@ -13,7 +13,7 @@ const standardFormOptions = {
 		accent: "#e1e1e0",
 		accentForeground: "#353148",
 		backgroundColor: "#11151d",
-		color: "#FFF",
+		color: "#e1e1e0",
 	},
 	postHeaders: {
 		// We have A state store at home, you don't need to write your own
