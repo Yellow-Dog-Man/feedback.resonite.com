@@ -31,6 +31,11 @@ export const apiApp = new Hono();
 // Apply turnstile middleware to all API POST routes
 apiApp.use("*", turnstileMiddleware());
 
+// Endpoint to check if the current user/IP is rate limited for forms or landing
+apiApp.route("/checklimits", checkLimitsApp);
+// Stats endpoints
+apiApp.route("/stats", statsApp);
+
 function isFile(value) {
 	return value instanceof File || value instanceof Blob;
 }
@@ -169,12 +174,6 @@ apiApp.post(
 		}
 	},
 );
-
-// Endpoint to check if the current user/IP is rate limited for forms or landing
-apiApp.route("/checklimits", checkLimitsApp);
-
-// Stats endpoints
-apiApp.route("/stats", statsApp);
 
 // We need to signal to FormsMd/Frontend what to do on a completed form.
 function redirectTo(location) {

@@ -15,6 +15,13 @@ async function checkLimit(id) {
 	const res = await fetch("/api/checklimits");
 	const json = await res.json();
 
+	console.log(json);
+
+	if (!json.limits)
+	{
+		throw new Error("Invalid format for limit items");
+	}
+
 	switch (id) {
 		case LANDING:
 			return json.limits.landing.limited;
@@ -52,7 +59,7 @@ document.addEventListener(TURNSTILE_SUCCESS_EVENT, () => {
 });
 
 function limited() {
-	showModal(
+	window.showModal(
 		"You have filled this in too many times and are rate limited. Please try again in 1 hour",
 	);
 	window.location = "/limited";
@@ -93,9 +100,15 @@ function showResetButton() {
 function handleCompletion(result) {
 	if (!result) return;
 
-	if (result.redirectTo !== undefined) window.location.href = result.redirectTo;
+	if (result.redirectTo !== undefined) {
+		window.location.href = result.redirectTo;
+	}
 
-	if (!result.success) if (result.message) window.showModal(result.message);
+	if (!result.success) {
+		if (result.message) {
+				window.showModal(result.message);
+		}
+	}
 
 	showResetButton();
 }
