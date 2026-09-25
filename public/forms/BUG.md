@@ -47,10 +47,18 @@ expectation*= TextInput(
 logs* = FileInput(
   | question = Upload your Log File
   | description = We'll need a Log File to file this bug report.
+  | required
+)
+
+anonymizeLogs* = ChoiceInput(
+  | question = Should we anonymize the log file?
+  | choices = Yes, No
+  | description = Anonymization of Log Files is in BETA, and **may not** anonymize all details.
+  | checked = Yes
+  | required
 )
 
 More information on locating your log files can be found [on our wiki](https://wiki.resonite.com/Log_files).
-Log Files are **NOT** currently anonymized, see [this issue](https://github.com/Yellow-Dog-Man/feedback.resonite.com/issues/5).
 
 ---
 

@@ -43,6 +43,7 @@ export const bugSchema = z.object({
 	reproduction: longText,
 	expectation: longText,
 	logs: logFile,
+	anonymizeLogs: yesNo,
 	screenshots: imageFile.optional().nullable(),
 	reproductionItem: longText.optional().nullable(),
 	additionalContext: longText.optional().nullable(),

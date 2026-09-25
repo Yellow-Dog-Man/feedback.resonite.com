@@ -20,6 +20,7 @@ import { SubmitToGitHub } from "../services/githubService.js";
 import { uploadFileToR2 } from "../services/r2Service.js";
 import { saveScore } from "../services/scoreService.js";
 import { checkLimitsApp } from "./checkLimits.js";
+import {anonymizeLogs, canFilter} from "../services/logFilterService";
 import { statsApp } from "./stats.js";
 
 export const apiApp = new Hono();
@@ -46,18 +47,21 @@ function handleValidationError(result, c) {
 
 const RECORD_ID_KEY = "_rid";
 
-async function processFile(c, body, key, value, filePrefix) {
-	if (c.env.BUCKET && value.size > 0) {
+async function processFile(c, formBody, key, file, filePrefix) {
+	if (c.env.BUCKET && file.size > 0) {
 		try {
-			const r2Key = await uploadFileToR2(c.env.BUCKET, filePrefix, value);
-			body[key] = r2Key;
-			body[`${key}_name`] = value.name;
+			if (canFilter(file.name, formBody)) {
+				file = anonymizeLogs(file);
+			}
+			const r2Key = await uploadFileToR2(c.env.BUCKET, filePrefix, file);
+			formBody[key] = r2Key;
+			formBody[`${key}_name`] = file.name;
 		} catch (uploadErr) {
 			console.error(`Failed to upload file for ${key}:`, uploadErr);
-			body[key] = null;
+			formBody[key] = null;
 		}
 	} else {
-		body[key] = null;
+		formBody[key] = null;
 	}
 }
 
