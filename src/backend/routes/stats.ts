@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { cache } from "hono/cache";
-import { getScore } from "../services/scoreService.js";
+import { getScore } from "../services/scoreService";
 
 export const statsApp = new Hono();
 
