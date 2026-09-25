@@ -52,9 +52,9 @@ logs* = FileInput(
 
 anonymizeLogs* = ChoiceInput(
   | question = Should we anonymize the log file?
-  | choices = Yes, No
+  | choices = "yes" Yes, "no" No
   | description = Anonymization of Log Files is in BETA, and **may not** anonymize all details.
-  | checked = Yes
+  | checked = yes
   | required
 )
 
