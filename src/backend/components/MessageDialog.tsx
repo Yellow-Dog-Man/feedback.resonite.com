@@ -11,13 +11,12 @@ export const MessageDialog: FC = () => {
 					method="dialog"
 					style="display: flex; justify-content: center; margin-top: 1rem;"
 				>
-					<button commandfor="message-dialog" command="close" type="button">OK</button>
+					<button commandfor="message-dialog" command="close" type="button">
+						OK
+					</button>
 				</form>
 			</dialog>
-			<Script
-				type="module"
-				src="/src/frontend/components/MessageDialog.js"
-			/>
+			<Script type="module" src="/src/frontend/components/MessageDialog.js" />
 		</>
 	);
 };
