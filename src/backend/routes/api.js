@@ -19,7 +19,7 @@ export const apiApp = new Hono();
 // Apply turnstile middleware to all API POST routes
 apiApp.use('*', turnstileMiddleware());
 
-function isFile(value){
+function isFile(value) {
   return value instanceof File || value instanceof Blob;
 }
 
