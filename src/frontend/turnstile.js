@@ -9,8 +9,12 @@ const turnstileSuccessEvent = new Event(TURNSTILE_SUCCESS_EVENT);
 export const TURNSTILE_FAILURE_EVENT = "turnstileFailure";
 const turnstileFailureEvent = new Event(TURNSTILE_FAILURE_EVENT);
 
+//TODO: I want to make turnstile a full component for SSR
 export function initTurnstile() {
 	const turnstileContainer = document.querySelector(TURNSTILE_DIV);
+	if (!turnstileContainer) {
+		return;
+	}
 	const key = turnstileContainer.dataset.sitekey;
 
 	if (window.turnstile) {
