@@ -30,7 +30,7 @@ const SCORE_QUERY = `
 export async function getScore(c: Context, interval: string) {
 	let query = SCORE_QUERY;
 	if (interval !== undefined) {
-		query = query + ` WHERE timestamp > NOW() - INTERVAL ${interval}`;
+		query = `${query} WHERE timestamp > NOW() - INTERVAL ${interval}`;
 	}
 	const API = `https://api.cloudflare.com/client/v4/accounts/${c.env.ACCOUNT_ID}/analytics_engine/sql`;
 

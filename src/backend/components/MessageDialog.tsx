@@ -11,7 +11,7 @@ export const MessageDialog: FC = () => {
 					method="dialog"
 					style="display: flex; justify-content: flex-end; margin-top: 1rem;"
 				>
-					<button>OK</button>
+					<button type="button">OK</button>
 				</form>
 			</dialog>
 			<script

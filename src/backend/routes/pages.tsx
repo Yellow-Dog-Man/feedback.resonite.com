@@ -7,7 +7,7 @@ import { Limited } from "../components/limited";
 
 export const pageApp = new Hono();
 
-const landingUrl = "/" + LANDING;
+const landingUrl = `/${LANDING}`;
 
 pageApp.use(renderer);
 
@@ -28,7 +28,7 @@ pageApp.get("/:form", (c) => {
 	if (!VALID_FORMS.includes(formId)) return c.redirect(landingUrl);
 	const form = {
 		id: formId,
-		templatePath: "/forms/" + formId.toUpperCase() + ".md",
+		templatePath: `/forms/${formId.toUpperCase()}.md`,
 	};
 	return c.render(<Form formConfig={form} />);
 });

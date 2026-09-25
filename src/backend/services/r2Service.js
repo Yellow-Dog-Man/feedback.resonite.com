@@ -10,16 +10,17 @@ export async function uploadFileToR2(bucket, filePrefix, file) {
 		typeof file === "string" ||
 		!(file instanceof File || file instanceof Blob)
 	)
-		throw new Error("Invalid file: " + file);
+		throw new Error(`Invalid file: ${file}`);
 
-	const uniqueId = filePrefix == "" ? crypto.randomUUID() : filePrefix;
+	const uniqueId = filePrefix === "" ? crypto.randomUUID() : filePrefix;
 	const originalName = file.name || "attachment";
 
 	const key = processKey(
 		`${new Date().toISOString().split("T")[0]}/${uniqueId}/${originalName}`,
 	);
 
-	const res = await bucket.put(key, file.stream(), {
+	//TODO: errors
+	await bucket.put(key, file.stream(), {
 		httpMetadata: {
 			contentType: file.type || "application/octet-stream",
 		},

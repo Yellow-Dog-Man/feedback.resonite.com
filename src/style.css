@@ -31,7 +31,6 @@
 	--color-mid-mmc: #ab44a8;
 	--color-sub-mmc: #8f0089;
 	--color-dark-mmc: #292329;
-	--background-body: #11151d;
 	--border-radius: 8px;
 	--btn--icon-only-size: 36px;
 	--badge-content-gap: 5px;
@@ -60,7 +59,6 @@
 	--button-base: #0c151c;
 	--button-hover: #040a0f;
 	--scrollbar-thumb: var(--button-hover);
-	--scrollbar-thumb-hover: color-mod(var(--scrollbar-thumb) lightness(-30%));
 	--form-placeholder: #a9a9a9;
 	--form-text: #fff;
 	--variable: #d941e2;

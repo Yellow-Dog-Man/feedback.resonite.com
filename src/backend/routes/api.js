@@ -80,13 +80,13 @@ async function transformFormBody(rawBody, c) {
 	return body;
 }
 
-apiApp.use("/" + LANDING, async (c, next) => {
+apiApp.use(`/${LANDING}`, async (c, next) => {
 	const limit = landingLimiter(c);
 	return limit(c, next);
 });
 
 apiApp.post(
-	"/" + LANDING,
+	`/${LANDING}`,
 	zValidator("form", getFormSchema(LANDING), (result, c) => {
 		if (!result.success) return handleValidationError(result, c);
 	}),
@@ -135,9 +135,9 @@ apiApp.post(
 			const body = await transformFormBody(rawValidated, c);
 			const SUBMIT_TO_GITHUB = isDev(c.env);
 			if (SUBMIT_TO_GITHUB) {
-				var gitHubResult = await processFormBodyForGitHub(c, formType, body);
+				const gitHubResult = await processFormBodyForGitHub(c, formType, body);
 				if (gitHubResult) {
-					var finalResult = {
+					const finalResult = {
 						success: true,
 						message: `Successfully received submission for ${formType}`,
 						receivedAt: new Date().toISOString(),
@@ -182,7 +182,7 @@ function addLandingMetadata(body) {
 	// This means they skipped to the end, just the +1 -1 feedback
 	if (!body.more) return {};
 	// This means we already have the feedback, we can bail as well
-	if (body.redirectType == TEXT) return {};
+	if (body.redirectType === TEXT) return {};
 
 	// For the rest, we need to redirect somewhere else.
 	if (redirectType === BUG) return redirectTo("/bug");

@@ -27,7 +27,7 @@ export function landingLimiter(cx: Context) {
 }
 
 export function GetRateLimitKey(c: Context, key: string) {
-	return key + ":" + GetClientIp(c);
+	return `${key}:${GetClientIp(c)}`;
 }
 
 const keyMaker = (key: string) => {

@@ -16,7 +16,7 @@ export const Limited: FC = () => {
 				an hour.
 			</p>
 			<div class="center">
-				<button id="restart">Restart</button>
+				<button id="restart" type="button">Restart</button>
 			</div>
 		</div>
 	);

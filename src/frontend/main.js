@@ -82,7 +82,7 @@ function getSubmissionErrors(json) {
 }
 
 document.getElementById("restart").addEventListener("click", () => {
-	window.location = "/" + LANDING;
+	window.location = `/${LANDING}`;
 });
 
 function showResetButton() {

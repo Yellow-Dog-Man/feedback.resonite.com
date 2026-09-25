@@ -7,8 +7,7 @@ import { FEEDBACK_DOMAIN, REPO, REPO_OWNER } from "../../config/index.js";
 
 const USER_AGENT = FEEDBACK_DOMAIN;
 
-const URL =
-	"https://api.github.com/repos/" + REPO_OWNER + "/" + REPO + "/issues";
+const URL = `https://api.github.com/repos/${REPO_OWNER}/${REPO}/issues`;
 
 const ISSUE_LABEL = FEEDBACK_DOMAIN;
 
@@ -34,7 +33,7 @@ export async function SubmitToGitHub(c, formType, body) {
 			"Content-Type": "application/json",
 			"User-Agent": USER_AGENT,
 			Accept: "application/vnd.github+json",
-			Authorization: "Bearer " + c.env.GITHUB_TOKEN,
+			Authorization: `Bearer ${c.env.GITHUB_TOKEN}`,
 		},
 	});
 

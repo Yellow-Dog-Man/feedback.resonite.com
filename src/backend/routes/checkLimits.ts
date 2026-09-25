@@ -3,7 +3,6 @@ import { WorkersKVStore } from "@hono-rate-limiter/cloudflare";
 import {
 	getLimitSettings,
 	GetRateLimitKey,
-	LimitSettings,
 } from "../helpers/RateLimits.js";
 import { FORM, LANDING } from "../helpers/FormHelpers.js";
 import { GetClientIp } from "../helpers/CloudflareHelpers.js";

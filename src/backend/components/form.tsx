@@ -37,7 +37,7 @@ export const Form: FC<{ formConfig: FormConfig }> = (props: {
 				style="margin: 20px 0; display: flex; justify-content: center;"
 			></div>
 			<div id="success-container" class="center hidden">
-				<button id="restart">Restart</button>
+				<button id="restart" type="button">Restart</button>
 			</div>
 		</Fragment>
 	);

@@ -6,7 +6,7 @@ import { MessageDialog } from "./MessageDialog";
 export const renderer = jsxRenderer(({ children }) => {
 	// <! DOCTYPE etc, is automatically added by jsxRenderer
 	return (
-		<html>
+		<html lang="en">
 			<head>
 				<meta charset="UTF-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,7 +28,7 @@ export const renderer = jsxRenderer(({ children }) => {
 			</head>
 			<body>
 				<header>
-					<img src="/images/resonite.png" />
+					<img src="/images/resonite.png" alt="Resonite logo"/>
 					<h1>Submit Feedback</h1>
 				</header>
 				<main>{children}</main>
