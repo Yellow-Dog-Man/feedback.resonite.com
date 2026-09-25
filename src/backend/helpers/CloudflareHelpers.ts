@@ -3,5 +3,5 @@ import type { Context } from "hono";
 export const IP_HEADER = "cf-connecting-ip";
 
 export function GetClientIp(c: Context) {
-	return c.req.header(IP_HEADER) ?? "";
+	return c.req.header(IP_HEADER) ?? "0.0.0.0"; // In Dev, this is often blank for some reason.
 }
