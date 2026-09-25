@@ -51,7 +51,7 @@ async function processFile(c, formBody, key, file, filePrefix) {
 	if (c.env.BUCKET && file.size > 0) {
 		try {
 			if (canFilter(file.name, formBody)) {
-				file = anonymizeLogs(file);
+				file = await anonymizeLogs(file);
 			}
 			const r2Key = await uploadFileToR2(c.env.BUCKET, filePrefix, file);
 			formBody[key] = r2Key;

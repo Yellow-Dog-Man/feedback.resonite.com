@@ -87,7 +87,7 @@ function redactNames(lines, allNames) {
 	});
 }
 
-function processLog(text) {
+export function processLog(text) {
 	let lines = text.split(/\r?\n/);
 
 	const allNames = locateUsersInfo(lines);
@@ -100,3 +100,4 @@ function processLog(text) {
 		names: [...allNames]
 	};
 }
+
