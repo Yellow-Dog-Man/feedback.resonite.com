@@ -15,8 +15,6 @@ async function checkLimit(id) {
 	const res = await fetch("/api/checklimits");
 	const json = await res.json();
 
-	console.log(json);
-
 	if (!json.limits)
 	{
 		throw new Error("Invalid format for limit items");
