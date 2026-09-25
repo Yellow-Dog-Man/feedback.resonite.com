@@ -14,7 +14,7 @@ export async function anonymizeLogs(log: File): Promise<File> {
     }
 }
 
-export function canFilter(fileName: string, formBody: Record<string, unknown>) {
+export function shouldAnonymizeLog(fileName: string, formBody: Record<string, unknown>) {
     if (formBody.anonymizeLogs !== undefined && formBody.anonymizeLogs)
         return fileName.endsWith("log");
 

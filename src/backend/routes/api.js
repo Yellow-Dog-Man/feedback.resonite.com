@@ -20,7 +20,7 @@ import { SubmitToGitHub } from "../services/githubService.js";
 import { uploadFileToR2 } from "../services/r2Service.js";
 import { saveScore } from "../services/scoreService.js";
 import { checkLimitsApp } from "./checkLimits.js";
-import {anonymizeLogs, canFilter} from "../services/logFilterService";
+import {anonymizeLogs, shouldAnonymizeLog} from "../services/logFilterService";
 import { statsApp } from "./stats.js";
 
 export const apiApp = new Hono();
@@ -50,7 +50,7 @@ const RECORD_ID_KEY = "_rid";
 async function processFile(c, formBody, key, file, filePrefix) {
 	if (c.env.BUCKET && file.size > 0) {
 		try {
-			if (canFilter(file.name, formBody)) {
+			if (shouldAnonymizeLog(file.name, formBody)) {
 				file = await anonymizeLogs(file);
 			}
 			const r2Key = await uploadFileToR2(c.env.BUCKET, filePrefix, file);
