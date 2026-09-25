@@ -136,6 +136,7 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 - https://unstorage.unjs.io/
 - https://unjs.io/
 - https://dev.to/drprime01/how-to-validate-a-file-input-with-zod-5739
+- https://github.com/rhinobase/hono-rate-limiter/tree/core-0.4.0/packages/cloudflare
 
 ### Resource Goals
 Sometimes, prime discovers things he wanted to use but didn't know of at the time, anyway:
