@@ -76,7 +76,7 @@ TODO: Don't recommend this anymore. Will update with recommended template later
     - FormsMd, supports recapthca
     - I think we can just turnstile before the form starts though.
     - like: Turnstile -> PASS -> Load Form
-- [ ] Other Bot Protection, see Cloudflare docs/Panel
+- [x] Other Bot Protection, see Cloudflare docs/Panel
     - Will wait for Deploy
 - [ ] Resonite Account OAuth
     - Use the OAuth Middleware: https://github.com/honojs/middleware/tree/main/packages/oauth-providers
@@ -126,7 +126,7 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 - https://www.npmjs.com/package/hono - This is the recommended Cloudflare router
     - ITS AWESOME
 - https://github.com/paveg/hono-problem-details
-- https://trycap.dev/
+- [Self-Hosted Captcha](https://trycap.dev/)
 - https://stitchapi.dev/
 - https://github.com/honojs/middleware/tree/main/packages/session
 - https://github.com/honojs/middleware/tree/main/packages/otel
