@@ -34,8 +34,14 @@ export const renderer = jsxRenderer(({ children }) => {
 				<main>{children}</main>
 				<MessageDialog />
 				<footer>
-					<span><a href="https://feedback.resonite.com">Feedback Home</a> | <a href="policies.resonite.com">Policies Page</a></span>
-					<span>Copyright © <a href="https://yellowdogman.com">Yellow Dog Man Studios S.r.o.</a></span>
+					<span>
+						<a href="https://feedback.resonite.com">Feedback Home</a> |{" "}
+						<a href="policies.resonite.com">Policies Page</a>
+					</span>
+					<span>
+						Copyright ©{" "}
+						<a href="https://yellowdogman.com">Yellow Dog Man Studios S.r.o.</a>
+					</span>
 				</footer>
 			</body>
 		</html>

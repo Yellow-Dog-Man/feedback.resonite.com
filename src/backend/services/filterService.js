@@ -21,5 +21,5 @@ export function containsEmail(text) {
 }
 
 export async function filter(text) {
-	return await containsProfanity(text) || await containsEmail(text);
+	return (await containsProfanity(text)) || (await containsEmail(text));
 }

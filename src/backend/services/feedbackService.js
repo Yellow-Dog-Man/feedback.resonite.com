@@ -1,6 +1,5 @@
 export async function saveFeedbackText(db, body, date) {
-	if (!db) 
-		throw new Error("DB is not setup correctly");
+	if (!db) throw new Error("DB is not setup correctly");
 	try {
 		await createFeedbackTable(db);
 		await db
