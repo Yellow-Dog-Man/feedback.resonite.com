@@ -27,6 +27,9 @@ more* = ChoiceInput(
 type* = ChoiceInput(
     | question = What type of feedback do you have?
     | choices = "text" 📝 Text, "bug" 🐞 Bug, "featureRequest" 💡 Feature Request, "moderation" 🚨 Moderation Issue, "security" 🔐 Security Issue
+    | required
+    | fieldSize = "lg"
+    | horizontal
 )
 
 ---
