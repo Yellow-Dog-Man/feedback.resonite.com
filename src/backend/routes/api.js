@@ -204,6 +204,13 @@ async function processLanding(c, body) {
 	const date = new Date().toISOString();
 
 	if (body.more && body.type === "text") {
+		if (containsProfanity(body.feedback)) {
+			return BadRequest(c, "Issue contains profanity");
+		}
+
+		if (containsEmail(body.feedback)) {
+			return BadRequest(c, "Issue contains an email address");
+		}
 		await saveFeedbackText(c.env.DB, body.feedback, date);
 	}
 }
