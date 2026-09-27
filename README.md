@@ -1,24 +1,21 @@
-# feedback.resonite.com
+# [feedback.resonite.com](feedback.resonite.com)
 
-> [!IMPORTANT]
-> This is a [Creative Day](https://github.com/Yellow-Dog-Man/Resonite-Issues/blob/main/CREATIVE_DAY.md) project. It might not make it to production, It is fun and experimental!
+Simple feedback system for Resonite, focused on generating multi-dimensional, multi-modal feedback from our users.
 
-A [Creative Day](https://github.com/Yellow-Dog-Man/Resonite-Issues/blob/main/CREATIVE_DAY.md) project by [ProbablePrime](https://github.com/ProbablePrime), to experiment in feedback systems.
-
-## Goals
-- Experimental
-- Fun
-- Simple
-- Minimal
-- No React
-    - We do use JSX/TSX, but... its cool and so much simpler than React.
-
-## Non-Goals
-- Be released
-    - This project will stay in Creative Day mode until it graduates.
-
+Check it out live at [feedback.resonite.com](feedback.resonite.com)
+    
 ## Diagram
 ![Diagram showing rough plan, would like help making it mermaid](docs/images/diagram.png)
+
+## Features
+1. Simple Positive and Negative Feedback
+    - Quick, no effort, just "Did you enjoy Resonite today?"
+1. Anonymous text based feedback
+    - Don't want to make a bug report? Just want to rant. DO IT!
+1. Structured Forms aligned to our reporting guidelines
+    - We took our GitHub issue reporting forms and converted them into forms
+1. Profanity and Email Address Filtering
+1. Log File Anonymization
 
 ## Experiments
 
@@ -28,6 +25,20 @@ A [Creative Day](https://github.com/Yellow-Dog-Man/Resonite-Issues/blob/main/CRE
 Many platforms have removed options to apply multi-dimensional sentiment. We're exploring that with our [first question](https://github.com/Yellow-Dog-Man/feedback.resonite.com/blob/main/src/main.js#L33-L47). You can also read more about multi-dimensional sentiment on our [issue discussing it](https://github.com/Yellow-Dog-Man/feedback.resonite.com/issues/2)
 
 ## Tech Stack
+
+Also see Resources.
+
+- [Forms MD](https://github.com/formsmd/formsmd)
+- [Clouflare Workers](https://developers.cloudflare.com/workers/)
+- [Vite](https://vite.dev/)
+- [Water.css](https://github.com/kognise/water.css)
+- [Hono](https://hono.dev/)
+- [Mustache](https://mustache.github.io/)
+- Cloudflare D1 for Text Feedback
+- Cloudflare Analytics Engine for +1, -1 recording
+- TODO: Explain the following two items, they are some small items of glue that really make a difference here.
+- `vite-ssr-components`
+- `@cloudflare/vite-plugin`
 
 ## Environment Variables & Configuration
 
@@ -49,20 +60,6 @@ Set these using `npx wrangler secret put <NAME>` or inside your local `.dev.vars
 * **`DB`**: Cloudflare D1 database binding (`feedback-db`) for storing text feedback.
 * **`RATE_LIMIT_KV`**: KV namespace binding for handling rate limits.
 * **`BUCKET`**: R2 bucket binding (`feedback-resonite-files`) for storing user-uploaded screenshots and log files.
-
----
-
-- [Forms MD](https://github.com/formsmd/formsmd)
-- [Clouflare Workers](https://developers.cloudflare.com/workers/)
-- [Vite](https://vite.dev/)
-- [Water.css](https://github.com/kognise/water.css)
-- [Hono](https://hono.dev/)
-- [Mustache](https://mustache.github.io/)
-- Cloudflare D1 for Text Feedback
-- Cloudflare Analytics Engine for +1, -1 recording
-- TODO: Explain the following two items, they are some small items of glue that really make a difference here.
-- `vite-ssr-components`
-- `@cloudflare/vite-plugin`
 
 ### Scaffolding
 TODO: Don't recommend this anymore. Will update with recommended template later
@@ -138,22 +135,13 @@ TODO: Don't recommend this anymore. Will update with recommended template later
 - https://unjs.io/
 - https://dev.to/drprime01/how-to-validate-a-file-input-with-zod-5739
 - https://github.com/rhinobase/hono-rate-limiter/tree/core-0.4.0/packages/cloudflare
-
-### Resource Goals
-Sometimes, prime discovers things he wanted to use but didn't know of at the time, anyway:
-
-#### Vite Templates
-Other than the usual React soup, there are some interesting Frameworks on Vite's site.
-
-Prime is logging them here in the case we need to migrate from whatever monster he's creating right now:
-
-- https://www.npmjs.com/package/lit - For really really cool no bs templating.
-- https://qwik.dev/ - Looks like a react complete, me no likey
-- https://www.solidjs.com/ - Another new one
-- https://developers.cloudflare.com/workers/static-assets/routing/full-stack-application/ lots more here
-
-### Cloudflare
-- https://void.cloud/
+- Templating
+    - https://www.npmjs.com/package/lit - For really really cool no bs templating.
+    - https://qwik.dev/ - Looks like a react complete, me no likey
+    - https://www.solidjs.com/ - Another new one
+    - https://developers.cloudflare.com/workers/static-assets/routing/full-stack-application/ lots more here
+- Better Scaffolding
+    - https://void.cloud/
 
 Look into an "Awesome Cloudflare" list or collection, because I keep finding cool stuff.
 
