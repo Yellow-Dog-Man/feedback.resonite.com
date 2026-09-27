@@ -90,6 +90,7 @@ TODO: Don't recommend this anymore. Will update with recommended template later
     - Need way to review text feedback
         - Hmm, take each new entry and send it to Discord/Mattermost?
     - You can access the feedback via D1 Dashboard atm
+    - Will do more here after launch
 - [X] Filtering
     - Do some basic safety filtering for profanity etc.
     - See what Cloudflare has natively.
