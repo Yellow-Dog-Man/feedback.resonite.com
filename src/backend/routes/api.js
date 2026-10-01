@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { MODERATION_URL } from "../../config/index.js";
-import { isDev } from "../helpers/EnvHelpers.js";
+import { shouldSubmitToGitHub } from "../helpers/EnvHelpers.js";
 import {
 	BUG,
 	FEATURE,
@@ -145,7 +145,7 @@ apiApp.post(
 				? c.req.valid("form")
 				: await c.req.parseBody({ all: true });
 			const body = await transformFormBody(rawValidated, c);
-			const SUBMIT_TO_GITHUB = isDev(c.env);
+			const SUBMIT_TO_GITHUB = shouldSubmitToGitHub(c.env);
 			if (SUBMIT_TO_GITHUB) {
 				const gitHubResult = await processFormBodyForGitHub(c, formType, body);
 				if (gitHubResult) {

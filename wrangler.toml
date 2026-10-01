@@ -21,6 +21,7 @@ head_sampling_rate = 1
 
 [vars]
 ENVIRONMENT = "production"
+SUBMIT_TO_GITHUB = true
 
 [assets]
 directory = "./dist"

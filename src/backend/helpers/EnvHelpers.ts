@@ -7,3 +7,8 @@ export function isDev(env: Bindings) {
 		!env.ENVIRONMENT
 	);
 }
+
+// Accepts a boolean from wrangler.toml [vars] or a "true" string from .dev.vars / dashboard
+export function shouldSubmitToGitHub(env: Bindings) {
+	return env.SUBMIT_TO_GITHUB === true || env.SUBMIT_TO_GITHUB === "true";
+}
