@@ -1,8 +1,8 @@
-# [feedback.resonite.com](feedback.resonite.com)
+# [feedback.resonite.com](https://feedback.resonite.com)
 
 Simple feedback system for Resonite, focused on generating multi-dimensional, multi-modal feedback from our users.
 
-Check it out live at [feedback.resonite.com](feedback.resonite.com)
+Check it out live at [feedback.resonite.com](https://feedback.resonite.com)
     
 ## Diagram
 ![Diagram showing rough plan, would like help making it mermaid](docs/images/diagram.png)
