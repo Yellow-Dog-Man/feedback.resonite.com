@@ -29,7 +29,16 @@ export const Form: FC<{ formConfig: FormConfig }> = (props: {
 				data-form-template={props.formConfig.templatePath}
 				data-form-type={props.formConfig.id}
 			>
-				<div class="center">Loading...</div>
+				{/* Formsmd replaces this when the form is ready */}
+				<div class="loader" role="status">
+					<div class="loader-spinner" aria-hidden="true"></div>
+					<div class="loader-messages" aria-hidden="true">
+						<span>Checking you're not a robot...</span>
+						<span>Warming up the forms...</span>
+						<span>Consulting the cheese...</span>
+					</div>
+					<span class="visually-hidden">Loading the form</span>
+				</div>
 			</div>
 			<div
 				id="turnstile-container"

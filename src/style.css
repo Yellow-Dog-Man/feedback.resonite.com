@@ -90,3 +90,100 @@ header {
 .hidden {
 	display: none;
 }
+
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+/* Shown before Formsmd loads */
+.loader {
+	--loader-step: 2s;
+	margin: 40px 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 16px;
+}
+
+.loader-spinner {
+	width: 48px;
+	height: 48px;
+	border: 5px solid var(--color-neutrals-mid);
+	border-top-color: var(--color-hero-yellow);
+	border-radius: 50%;
+	animation:
+		loader-spin 0.9s linear infinite,
+		loader-colors calc(var(--loader-step) * 3) step-end infinite;
+}
+
+/* Messages stack in one grid cell and take turns being visible */
+.loader-messages {
+	display: grid;
+	text-align: center;
+	color: var(--color-neutrals-sub);
+}
+
+.loader-messages span {
+	grid-area: 1 / 1;
+	opacity: 0;
+	animation: loader-message calc(var(--loader-step) * 3) infinite;
+}
+
+.loader-messages span:nth-child(2) {
+	animation-delay: var(--loader-step);
+}
+
+.loader-messages span:nth-child(3) {
+	animation-delay: calc(var(--loader-step) * 2);
+}
+
+@keyframes loader-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes loader-colors {
+	0% {
+		border-top-color: var(--color-hero-yellow);
+	}
+	33% {
+		border-top-color: var(--color-hero-cyan);
+	}
+	66% {
+		border-top-color: var(--color-hero-mmc);
+	}
+}
+
+@keyframes loader-message {
+	0% {
+		opacity: 0;
+	}
+	5%,
+	28% {
+		opacity: 1;
+	}
+	33%,
+	100% {
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.loader-spinner {
+		animation-duration: 3s, calc(var(--loader-step) * 3);
+	}
+
+	.loader-messages span {
+		animation: none;
+	}
+
+	.loader-messages span:first-child {
+		opacity: 1;
+	}
+}
