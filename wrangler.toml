@@ -3,6 +3,22 @@ main = "./src/backend/main.js"
 compatibility_date = "2026-03-11"
 compatibility_flags = [ "nodejs_compat" ]
 
+routes = [
+  { pattern = "feedback.resonite.com", custom_domain = true }
+]
+
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
+invocation_logs = true
+head_sampling_rate = 1
+
+[observability.traces]
+enabled = true
+head_sampling_rate = 1
+
 [vars]
 ENVIRONMENT = "production"
 
