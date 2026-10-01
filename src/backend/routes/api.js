@@ -149,6 +149,8 @@ apiApp.post(
 			const SUBMIT_TO_GITHUB = shouldSubmitToGitHub(c.env);
 			if (SUBMIT_TO_GITHUB) {
 				const gitHubResult = await processFormBodyForGitHub(c, formType, body);
+				// SubmitToGitHub returns an error Response (e.g. profanity, not setup) when it rejects a submission
+				if (gitHubResult instanceof Response) return gitHubResult;
 				if (gitHubResult) {
 					const finalResult = {
 						success: true,
@@ -189,7 +191,7 @@ function addLandingMetadata(body) {
 	// This means they skipped to the end, just the +1 -1 feedback
 	if (!body.more) return {};
 	// This means we already have the feedback, we can bail as well
-	if (body.redirectType === TEXT) return {};
+	if (redirectType === TEXT) return {};
 
 	// For the rest, we need to redirect somewhere else.
 	if (redirectType === BUG) return redirectTo("/bug");
