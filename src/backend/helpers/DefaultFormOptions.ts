@@ -1,5 +1,3 @@
-import { getTurnstileHeader } from "../../frontend/turnstile";
-
 const standardFormOptions = {
 	colorScheme: "dark",
 	// TODO: Want better theming? We can spend $99 per site: https://forms.md/pricing/ for the entire lifetime of this site.
@@ -25,19 +23,5 @@ const standardFormOptions = {
 };
 
 export function GetDefaultFormOptions() {
-	return {
-		...standardFormOptions,
-		...getHydratedFormOptions(),
-	};
-}
-
-function getHydratedFormOptions() {
-	const options = {
-		postHeaders: {
-			...getTurnstileHeader(),
-		},
-	};
-	options.postHeaders.Authorization = `Bearer `; //Get·Auth·Token
-
-	return options;
+	return { ...standardFormOptions };
 }
