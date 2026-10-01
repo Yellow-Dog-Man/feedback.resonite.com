@@ -39,7 +39,7 @@ document.addEventListener(TURNSTILE_SUCCESS_EVENT, () => {
 		}
 
 		if (!templatePath) {
-			showModal("Invalid form setup");
+			window.showModal("Invalid form setup");
 			return;
 		}
 		try {

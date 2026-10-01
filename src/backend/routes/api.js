@@ -16,6 +16,7 @@ import { formLimiter, landingLimiter } from "../helpers/RateLimits.js";
 import { getFormSchema } from "../helpers/ValidationSchemas.js";
 import { turnstileMiddleware } from "../middleware/TurnstileMiddleware.js";
 import { saveFeedbackText } from "../services/feedbackService.js";
+import { containsEmail, containsProfanity } from "../services/filterService.js";
 import { SubmitToGitHub } from "../services/githubService.js";
 import {
 	anonymizeLogs,
