@@ -3,7 +3,11 @@ import "formsmd/dist/css/formsmd.min.css";
 import { Formsmd } from "formsmd";
 import { GetDefaultFormOptions } from "../backend/helpers/DefaultFormOptions.js";
 import { LANDING } from "../backend/helpers/FormHelpers.js";
-import { initTurnstile, TURNSTILE_SUCCESS_EVENT } from "./turnstile.js";
+import {
+	getTurnstileHeader,
+	initTurnstile,
+	TURNSTILE_SUCCESS_EVENT,
+} from "./turnstile.js";
 
 //TODO: Move this to the form component, ideally it shouldn't be here
 
@@ -27,7 +31,26 @@ async function checkLimit(id) {
 	}
 }
 
-document.addEventListener(TURNSTILE_SUCCESS_EVENT, () => {
+// Turnstile tokens are single use, so each POST gets a fresh one rather than
+// baking one into postHeaders at init (which made every retry a 403).
+function attachFreshTurnstileTokens(formsmd) {
+	const postFormData = formsmd.postFormData;
+	formsmd.postFormData = async (postCondition, end) => {
+		if (postCondition) {
+			formsmd.options.postHeaders = {
+				...formsmd.options.postHeaders,
+				...(await getTurnstileHeader()),
+			};
+		}
+		return postFormData(postCondition, end);
+	};
+}
+
+// Only build the forms once. Rebuilding on a later Turnstile success would
+// wipe whatever the user has typed so far.
+document.addEventListener(TURNSTILE_SUCCESS_EVENT, initForms, { once: true });
+
+function initForms() {
 	document.querySelectorAll(".formsMDTarget").forEach(async (el) => {
 		const templatePath = el.getAttribute("data-form-template");
 		const id = el.getAttribute("data-form-type");
@@ -46,6 +69,7 @@ document.addEventListener(TURNSTILE_SUCCESS_EVENT, () => {
 			const response = await fetch(templatePath);
 			const text = await response.text();
 			const formsmd = new Formsmd(text, el, GetDefaultFormOptions());
+			attachFreshTurnstileTokens(formsmd);
 			formsmd.init();
 			formsmd.onCompletion = handleCompletion;
 			formsmd.getSubmissionErrors = getSubmissionErrors;
@@ -53,7 +77,7 @@ document.addEventListener(TURNSTILE_SUCCESS_EVENT, () => {
 			console.error("Failed to initialize form:", err);
 		}
 	});
-});
+}
 
 function limited() {
 	window.showModal(
