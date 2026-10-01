@@ -11,9 +11,9 @@
 
 # 🐞 Bug Report
 
-Use this when a feature is not behaving as you expected.
+Use this when a feature is not behaving as you expected. 
 
-⚠️ WE ARE IN TESTING MODE, THIS FORM INPUT WILL NOT BE SAVED.
+⚠️ Information entered into this form, will be submitted to our [📢Public Issue Tracker](github.com/Yellow-Dog-Man/Resonite-Issues)!
 
 ---
 issueTitle*= TextInput(
