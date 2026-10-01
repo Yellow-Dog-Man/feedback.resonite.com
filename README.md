@@ -50,7 +50,7 @@ This project uses several Cloudflare environment variables, bindings, and secret
 
 ### 2. Secrets (Configured via Wrangler or `.dev.vars` for local dev)
 Set these using `npx wrangler secret put <NAME>` or inside your local `.dev.vars` file:
-* **`GITHUB_TOKEN`**: A GitHub Personal Access Token with repo/issue creation permissions (used to submit feedback issues via `githubService.js`).
+* **`GITHUB_APP_ID`** / **`GITHUB_PRIVATE_KEY`**: GitHub App credentials used to submit feedback issues via `githubService.js`. The App must be installed on the issues repo with Issues read & write permission. See [GitHub App](#github-app).
 * **`API_TOKEN`**: A Cloudflare API Token with **Account Analytics Read** permissions (required for querying the Workers Analytics Engine SQL API).
 * **`TURNSTILE_SECRET_KEY`**: Cloudflare Turnstile secret key used for validating bot protection challenges on form submissions. (Falls back to a test key if not provided).
 
@@ -61,7 +61,27 @@ Set these using `npx wrangler secret put <NAME>` or inside your local `.dev.vars
 * **`RATE_LIMIT_KV`**: KV namespace binding for handling rate limits.
 * **`BUCKET`**: R2 bucket binding (`feedback-resonite-files`) for storing user-uploaded screenshots and log files.
 
-### Scaffolding
+## GitHub App
+Based on: https://github.com/gr2m/cloudflare-worker-github-app-example
+1. Create a GitHub App
+2. Generate a private key (see the button at the bottom of your GitHub App registration's settings page)
+3. You will be prompted to download a `*.pem` file. After download, rename it to `private-key.pem`.
+4. Convert the key from the `PKCS#1` format to `PKCS#8` (The WebCrypto API only supports `PKCS#8`):
+
+    ```
+    openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in private-key.pem -out private-key-pkcs8.pem
+    ```
+5. Write the contents of the new file into the secret `GITHUB_PRIVATE_KEY`:
+
+    ```
+    cat private-key-pkcs8.pem | wrangler secret put GITHUB_PRIVATE_KEY
+    ```
+
+So 2 ENV's:
+1. `GITHUB_APP_ID`
+2. `GITHUB_PRIVATE_KEY`
+
+## Scaffolding
 TODO: Don't recommend this anymore. Will update with recommended template later
 - `npm create vite@latest feedback.resonite.com -- --template vanilla`
 

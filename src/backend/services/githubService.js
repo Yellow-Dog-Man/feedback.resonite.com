@@ -1,20 +1,21 @@
-// Easiest option here is their HTTP API SO....
+// Based on: https://github.com/gr2m/cloudflare-worker-github-app-example which is Copyright (c) 2020 Gregor Martynus
+// Authenticates as a GitHub App.
+// Better than being a PAT, and also allows us to expand this later to other matters.
 
+import { App } from "@octokit/app";
 import { FEEDBACK_DOMAIN, REPO, REPO_OWNER } from "../../config/index.js";
 import { BUG, FEATURE } from "../helpers/FormHelpers";
-import { BadRequest } from "../helpers/HttpHelpers.js";
+import { BadRequest, TemporaryError } from "../helpers/HttpHelpers.js";
 import { containsEmail, containsProfanity } from "./filterService.js";
 import { formatIssue } from "./markdownTemplateService.js";
-
-const USER_AGENT = FEEDBACK_DOMAIN;
-
-const URL = `https://api.github.com/repos/${REPO_OWNER}/${REPO}/issues`;
 
 const ISSUE_LABEL = FEEDBACK_DOMAIN;
 
 export async function SubmitToGitHub(c, formType, body) {
-	if (c.env.GITHUB_TOKEN === undefined)
-		return TemporaryError("Github Not Setup");
+	const env = c.env;
+
+	if (env.GITHUB_APP_ID === undefined || env.GITHUB_PRIVATE_KEY === undefined)
+		return TemporaryError(c, "Github Not Setup");
 
 	const markdownBody = formatIssue(formType, body); // Create Markdown representation of issue
 
@@ -27,28 +28,41 @@ export async function SubmitToGitHub(c, formType, body) {
 		return BadRequest(c, "Issue contains an email address");
 	}
 
-	const res = await fetch(URL, {
-		method: "POST",
-		body: JSON.stringify(convertToGitHub(formType, body, markdownBody)),
-		headers: {
-			"Content-Type": "application/json",
-			"User-Agent": USER_AGENT,
-			Accept: "application/vnd.github+json",
-			Authorization: `Bearer ${c.env.GITHUB_TOKEN}`,
-		},
+	try {
+		const octokit = await getInstallationOctokit(c.env);
+		const { data } = await octokit.request(
+			"POST /repos/{owner}/{repo}/issues",
+			{
+				owner: REPO_OWNER,
+				repo: REPO,
+				...convertToGitHub(formType, body, markdownBody),
+			},
+		);
+
+		// return issue number and link
+		return {
+			url: data.html_url,
+			number: data.number,
+		};
+	} catch (error) {
+		console.error("GitHub issue creation failed:", error);
+		if (error.status === 401) return TemporaryError(c, "Github Not Setup");
+	}
+}
+
+// Get an Octokit authenticated as the App's installation on the issues repo
+async function getInstallationOctokit(env) {
+	const app = new App({
+		appId: env.GITHUB_APP_ID,
+		privateKey: env.GITHUB_PRIVATE_KEY,
 	});
 
-	// return issue number and link
-	if (res.ok) {
-		const obj = await res.json();
-		return {
-			url: obj.html_url,
-			number: obj.number,
-		};
-	}
+	const { data: installation } = await app.octokit.request(
+		"GET /repos/{owner}/{repo}/installation",
+		{ owner: REPO_OWNER, repo: REPO },
+	);
 
-	const githubJson = await res.json();
-	if (githubJson.status === 401) return TemporaryError("Github Not Setup");
+	return app.getInstallationOctokit(installation.id);
 }
 
 // Map Us => GH labels
@@ -57,11 +71,27 @@ function getLabels(formType) {
 	if (formType === FEATURE) return ["New Feature"];
 }
 
+function isAnonymous(reporter) {
+	if (reporter === null || reporter === undefined)
+		return true;
+
+	if (reporter.length == 0)
+		return true;
+
+	return false;
+}
+
 // TODO: check for any additional items we can specify here
 function convertToGitHub(formType, body, markdownBody) {
+	const labels = [...getLabels(formType), ISSUE_LABEL];
+
+	const anonymous = isAnonymous(body.reporter);
+	if (anonymous)
+		labels.push('Anonymous');
+
 	const issue = {
 		title: body.issueTitle || body.title,
-		labels: [...getLabels(formType), ISSUE_LABEL],
+		labels: labels,
 		body: markdownBody,
 	};
 

@@ -2,7 +2,8 @@ import { z } from "zod";
 
 export const envSchema = z.object({
 	ENVIRONMENT: z.string().optional().default("dev"),
-	GITHUB_TOKEN: z.string().optional(),
+	GITHUB_APP_ID: z.string().optional(),
+	GITHUB_PRIVATE_KEY: z.string().optional(),
 	TURNSTILE_SECRET_KEY: z.string().optional(),
 	API_TOKEN: z.string().optional(),
 	ACCOUNT_ID: z.string().optional(),
