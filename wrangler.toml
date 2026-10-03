@@ -35,7 +35,7 @@ dataset = "SCORE"
 binding = "DB"
 database_name = "feedback-db"
 database_id = "564f0061-df9e-4328-a746-f910c158da24"
-migrations_dir = "../../migrations"
+migrations_dir = "migrations"
 
 [[kv_namespaces]]
 binding = "RATE_LIMIT_KV"

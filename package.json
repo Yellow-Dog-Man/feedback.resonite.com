@@ -7,7 +7,10 @@
 		"dev": "vite",
 		"build": "vite build",
 		"preview": "npm run build && npx wrangler dev",
-		"deploy": "npm run build && wrangler deploy",
+		"deploy": "npm run build && wrangler d1 migrations apply feedback-db --remote && wrangler deploy",
+		"db:migrate:local": "wrangler d1 migrations apply feedback-db --local",
+		"db:migrate:remote": "wrangler d1 migrations apply feedback-db --remote",
+		"db:migration:create": "wrangler d1 migrations create feedback-db",
 		"format": "npx @biomejs/biome format --write",
 		"lint": "npx @biomejs/biome lint --write"
 	},
