@@ -3,7 +3,7 @@ import { BUG, FEATURE, LANDING, VALID_FEEDBACK_TYPES } from "./FormHelpers.js";
 
 const MIN_TEXT = 5;
 const SHORT_LENGTH = 120;
-const LONG_LENGTH = 500;
+const LONG_LENGTH = 5000;
 
 // This is the best way to render this information
 const MB = 1024 * 1024;

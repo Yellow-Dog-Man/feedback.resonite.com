@@ -39,7 +39,7 @@ feedback*= TextInput(
     | question = What's your feedback?
     | description = Tell us whatever you want, it's anonymous!"
     | multiline
-    | maxlength = 1000
+    | maxlength = 5000
     | autofocus
 )
 
