@@ -37,7 +37,16 @@ npx wrangler d1 create feedback-db
 binding = "DB"
 database_name = "feedback-db"
 database_id = "<YOUR_GENERATED_DATABASE_ID>"
+migrations_dir = "migrations"
 ```
+
+The schema is managed with D1 migrations in the `migrations/` folder. Apply them to the remote database:
+```bash
+npm run db:migrate:remote
+```
+`npm run deploy` also applies any pending migrations before deploying. For local development, run `npm run db:migrate:local` once (and again after pulling new migrations).
+
+To change the schema, create a new migration with `npm run db:migration:create -- <name>` and edit the generated SQL file. Never edit a migration that has already been applied.
 
 ### 2. KV Namespace (`RATE_LIMIT_KV`)
 Create the KV namespace used for rate limiting:
