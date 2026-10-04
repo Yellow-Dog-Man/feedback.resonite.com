@@ -12,6 +12,7 @@ export const envSchema = z.object({
 	BUCKET: z.any().optional(),
 	RATE_LIMIT_KV: z.any().optional(),
 	SCORE: z.any().optional(),
+	AI: z.any().optional(),
 });
 
 export type Bindings = z.infer<typeof envSchema>;
