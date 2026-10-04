@@ -47,3 +47,7 @@ bucket_name = "feedback-resonite-files"
 jurisdiction = "eu"
 
 
+
+[ai]
+binding = "AI"
+remote = true
