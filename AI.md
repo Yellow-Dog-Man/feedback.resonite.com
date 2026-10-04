@@ -12,7 +12,16 @@ For the Text-based anonymous feedback, we have employed AI translations. The pro
 Small workflow, to enable our non-english community to better reach us with their feedback in a way we can easily understand.
 
 ## Models Used
-- [m2m100-1.2b](https://developers.cloudflare.com/workers-ai/models/m2m100-1.2b/)
+
+### m2m100-1.2b
+
+m2m100-1.2b is an [open source](https://github.com/facebookresearch/fairseq/tree/main/examples/m2m_100), model trained on [Common Crawl](https://commoncrawl.org/) data.
+
+It is used on [Cloudflare via Workers AI](https://developers.cloudflare.com/workers-ai/models/m2m100-1.2b/)
+
+#### Common Crawl
+
+Common Crawl is a 501(c)(3) non–profit founded in 2007. That uses [standard webscraping](https://commoncrawl.org/about) to crawl web pages. It has been operating since 2007. It fully honors [robots.txt](https://www.robotstxt.org/) directives and rate-limits its requests.
 
 ## Tools Used
 - [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/)
