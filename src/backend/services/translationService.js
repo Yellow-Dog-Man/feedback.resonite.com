@@ -20,5 +20,5 @@ export async function translateToEnglish(ai, text, sourceLang) {
 
 // tinyld returns an ISO 639-1 code, or "" when it isn't confident.
 export function detectLanguage(text) {
-	return detect(body) || null;
+	return detect(text) || null;
 }
