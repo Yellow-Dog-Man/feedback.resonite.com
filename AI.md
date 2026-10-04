@@ -11,6 +11,8 @@ For the Text-based anonymous feedback, we have employed AI translations. The pro
 
 Small workflow, to enable our non-english community to better reach us with their feedback in a way we can easily understand.
 
+Your text is **NOT** used for any training.
+
 ## Models Used
 
 ### m2m100-1.2b
