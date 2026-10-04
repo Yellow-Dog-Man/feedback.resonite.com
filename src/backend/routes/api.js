@@ -212,7 +212,7 @@ async function processLanding(c, body) {
 		if (containsEmail(body.feedback)) {
 			return BadRequest(c, "Issue contains an email address");
 		}
-		await saveFeedbackText(c.env.DB, body.feedback, date);
+		await saveFeedbackText(c, body.feedback, date);
 	}
 }
 
