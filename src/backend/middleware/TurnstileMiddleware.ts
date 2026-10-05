@@ -12,7 +12,7 @@ export function turnstileMiddleware() {
 			return await next();
 		}
 
-		if (isDev(c.env)) await next();
+		if (isDev(c.env)) return await next();
 
 		const verification = await verifyTurnstileToken(
 			getTurnstileSecretKey(c),

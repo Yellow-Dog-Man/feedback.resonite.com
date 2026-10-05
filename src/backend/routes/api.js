@@ -26,6 +26,7 @@ import { uploadFileToR2 } from "../services/r2Service.js";
 import { saveScore } from "../services/scoreService.js";
 import { checkLimitsApp } from "./checkLimits.js";
 import { statsApp } from "./stats.js";
+import { sha256Hex } from "../services/hashService.js";
 
 export const apiApp = new Hono();
 
@@ -55,6 +56,7 @@ function handleValidationError(result, c) {
 }
 
 const RECORD_ID_KEY = "_rid";
+const HASHED_RECORD_ID_KEY = "hashedRid";
 
 async function processFile(c, formBody, key, file, filePrefix) {
 	if (c.env.BUCKET && file.size > 0) {
@@ -84,11 +86,16 @@ async function transformFormBody(rawBody, c) {
 		else if (isFile(value)) {
 			files.push(key);
 		} else {
-			body[key] = value;
+			// Hash the incoming _rid from Forms.md, this prevents it from being edited by the client.
+			if (key === RECORD_ID_KEY)
+				body[HASHED_RECORD_ID_KEY] = sha256Hex(value);
+			else
+				body[key] = value;
 		}
 	}
+
 	for (const key of files) {
-		await processFile(c, body, key, rawBody[key], body[RECORD_ID_KEY] ?? "");
+		await processFile(c, body, key, rawBody[key], body[HASHED_RECORD_ID_KEY] ?? "");
 	}
 	return body;
 }
@@ -149,6 +156,8 @@ apiApp.post(
 			const SUBMIT_TO_GITHUB = shouldSubmitToGitHub(c.env);
 			if (SUBMIT_TO_GITHUB) {
 				const gitHubResult = await processFormBodyForGitHub(c, formType, body);
+				// SubmitToGitHub returns an error Response (e.g. profanity, not setup) when it rejects a submission
+				if (gitHubResult instanceof Response) return gitHubResult;
 				if (gitHubResult) {
 					const finalResult = {
 						success: true,
@@ -189,7 +198,7 @@ function addLandingMetadata(body) {
 	// This means they skipped to the end, just the +1 -1 feedback
 	if (!body.more) return {};
 	// This means we already have the feedback, we can bail as well
-	if (body.redirectType === TEXT) return {};
+	if (redirectType === TEXT) return {};
 
 	// For the rest, we need to redirect somewhere else.
 	if (redirectType === BUG) return redirectTo("/bug");

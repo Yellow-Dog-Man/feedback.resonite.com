@@ -106,6 +106,10 @@ function getSubmissionErrors(json) {
 	if (messages.length === 0 && json.error) {
 		messages.push(json.error);
 	}
+	// Problem details (RFC 9457) responses from HttpHelpers
+	if (messages.length === 0 && json.detail) {
+		messages.push(json.detail);
+	}
 	return messages;
 }
 

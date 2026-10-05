@@ -1,8 +1,8 @@
 import { sha256Hex } from "./hashService";
 
-export async function verifyTurnstileToken(secret, token) {
+export async function verifyTurnstileToken(secret, token, ip) {
 	try {
-		return await submitTurnstileToken(secret, token);
+		return await submitTurnstileToken(secret, token, ip);
 	} catch (err) {
 		return turnstileFail();
 	}
@@ -12,7 +12,7 @@ async function submitTurnstileToken(secret, turnstileToken, ip) {
 	const formData = new FormData();
 	formData.append("secret", secret);
 	formData.append("response", turnstileToken);
-	formData.append("remoteip", ip);
+	if (ip) formData.append("remoteip", ip);
 
 	const verifyRes = await fetch(
 		"https://challenges.cloudflare.com/turnstile/v0/siteverify",

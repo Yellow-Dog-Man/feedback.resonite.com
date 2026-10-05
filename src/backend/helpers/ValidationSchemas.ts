@@ -10,12 +10,18 @@ const MB = 1024 * 1024;
 const MAX_LOG_FILE_BYTES = 10 * MB;
 const MAX_IMAGE_FILE_BYTES = 25 * MB;
 
+// Landing text feedback, keep in sync with maxlength in public/forms/LANDING.md
+const FEEDBACK_LENGTH = 1000;
+
 const shortText = z.string().min(MIN_TEXT).max(SHORT_LENGTH);
 const longText = z.string().min(MIN_TEXT).max(LONG_LENGTH);
 
-// Having issues with form validation, we send empty strings for missing data, which doesn't have a min/max length.
-// So this ends up doing both.
-const optionalText = z.union([longText, z.string()]).optional().nullable();
+// Missing data comes through as an empty string, so no min length here, but we still cap the max.
+const optionalFeedbackText = z
+	.string()
+	.max(FEEDBACK_LENGTH)
+	.optional()
+	.nullable();
 
 // TODO: as we use formdata, everything comes in as stream, so we can't do any filtering, we can max the sizes though
 const stream = "application/octet-stream";
@@ -33,7 +39,7 @@ export const landingSchema = z.object({
 		.union([z.string(), z.enum(VALID_FEEDBACK_TYPES)])
 		.optional()
 		.nullable(),
-	feedback: optionalText,
+	feedback: optionalFeedbackText,
 	_rid: z.string().optional().nullable(),
 });
 
