@@ -36,7 +36,10 @@ export const renderer = jsxRenderer(({ children }) => {
 				<footer>
 					<span>
 						<a href="https://feedback.resonite.com">Feedback Home</a> |{" "}
-						<a href="policies.resonite.com">Policies Page</a>
+						<a href="policies.resonite.com">Policies Page</a> |{" "}
+						<a href="https://github.com/Yellow-Dog-Man/feedback.resonite.com">
+							GitHub
+						</a>
 					</span>
 					<span>
 						Copyright ©{" "}
