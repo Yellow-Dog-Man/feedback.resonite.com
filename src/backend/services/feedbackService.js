@@ -1,6 +1,11 @@
 
 import { sha256Hex } from "./hashService";
-import { translateToEnglish, detectLanguage } from "./translationService";
+import {
+	translateToEnglish,
+	detectLanguage,
+	SUPPORTED_LANGUAGES,
+	isSupported,
+} from "./translationService";
 
 // The feedback table is created by D1 migrations in /migrations.
 // Run `npm run db:migrate:local` (dev) or `npm run db:migrate:remote` (prod).
@@ -30,22 +35,27 @@ export async function saveFeedbackText(c, body, date) {
 	// Translate after the response is sent, so a slow or failing AI call
 	// doesn't hold up the user or lose the original feedback.
 	// https://developers.cloudflare.com/workers/runtime-apis/context/#waituntil
-	c.executionCtx.waitUntil(saveTranslation(c.env, rowId, body, language));
+	// Don't wait if we don't have a language
+	if (isSupported(language))
+		c.executionCtx.waitUntil(saveTranslation(c.env, rowId, body, language));
 }
 
 const BACKFILL_BATCH_SIZE = 25;
 
 // Run by the cron trigger. Fills in hash, language and translation for rows
 // saved before migration 0002 (hash IS NULL), and retries translations that
-// failed after a submission. Rows whose language couldn't be detected are
-// left with content_translated NULL and aren't picked up again.
+// failed after a submission. Rows whose language couldn't be detected, or
+// isn't one the model supports, are left with content_translated NULL and
+// aren't picked up again.
 export async function backfillTranslations(env) {
 	const { results } = await env.DB.prepare(
 		`SELECT id, content, hash, language FROM feedback
-		WHERE hash IS NULL OR (content_translated IS NULL AND language IS NOT NULL)
+		WHERE hash IS NULL
+			OR (content_translated IS NULL
+				AND language IN (SELECT value FROM json_each(?)))
 		ORDER BY id LIMIT ?`,
 	)
-		.bind(BACKFILL_BATCH_SIZE)
+		.bind(JSON.stringify([...SUPPORTED_LANGUAGES]), BACKFILL_BATCH_SIZE)
 		.all();
 
 	for (const row of results) {
