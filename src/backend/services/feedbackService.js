@@ -33,6 +33,38 @@ export async function saveFeedbackText(c, body, date) {
 	c.executionCtx.waitUntil(saveTranslation(c.env, rowId, body, language));
 }
 
+const BACKFILL_BATCH_SIZE = 25;
+
+// Run by the cron trigger. Fills in hash, language and translation for rows
+// saved before migration 0002 (hash IS NULL), and retries translations that
+// failed after a submission. Rows whose language couldn't be detected are
+// left with content_translated NULL and aren't picked up again.
+export async function backfillTranslations(env) {
+	const { results } = await env.DB.prepare(
+		`SELECT id, content, hash, language FROM feedback
+		WHERE hash IS NULL OR (content_translated IS NULL AND language IS NOT NULL)
+		ORDER BY id LIMIT ?`,
+	)
+		.bind(BACKFILL_BATCH_SIZE)
+		.all();
+
+	for (const row of results) {
+		let language = row.language;
+		if (row.hash === null) {
+			const hash = await sha256Hex(row.content);
+			language = detectLanguage(row.content);
+			await env.DB.prepare(
+				`UPDATE feedback SET hash = ?, language = ? WHERE id = ?`,
+			)
+				.bind(hash, language, row.id)
+				.run();
+		}
+		await saveTranslation(env, row.id, row.content, language);
+	}
+
+	console.log(`Translation backfill processed ${results.length} rows`);
+}
+
 async function saveTranslation(env, id, body, language) {
 	try {
 		const translated = await translateToEnglish(env.AI, body, language);

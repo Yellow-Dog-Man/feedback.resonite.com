@@ -7,6 +7,10 @@ routes = [
   { pattern = "feedback.resonite.com", custom_domain = true }
 ]
 
+# Backfills/retries feedback translations (see backfillTranslations)
+[triggers]
+crons = [ "*/10 * * * *" ]
+
 [observability]
 enabled = true
 
