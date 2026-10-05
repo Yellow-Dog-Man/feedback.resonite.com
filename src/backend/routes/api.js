@@ -87,15 +87,19 @@ async function transformFormBody(rawBody, c) {
 			files.push(key);
 		} else {
 			// Hash the incoming _rid from Forms.md, this prevents it from being edited by the client.
-			if (key === RECORD_ID_KEY)
-				body[HASHED_RECORD_ID_KEY] = sha256Hex(value);
-			else
-				body[key] = value;
+			if (key === RECORD_ID_KEY) body[HASHED_RECORD_ID_KEY] = sha256Hex(value);
+			else body[key] = value;
 		}
 	}
 
 	for (const key of files) {
-		await processFile(c, body, key, rawBody[key], body[HASHED_RECORD_ID_KEY] ?? "");
+		await processFile(
+			c,
+			body,
+			key,
+			rawBody[key],
+			body[HASHED_RECORD_ID_KEY] ?? "",
+		);
 	}
 	return body;
 }

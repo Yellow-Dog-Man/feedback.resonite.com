@@ -1,10 +1,7 @@
 import type { Bindings } from "../../config";
 
 export function isDev(env: Bindings) {
-	return (
-		env.ENVIRONMENT === "development" ||
-		env.ENVIRONMENT === "dev"
-	);
+	return env.ENVIRONMENT === "development" || env.ENVIRONMENT === "dev";
 }
 
 // Accepts a boolean from wrangler.toml [vars] or a "true" string from .dev.vars / dashboard
