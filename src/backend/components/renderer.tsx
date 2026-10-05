@@ -16,6 +16,8 @@ export const renderer = jsxRenderer(({ children }) => {
 				<link
 					rel="stylesheet"
 					href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css"
+					integrity="sha256-hTRSYUhpEmUIay0GrSZG58ztGFqdQ/dIVAXYHE16Xgo=" 
+					crossorigin="anonymous"
 				/>
 				<Link href="/src/style.css" rel="stylesheet" />
 				<script
