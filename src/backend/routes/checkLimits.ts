@@ -13,8 +13,8 @@ checkLimitsApp.get("/", async (c: Context) => {
 	});
 
 	const clientIp = GetClientIp(c);
-	const formKey = GetRateLimitKey(c, FORM);
-	const landingKey = GetRateLimitKey(c, LANDING);
+	const formKey = await GetRateLimitKey(c, FORM);
+	const landingKey = await GetRateLimitKey(c, LANDING);
 
 	const formSettings = getLimitSettings(c, FORM);
 	const landingSettings = getLimitSettings(c, LANDING);

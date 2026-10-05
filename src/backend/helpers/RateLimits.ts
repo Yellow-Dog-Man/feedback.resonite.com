@@ -1,6 +1,7 @@
 import { WorkersKVStore } from "@hono-rate-limiter/cloudflare";
 import type { Context } from "hono";
 import { rateLimiter } from "hono-rate-limiter";
+import { hmacSha256Hex } from "../services/hashService.js";
 import { GetClientIp } from "./CloudflareHelpers";
 import { isDev } from "./EnvHelpers";
 import { FORM, LANDING } from "./FormHelpers";
@@ -26,8 +27,17 @@ export function landingLimiter(cx: Context) {
 	return createLimiter(cx, keyMaker(LANDING), getLimitSettings(cx, LANDING));
 }
 
-export function GetRateLimitKey(c: Context, key: string) {
-	return `${key}:${GetClientIp(c)}`;
+export async function GetRateLimitKey(c: Context, key: string) {
+	return `${key}:${await hashClientIp(c)}`;
+}
+
+// Rate limit keys hold a keyed hash of the IP, never the IP itself, so KV
+// doesn't store real addresses. A plain SHA-256 isn't enough, because every
+// IPv4 address can be hashed in minutes, so the hash needs a secret.
+async function hashClientIp(c: Context) {
+	const secret = c.env.IP_HASH_SECRET ?? (isDev(c.env) ? "dev" : undefined);
+	if (!secret) throw new Error("IP_HASH_SECRET is not set");
+	return hmacSha256Hex(secret, GetClientIp(c));
 }
 
 const keyMaker = (key: string) => {

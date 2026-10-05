@@ -88,6 +88,11 @@ The application requires specific secrets for interacting with GitHub, Cloudflar
    ```bash
    npx wrangler secret put TURNSTILE_SECRET_KEY
    ```
+4. **IP Hash Secret** (any long random value, e.g. from `openssl rand -hex 32`). Rate limiting stores an HMAC of each client IP in KV instead of the IP, and every form submission fails without this secret:
+   ```bash
+   openssl rand -hex 32 | npx wrangler secret put IP_HASH_SECRET
+   ```
+
 
 *(Optional)* You can also verify your `ACCOUNT_ID` in `wrangler.toml` under `[vars]` if required by specific API integrations.
 

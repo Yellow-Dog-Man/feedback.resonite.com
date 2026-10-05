@@ -61,6 +61,7 @@ Set these using `npx wrangler secret put <NAME>` or inside your local `.dev.vars
 * **`GITHUB_APP_ID`** / **`GITHUB_PRIVATE_KEY`**: GitHub App credentials used to submit feedback issues via `githubService.js`. The App must be installed on the issues repo with Issues read & write permission. See [GitHub App](#github-app).
 * **`API_TOKEN`**: A Cloudflare API Token with **Account Analytics Read** permissions (required for querying the Workers Analytics Engine SQL API).
 * **`TURNSTILE_SECRET_KEY`**: Cloudflare Turnstile secret key used for validating bot protection challenges on form submissions. (Falls back to a test key if not provided).
+* **`IP_HASH_SECRET`**: Random secret used to HMAC client IPs before they're used as rate limit keys in KV, so no real IP addresses are stored. Required in production; falls back to a fixed value in dev. Generate one with `openssl rand -hex 32`.
 
 ### 3. Cloudflare Bindings (`wrangler.toml`)
 * **`ASSETS`**: Static assets binding for serving frontend files from `./dist`.

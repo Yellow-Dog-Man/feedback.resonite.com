@@ -6,6 +6,7 @@ export const envSchema = z.object({
 	GITHUB_APP_ID: z.string().optional(),
 	GITHUB_PRIVATE_KEY: z.string().optional(),
 	TURNSTILE_SECRET_KEY: z.string().optional(),
+	IP_HASH_SECRET: z.string().optional(),
 	API_TOKEN: z.string().optional(),
 	ACCOUNT_ID: z.string().optional(),
 	DB: z.any().optional(),
