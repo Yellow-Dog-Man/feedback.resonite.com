@@ -73,6 +73,7 @@ function createLimiter(
 	return rateLimiter({
 		windowMs: settings.windowMs,
 		limit: settings.limit,
+		skipFailedRequests: true,
 		keyGenerator: keyGenerator,
 		message: rateLimitMessage,
 		store: new WorkersKVStore({
