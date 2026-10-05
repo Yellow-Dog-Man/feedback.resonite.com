@@ -72,11 +72,9 @@ function getLabels(formType) {
 }
 
 function isAnonymous(reporter) {
-	if (reporter === null || reporter === undefined)
-		return true;
+	if (reporter === null || reporter === undefined) return true;
 
-	if (reporter.length == 0)
-		return true;
+	if (reporter.length === 0) return true;
 
 	return false;
 }
@@ -86,8 +84,7 @@ function convertToGitHub(formType, body, markdownBody) {
 	const labels = [...getLabels(formType), ISSUE_LABEL];
 
 	const anonymous = isAnonymous(body.reporter);
-	if (anonymous)
-		labels.push('Anonymous');
+	if (anonymous) labels.push("Anonymous");
 
 	const issue = {
 		title: body.issueTitle || body.title,

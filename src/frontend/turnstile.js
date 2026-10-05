@@ -52,7 +52,7 @@ function renderWidget(key) {
 		"expired-callback": onExpired,
 		"error-callback": onFailure,
 		// Automatically refresh expired tokens
-		"refresh-expired": "auto"
+		"refresh-expired": "auto",
 	});
 }
 

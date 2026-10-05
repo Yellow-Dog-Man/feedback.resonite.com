@@ -14,8 +14,7 @@ export const SUPPORTED_LANGUAGES = new Set(
 );
 
 export function isSupported(language) {
-	if (language === null)
-		return false;
+	if (language === null) return false;
 	return SUPPORTED_LANGUAGES.has(language);
 }
 

@@ -1,4 +1,3 @@
-
 import { sha256Hex } from "./hashService";
 import {
 	translateToEnglish,
