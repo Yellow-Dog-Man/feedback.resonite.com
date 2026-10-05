@@ -40,6 +40,14 @@ Also see Resources.
 - `vite-ssr-components`
 - `@cloudflare/vite-plugin`
 
+## Translations
+
+For the Text-based anonymous feedback, we have employed AI translations. The process is as follows:
+1. Detect the language of the incoming text using `tinyld`([NPM](https://www.npmjs.com/package/tinyld)).
+2. If non english send to [m2m100-1.2b](https://developers.cloudflare.com/workers-ai/models/m2m100-1.2b/) a model designed for translation
+3. Store the translated text, along with the original
+4. The original is saved.
+
 ## Environment Variables & Configuration
 
 This project uses several Cloudflare environment variables, bindings, and secrets depending on the services being used. Here is the full list of required and optional environment variables:
