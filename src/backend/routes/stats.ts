@@ -13,15 +13,13 @@ statsApp.get(
 		cacheControl: "max-age=180",
 	}),
 	async (c) => {
-		const scoreOverall = await getScore(c);
-		const scoreDaily = await getScore(c, "'1' DAY");
-		const scoreHour = await getScore(c, "'1' HOUR");
+		// The queries don't depend on each other, so run them in parallel.
+		const [overall, daily, hourly] = await Promise.all([
+			getScore(c),
+			getScore(c, "'1' DAY"),
+			getScore(c, "'1' HOUR"),
+		]);
 
-		var res = {
-			overall: scoreOverall,
-			daily: scoreDaily,
-			hourly: scoreHour,
-		};
-		return c.json(res);
+		return c.json({ overall, daily, hourly });
 	},
 );
