@@ -18,8 +18,9 @@ export const Form: FC<{ formConfig: FormConfig }> = (props: {
 	return (
 		<Fragment>
 			<link
-				as="text"
-				rel="modulepreload"
+				rel="preload"
+				as="fetch"
+				crossorigin="anonymous"
 				href={props.formConfig.templatePath}
 				id="formTemplateLink"
 			/>
