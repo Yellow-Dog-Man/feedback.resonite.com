@@ -26,22 +26,22 @@ export type FeedbackRow = {
 // date is an ISO string, as D1 can't bind Date objects.
 export async function saveFeedbackText(
 	c: AppContext,
-	body: string,
+	feedback: string,
 	date: string,
 ) {
 	const db = c.env.DB;
 	if (!db) throw new Error("DB is not setup correctly");
 
-	const language = detectLanguage(body);
+	const language = detectLanguage(feedback);
 
 	let rowId: number;
 	try {
-		const hash = await sha256Hex(body);
+		const hash = await sha256Hex(feedback);
 		const result = await db
 			.prepare(
 				`INSERT INTO feedback (content, created_at, hash, language) VALUES (?, ?, ?, ?)`,
 			)
-			.bind(body, date, hash, language)
+			.bind(feedback, date, hash, language)
 			.run();
 
 		rowId = result.meta.last_row_id;
@@ -55,7 +55,7 @@ export async function saveFeedbackText(
 	// https://developers.cloudflare.com/workers/runtime-apis/context/#waituntil
 	// Don't wait if we don't have a language
 	if (isSupported(language))
-		c.executionCtx.waitUntil(saveTranslation(c.env, rowId, body, language));
+		c.executionCtx.waitUntil(saveTranslation(c.env, rowId, feedback, language));
 }
 
 // This is disabled for now, because our Database is Backfilled.
