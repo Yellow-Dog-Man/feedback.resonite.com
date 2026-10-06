@@ -28,6 +28,8 @@ const optionalFeedbackText = z
 	.optional()
 	.nullable();
 
+const optionalShortText = z.string().max(SHORT_LENGTH).optional().nullable();
+
 // TODO: as we use formdata, everything comes in as stream, so we can't do any filtering, we can max the sizes though
 const stream = "application/octet-stream";
 
@@ -60,9 +62,9 @@ export const bugSchema = z.object({
 	logs: logFile,
 	anonymizeLogs: yesNo,
 	screenshots: imageFile.optional().nullable(),
-	reproductionItem: longText.optional().nullable(),
-	additionalContext: longText.optional().nullable(),
-	reporter: shortText.optional().nullable(),
+	reproductionItem: optionalShortText,
+	additionalContext: optionalShortText,
+	reporter: optionalShortText,
 	_rid: z.string().optional().nullable(),
 });
 
