@@ -15,7 +15,7 @@ const MB = 1024 * 1024;
 const MAX_LOG_FILE_BYTES = 10 * MB;
 const MAX_IMAGE_FILE_BYTES = 25 * MB;
 
-// Landing text feedback, keep in sync with maxlength in public/forms/LANDING.md
+// Landing text feedback, keep in sync with max length in public/forms/LANDING.md
 const FEEDBACK_LENGTH = 5000;
 
 const shortText = z.string().min(MIN_TEXT).max(SHORT_LENGTH);
@@ -73,8 +73,8 @@ export const featureSchema = z.object({
 	problem: longText,
 	solution: longText,
 	alternatives: longText,
-	additionalContext: longText.optional().nullable(),
-	reporter: shortText.optional().nullable(),
+	additionalContext: optionalFeedbackText,
+	reporter: optionalShortText,
 	_rid: z.string().optional().nullable(),
 });
 
