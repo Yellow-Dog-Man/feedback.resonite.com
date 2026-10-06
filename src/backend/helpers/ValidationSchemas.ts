@@ -37,13 +37,16 @@ const imageFile = z.file().max(MAX_IMAGE_FILE_BYTES);
 
 const yesNo = z.enum(["yes", "no"]);
 
+// Some browsers will send this as null, or '', so those values are allowed
+const formType = z
+		.union([z.string(''), z.enum(VALID_FEEDBACK_TYPES)])
+		.optional()
+		.nullable();
+
 export const landingSchema = z.object({
 	happiness: yesNo,
 	more: yesNo,
-	type: z
-		.union([z.string(), z.enum(VALID_FEEDBACK_TYPES)])
-		.optional()
-		.nullable(),
+	type: formType,
 	feedback: optionalFeedbackText,
 	_rid: z.string().optional().nullable(),
 });
