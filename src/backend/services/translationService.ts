@@ -13,15 +13,20 @@ export const SUPPORTED_LANGUAGES = new Set(
 	),
 );
 
-export function isSupported(language) {
+// Takes null, which detectLanguage returns when it can't tell.
+export function isSupported(language: string | null): language is string {
 	if (language === null) return false;
 	return SUPPORTED_LANGUAGES.has(language);
 }
 
 // Returns the English text, or null if the source language is unknown or
 // one the model can't translate.
-export async function translateToEnglish(ai, text, sourceLang) {
-	if (!sourceLang || !SUPPORTED_LANGUAGES.has(sourceLang)) return null;
+export async function translateToEnglish(
+	ai: Ai,
+	text: string,
+	sourceLang: string | null,
+) {
+	if (!isSupported(sourceLang)) return null;
 	if (sourceLang === TARGET_LANG) return text;
 
 	if (!ai) throw new Error("AI is not setup correctly");
@@ -30,6 +35,11 @@ export async function translateToEnglish(ai, text, sourceLang) {
 		source_lang: sourceLang,
 		target_lang: TARGET_LANG,
 	});
+
+	// TODO: I think this is a bug.
+	// The output type also covers the async-queue response ({ request_id }),
+	// which only comes back for requests sent with queueRequest.
+	if (!("translated_text" in result)) return null;
 	return result.translated_text ?? null;
 }
 
@@ -40,7 +50,7 @@ const MIN_DETECT_BYTES = 12;
 const encoder = new TextEncoder();
 
 // tinyld returns an ISO 639-1 code, or "" when it isn't confident.
-export function detectLanguage(text) {
+export function detectLanguage(text: string) {
 	if (encoder.encode(text.trim()).length < MIN_DETECT_BYTES) return null;
 	return detect(text) || null;
 }
