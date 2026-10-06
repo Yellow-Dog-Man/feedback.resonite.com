@@ -54,7 +54,7 @@ This project uses several Cloudflare environment variables, bindings, and secret
 
 ### 1. Wrangler Variables (`[vars]` in `wrangler.toml`)
 * **`ENVIRONMENT`**: The environment mode (e.g., `"production"` or `"development"`).
-* **`ACCOUNT_ID`**: Your Cloudflare Account ID. Required if you are querying the Workers Analytics Engine SQL API (used in `scoreService.ts`).
+* **`SUBMIT_TO_GITHUB`**: When true, issues are sent to GH, disable to not allow for any outputs.
 
 ### 2. Secrets (Configured via Wrangler or `.dev.vars` for local dev)
 Set these using `npx wrangler secret put <NAME>` or inside your local `.dev.vars` file (copy `.dev.vars.example` to start). When you add a secret or change `wrangler.toml`, add it to `.dev.vars.example` too and run `npm run types` to regenerate `worker-configuration.d.ts`; CI fails if that file is out of date. `npm run typecheck` checks the backend and frontend separately.
@@ -62,6 +62,7 @@ Set these using `npx wrangler secret put <NAME>` or inside your local `.dev.vars
 * **`API_TOKEN`**: A Cloudflare API Token with **Account Analytics Read** permissions (required for querying the Workers Analytics Engine SQL API).
 * **`TURNSTILE_SECRET_KEY`**: Cloudflare Turnstile secret key used for validating bot protection challenges on form submissions. (Falls back to a test key if not provided).
 * **`IP_HASH_SECRET`**: Random secret used to HMAC client IPs before they're used as rate limit keys in KV, so no real IP addresses are stored. Required in production; falls back to a fixed value in dev. Generate one with `openssl rand -hex 32`.
+* **`ACCOUNT_ID`**: Your Cloudflare Account ID. Required if you are querying the Workers Analytics Engine SQL API (used in `scoreService.ts`).
 
 ### 3. Cloudflare Bindings (`wrangler.toml`)
 * **`ASSETS`**: Static assets binding for serving frontend files from `./dist`.
@@ -69,6 +70,7 @@ Set these using `npx wrangler secret put <NAME>` or inside your local `.dev.vars
 * **`DB`**: Cloudflare D1 database binding (`feedback-db`) for storing text feedback.
 * **`RATE_LIMIT_KV`**: KV namespace binding for handling rate limits.
 * **`BUCKET`**: R2 bucket binding (`feedback-resonite-files`) for storing user-uploaded screenshots and log files.
+* **`AI`**: Standard AI binding, used for `translationService.ts`
 
 ## GitHub App
 Based on: https://github.com/gr2m/cloudflare-worker-github-app-example
