@@ -1,3 +1,4 @@
+import { AppContext } from "../types";
 import { sha256Hex } from "./hashService";
 import {
 	translateToEnglish,
@@ -6,10 +7,18 @@ import {
 	isSupported,
 } from "./translationService";
 
+export type FeedbackRow = {
+	id: string,
+	content: string,
+	content_translated: string,
+	language: string,
+	hash: string
+}
+
 // The feedback table is created by D1 migrations in /migrations.
 // Run `npm run db:migrate:local` (dev) or `npm run db:migrate:remote` (prod).
 
-export async function saveFeedbackText(c, body, date) {
+export async function saveFeedbackText(c:AppContext, body: string, date: Date) {
 	const db = c.env.DB;
 	if (!db) throw new Error("DB is not setup correctly");
 
@@ -23,7 +32,7 @@ export async function saveFeedbackText(c, body, date) {
 				`INSERT INTO feedback (content, created_at, hash, language) VALUES (?, ?, ?, ?)`,
 			)
 			.bind(body, date, hash, language)
-			.run();
+			.run<FeedbackRow>();
 
 		rowId = result.meta.last_row_id;
 	} catch (dbErr) {
@@ -39,6 +48,7 @@ export async function saveFeedbackText(c, body, date) {
 		c.executionCtx.waitUntil(saveTranslation(c.env, rowId, body, language));
 }
 
+// This is disabled for now, because our Database is Backfilled.
 const BACKFILL_BATCH_SIZE = 25;
 
 // Run by the cron trigger. Fills in hash, language and translation for rows
@@ -46,7 +56,7 @@ const BACKFILL_BATCH_SIZE = 25;
 // failed after a submission. Rows whose language couldn't be detected, or
 // isn't one the model supports, are left with content_translated NULL and
 // aren't picked up again.
-export async function backfillTranslations(env) {
+export async function backfillTranslations(env: Env) {
 	const { results } = await env.DB.prepare(
 		`SELECT id, content, hash, language FROM feedback
 		WHERE hash IS NULL
@@ -55,10 +65,10 @@ export async function backfillTranslations(env) {
 		ORDER BY id LIMIT ?`,
 	)
 		.bind(JSON.stringify([...SUPPORTED_LANGUAGES]), BACKFILL_BATCH_SIZE)
-		.all();
+		.all<FeedbackRow>();
 
 	for (const row of results) {
-		let language = row.language;
+		let language: String | null = row.language;
 		if (row.hash === null) {
 			const hash = await sha256Hex(row.content);
 			language = detectLanguage(row.content);
@@ -74,7 +84,7 @@ export async function backfillTranslations(env) {
 	console.log(`Translation backfill processed ${results.length} rows`);
 }
 
-async function saveTranslation(env, id, body, language) {
+async function saveTranslation(env: Env, id: string, body: string, language: string | null) {
 	try {
 		const translated = await translateToEnglish(env.AI, body, language);
 		if (translated === null) return;
