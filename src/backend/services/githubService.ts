@@ -18,8 +18,6 @@ export function isGitHubSetup(env: Env) {
 	);
 }
 
-
-
 // Callers check the content for profanity and email addresses first, before
 // uploading any files, so a rejected submission doesn't leave uploads behind.
 export async function SubmitToGitHub(
