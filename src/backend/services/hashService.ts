@@ -2,7 +2,7 @@
 
 const encoder = new TextEncoder();
 
-export async function sha256Hex(message) {
+export async function sha256Hex(message: string) {
 	const hashBuffer = await crypto.subtle.digest(
 		"SHA-256",
 		encoder.encode(message),
@@ -13,7 +13,7 @@ export async function sha256Hex(message) {
 // Keyed hash. Unlike sha256Hex, the result can't be reversed by hashing every
 // possible input (e.g. all 2^32 IPv4 addresses) unless you also have the secret.
 // https://developers.cloudflare.com/workers/runtime-apis/web-crypto/#sign
-export async function hmacSha256Hex(secret, message) {
+export async function hmacSha256Hex(secret: string, message: string) {
 	const key = await crypto.subtle.importKey(
 		"raw",
 		encoder.encode(secret),
@@ -29,7 +29,7 @@ export async function hmacSha256Hex(secret, message) {
 	return toHex(signature);
 }
 
-function toHex(buffer) {
+function toHex(buffer: ArrayBuffer) {
 	return Array.from(new Uint8Array(buffer))
 		.map((b) => b.toString(16).padStart(2, "0"))
 		.join("");
