@@ -1,4 +1,3 @@
-
 export function isDev(env: Env) {
 	return env.ENVIRONMENT === "development" || env.ENVIRONMENT === "dev";
 }

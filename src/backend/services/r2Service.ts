@@ -5,10 +5,12 @@ function processKey(key: string) {
 	return key.replaceAll(" ", "");
 }
 
-export async function uploadFileToR2(bucket: R2Bucket, filePrefix: string, file: File) {
-	if (
-		!file || typeof file === "string" || !(file instanceof File)
-	)
+export async function uploadFileToR2(
+	bucket: R2Bucket,
+	filePrefix: string,
+	file: File,
+) {
+	if (!file || typeof file === "string" || !(file instanceof File))
 		throw new Error(`Invalid file: ${file}`);
 
 	const uniqueId = filePrefix === "" ? crypto.randomUUID() : filePrefix;

@@ -5,7 +5,7 @@ import Mustache from "mustache";
 import bugTemplate from "../../../public/templates/BUG.md?raw";
 import featureTemplate from "../../../public/templates/FEATURE.md?raw";
 
-const templates:Record<string,string> = {
+const templates: Record<string, string> = {
 	bug: bugTemplate,
 	feature: featureTemplate,
 };
