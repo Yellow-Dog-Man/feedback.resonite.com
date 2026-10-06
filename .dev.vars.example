@@ -1,0 +1,10 @@
+# Copy to .dev.vars for local development. In production these are secrets:
+# npx wrangler secret put <NAME>
+# `npm run types` also reads this file, so add new secrets here.
+ENVIRONMENT=development
+GITHUB_APP_ID=
+GITHUB_PRIVATE_KEY=
+TURNSTILE_SECRET_KEY=
+API_TOKEN=
+ACCOUNT_ID=
+IP_HASH_SECRET=

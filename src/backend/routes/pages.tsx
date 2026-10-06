@@ -1,11 +1,12 @@
 import { Hono } from "hono";
+import type { AppEnv } from "../types";
 import { Cheese } from "../components/cheese";
 import { Form } from "../components/form";
 import { Limited } from "../components/limited";
 import { renderer } from "../components/renderer";
-import { LANDING, VALID_FORMS } from "../helpers/FormHelpers";
+import { LANDING, VALID_FORMS } from "../../shared/FormHelpers";
 
-export const pageApp = new Hono();
+export const pageApp = new Hono<AppEnv>();
 
 const landingUrl = `/${LANDING}`;
 

@@ -1,13 +1,24 @@
 {
+	// Worker (backend) and shared code. The browser code has its own
+	// src/frontend/tsconfig.json, so neither side sees the other's globals.
 	"compilerOptions": {
 		"target": "ESNext",
 		"module": "ESNext",
 		"moduleResolution": "Bundler",
 		"strict": true,
 		"skipLibCheck": true,
-		"lib": ["ESNext", "dom"],
-		"types": ["vite/client", "@cloudflare/workers-types"],
+		"noEmit": true,
+		"allowJs": true,
+		"allowImportingTsExtensions": true,
+		"lib": ["ESNext"],
+		"types": ["vite/client"],
 		"jsx": "react-jsx",
 		"jsxImportSource": "hono/jsx"
-	}
+	},
+	"include": [
+		"worker-configuration.d.ts",
+		"src/backend",
+		"src/shared",
+		"src/config"
+	]
 }

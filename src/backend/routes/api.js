@@ -10,7 +10,7 @@ import {
 	SECURITY,
 	TEXT,
 	VALID_FORMS,
-} from "../helpers/FormHelpers.js";
+} from "../../shared/FormHelpers.js";
 import { BadRequest } from "../helpers/HttpHelpers.js";
 import { formLimiter, landingLimiter } from "../helpers/RateLimits.js";
 import { getFormSchema } from "../helpers/ValidationSchemas.js";

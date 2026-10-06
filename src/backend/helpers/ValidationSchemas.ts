@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { BUG, FEATURE, LANDING, VALID_FEEDBACK_TYPES } from "./FormHelpers.js";
+import { BUG, FEATURE, LANDING, VALID_FEEDBACK_TYPES } from "../../shared/FormHelpers.js";
 
 const MIN_TEXT = 5;
 const SHORT_LENGTH = 120;

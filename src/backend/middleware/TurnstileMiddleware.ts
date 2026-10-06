@@ -1,12 +1,13 @@
-import type { Context, Next } from "hono";
-import { TURNSTILE_HEADER } from "../../frontend/turnstile.js";
+import type { Next } from "hono";
+import type { AppContext } from "../types";
+import { TURNSTILE_HEADER } from "../../shared/Turnstile.js";
 import { IP_HEADER } from "../helpers/CloudflareHelpers.js";
 import { isDev } from "../helpers/EnvHelpers.js";
 import { getTurnstileSecretKey } from "../helpers/TurnstileConfig.js";
 import { verifyTurnstileToken } from "../services/turnstileService.js";
 
 export function turnstileMiddleware() {
-	return async (c: Context, next: Next) => {
+	return async (c: AppContext, next: Next) => {
 		// Only protect POST requests to API endpoints
 		if (c.req.method !== "POST") {
 			return await next();

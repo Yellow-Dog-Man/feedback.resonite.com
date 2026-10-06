@@ -6,6 +6,8 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
+		"types": "wrangler types --env-file .dev.vars.example --strict-vars=false",
+		"typecheck": "tsc -p tsconfig.json && tsc -p src/frontend/tsconfig.json",
 		"preview": "npm run build && npx wrangler dev",
 		"deploy": "npm run build && wrangler d1 migrations apply feedback-db --remote && wrangler deploy",
 		"db:migrate:local": "wrangler d1 migrations apply feedback-db --local",
@@ -18,6 +20,7 @@
 		"@biomejs/biome": "2.5.14",
 		"@cloudflare/vite-plugin": "^1.54.8",
 		"@cloudflare/workers-types": "^5.20261003.1",
+		"typescript": "^7.0.2",
 		"vite": "^8.2.2",
 		"wrangler": "^4.131.1"
 	},

@@ -1,8 +1,9 @@
 import { Hono } from "hono";
+import type { AppEnv } from "../types";
 import { cache } from "hono/cache";
 import { getScore } from "../services/scoreService";
 
-export const statsApp = new Hono();
+export const statsApp = new Hono<AppEnv>();
 
 // Cache happiness stats for 3 minutes (180 seconds) to prevent analytics query thrashing
 statsApp.get(

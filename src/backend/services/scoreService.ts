@@ -4,10 +4,10 @@
 - index1/index[0] => date
 */
 
-import type { Context } from "hono";
+import type { AppContext } from "../types";
 
 export function saveScore(
-	c: Context,
+	c: AppContext,
 	bool: boolean,
 	question: string = "happiness",
 ) {
@@ -28,9 +28,19 @@ const SCORE_QUERY = `
             SUM(_sample_interval) AS total_events,
             SUM(_sample_interval * double1) / SUM(_sample_interval) AS average_score
         FROM SCORE`;
+// Analytics Engine SQL API response, for SCORE_QUERY.
+type ScoreQueryResult = {
+	data?: {
+		average_score?: number;
+		total_events?: number;
+		timestamp?: string;
+	}[];
+};
+
 // '1' DAY
 //WHERE timestamp > NOW() - INTERVAL '1' DAY
-export async function getScore(c: Context, interval: string) {
+// Without an interval, scores across all time.
+export async function getScore(c: AppContext, interval?: string) {
 	let query = SCORE_QUERY;
 	if (interval !== undefined) {
 		query = `${query} WHERE timestamp > NOW() - INTERVAL ${interval}`;
@@ -52,7 +62,7 @@ export async function getScore(c: Context, interval: string) {
 		);
 	}
 
-	const result = await response.json();
+	const result = await response.json<ScoreQueryResult>();
 
 	const row = result.data && result.data.length > 0 ? result.data[0] : {};
 
@@ -63,7 +73,7 @@ export async function getScore(c: Context, interval: string) {
 	};
 }
 
-export async function dumpScore(c: Context) {
+export async function dumpScore(c: AppContext) {
 	const query = `SELECT * FROM SCORE`;
 	const API = `https://api.cloudflare.com/client/v4/accounts/${c.env.ACCOUNT_ID}/analytics_engine/sql`;
 

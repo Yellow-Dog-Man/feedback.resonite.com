@@ -1,34 +1,5 @@
-import { z } from "zod";
-
-export const envSchema = z.object({
-	ENVIRONMENT: z.string().optional().default("dev"),
-	SUBMIT_TO_GITHUB: z.union([z.boolean(), z.string()]).optional(),
-	GITHUB_APP_ID: z.string().optional(),
-	GITHUB_PRIVATE_KEY: z.string().optional(),
-	TURNSTILE_SECRET_KEY: z.string().optional(),
-	IP_HASH_SECRET: z.string().optional(),
-	API_TOKEN: z.string().optional(),
-	ACCOUNT_ID: z.string().optional(),
-	DB: z.any().optional(),
-	BUCKET: z.any().optional(),
-	RATE_LIMIT_KV: z.any().optional(),
-	SCORE: z.any().optional(),
-	AI: z.any().optional(),
-});
-
-export type Bindings = z.infer<typeof envSchema>;
-
-export function parseEnv(env: unknown): Bindings {
-	const result = envSchema.safeParse(env);
-	if (!result.success) {
-		console.error(
-			"Invalid environment variables/bindings:",
-			result.error.format(),
-		);
-		throw new Error("Invalid environment configuration");
-	}
-	return result.data as Bindings;
-}
+// Bindings, vars and secrets are typed by the generated `Env` interface in
+// worker-configuration.d.ts (`npm run types`).
 
 //!IMPORTANT: No secrets here, use ENV!
 export const PARENT_DOMAIN = "resonite.com";

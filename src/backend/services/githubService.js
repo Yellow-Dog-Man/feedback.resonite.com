@@ -4,7 +4,7 @@
 
 import { App } from "@octokit/app";
 import { FEEDBACK_DOMAIN, REPO, REPO_OWNER } from "../../config/index.js";
-import { BUG, FEATURE } from "../helpers/FormHelpers";
+import { BUG, FEATURE } from "../../shared/FormHelpers";
 import { BadRequest, TemporaryError } from "../helpers/HttpHelpers.js";
 import { containsEmail, containsProfanity } from "./filterService.js";
 import { formatIssue } from "./markdownTemplateService.js";

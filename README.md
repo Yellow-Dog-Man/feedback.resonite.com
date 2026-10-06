@@ -57,7 +57,7 @@ This project uses several Cloudflare environment variables, bindings, and secret
 * **`ACCOUNT_ID`**: Your Cloudflare Account ID. Required if you are querying the Workers Analytics Engine SQL API (used in `scoreService.js`).
 
 ### 2. Secrets (Configured via Wrangler or `.dev.vars` for local dev)
-Set these using `npx wrangler secret put <NAME>` or inside your local `.dev.vars` file:
+Set these using `npx wrangler secret put <NAME>` or inside your local `.dev.vars` file (copy `.dev.vars.example` to start). When you add a secret or change `wrangler.toml`, add it to `.dev.vars.example` too and run `npm run types` to regenerate `worker-configuration.d.ts`; CI fails if that file is out of date. `npm run typecheck` checks the backend and frontend separately.
 * **`GITHUB_APP_ID`** / **`GITHUB_PRIVATE_KEY`**: GitHub App credentials used to submit feedback issues via `githubService.js`. The App must be installed on the issues repo with Issues read & write permission. See [GitHub App](#github-app).
 * **`API_TOKEN`**: A Cloudflare API Token with **Account Analytics Read** permissions (required for querying the Workers Analytics Engine SQL API).
 * **`TURNSTILE_SECRET_KEY`**: Cloudflare Turnstile secret key used for validating bot protection challenges on form submissions. (Falls back to a test key if not provided).

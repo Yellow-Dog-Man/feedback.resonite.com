@@ -1,8 +1,8 @@
 import "./../style.css";
 import "formsmd/dist/css/formsmd.min.css";
 import { Formsmd } from "formsmd";
-import { GetDefaultFormOptions } from "../backend/helpers/DefaultFormOptions.js";
-import { LANDING } from "../backend/helpers/FormHelpers.js";
+import { GetDefaultFormOptions } from "./DefaultFormOptions.js";
+import { LANDING } from "../shared/FormHelpers.js";
 import {
 	getTurnstileHeader,
 	initTurnstile,

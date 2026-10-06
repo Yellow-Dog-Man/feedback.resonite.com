@@ -1,4 +1,4 @@
-export const TURNSTILE_HEADER = "X-Turnstile-Token";
+import { TURNSTILE_HEADER } from "../shared/Turnstile.js";
 
 const TURNSTILE_DIV = "#turnstile-container";
 

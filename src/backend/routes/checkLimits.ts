@@ -1,13 +1,14 @@
 import { WorkersKVStore } from "@hono-rate-limiter/cloudflare";
-import { type Context, Hono } from "hono";
+import { Hono } from "hono";
+import type { AppEnv } from "../types";
 import type { ClientRateLimitInfo } from "hono-rate-limiter";
 import { GetClientIp } from "../helpers/CloudflareHelpers.js";
-import { FORM, LANDING } from "../helpers/FormHelpers.js";
+import { FORM, LANDING } from "../../shared/FormHelpers.js";
 import { GetRateLimitKey, getLimitSettings } from "../helpers/RateLimits.js";
 
-export const checkLimitsApp = new Hono();
+export const checkLimitsApp = new Hono<AppEnv>();
 
-checkLimitsApp.get("/", async (c: Context) => {
+checkLimitsApp.get("/", async (c) => {
 	const store = new WorkersKVStore({
 		namespace: c.env.RATE_LIMIT_KV,
 	});
