@@ -14,7 +14,8 @@
 		"db:migrate:remote": "wrangler d1 migrations apply feedback-db --remote",
 		"db:migration:create": "wrangler d1 migrations create feedback-db",
 		"format": "npx @biomejs/biome format --write",
-		"lint": "npx @biomejs/biome lint --write"
+		"lint": "npx @biomejs/biome lint --write",
+		"check": "npx @biomejs/biome check --write"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.14",
