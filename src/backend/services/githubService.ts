@@ -3,12 +3,12 @@
 // Better than being a PAT, and also allows us to expand this later to other matters.
 
 import { App } from "@octokit/app";
+import type { Octokit } from "@octokit/core";
 import { FEEDBACK_DOMAIN, REPO, REPO_OWNER } from "../../config/index.js";
 import { BUG, FEATURE } from "../../shared/FormHelpers.js";
 import { TemporaryError } from "../helpers/HttpHelpers.js";
 import type { AppContext } from "../types.js";
 import { formatIssue } from "./markdownTemplateService.js";
-import { Octokit } from "@octokit/core";
 
 const ISSUE_LABEL = FEEDBACK_DOMAIN;
 
@@ -61,8 +61,7 @@ function getErrorStatus(error: unknown) {
 
 let _octokit: Octokit | null = null;
 async function getOctokit(env: Env) {
-	if (_octokit === null)
-		_octokit = await getInstallationOctokit(env);
+	if (_octokit === null) _octokit = await getInstallationOctokit(env);
 
 	return _octokit;
 }

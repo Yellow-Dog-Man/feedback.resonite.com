@@ -90,7 +90,9 @@ function initForms() {
 			formsmd.getSubmissionErrors = getSubmissionErrors;
 		} catch (err) {
 			console.error("Failed to initialize form:", err);
-			showFormError("The form failed to load. Please refresh the page to try again.");
+			showFormError(
+				"The form failed to load. Please refresh the page to try again.",
+			);
 		}
 	});
 }

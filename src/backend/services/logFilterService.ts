@@ -11,7 +11,10 @@ export async function anonymizeLogs(log: File): Promise<File> {
 		});
 	} catch (err) {
 		console.error("Failed to anonymize log file:", err);
-		throw new HTTPException(503, {message:"Failed to anonymize logs, failing submission to protect privacy"});
+		throw new HTTPException(503, {
+			message:
+				"Failed to anonymize logs, failing submission to protect privacy",
+		});
 	}
 }
 

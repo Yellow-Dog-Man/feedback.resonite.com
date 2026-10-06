@@ -40,9 +40,9 @@ const typesEnum = z.enum(VALID_FEEDBACK_TYPES);
 
 // Some browsers will send this as null, or '', so those values are allowed
 const formType = z
-		.union([z.literal(""), typesEnum])
-		.optional()
-		.nullable();
+	.union([z.literal(""), typesEnum])
+	.optional()
+	.nullable();
 
 export const landingSchema = z.object({
 	happiness: yesNo,
