@@ -14,7 +14,7 @@ app.route("/", pageApp);
 export default {
 	fetch: app.fetch,
 	// https://developers.cloudflare.com/workers/runtime-apis/handlers/scheduled/
-	async scheduled(_controller, env, ctx) {
+	async scheduled(_controller:ScheduledController, env: Env, ctx: ExecutionContext) {
 		ctx.waitUntil(backfillTranslations(env));
 	},
 };
