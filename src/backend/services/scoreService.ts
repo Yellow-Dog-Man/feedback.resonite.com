@@ -1,7 +1,7 @@
 // Schema
 /*
 - double1/double[0] => Score
-- index1/index[0] => date
+- index1/index[0] => question
 */
 
 import type { AppContext } from "../types";
