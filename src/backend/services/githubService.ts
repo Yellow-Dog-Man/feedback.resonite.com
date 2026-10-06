@@ -4,14 +4,19 @@
 
 import { App } from "@octokit/app";
 import { FEEDBACK_DOMAIN, REPO, REPO_OWNER } from "../../config/index.js";
-import { BUG, FEATURE } from "../../shared/FormHelpers";
+import { BUG, FEATURE } from "../../shared/FormHelpers.js";
 import { BadRequest, TemporaryError } from "../helpers/HttpHelpers.js";
 import { containsEmail, containsProfanity } from "./filterService.js";
 import { formatIssue } from "./markdownTemplateService.js";
+import type { AppContext } from "../types.js";
 
 const ISSUE_LABEL = FEEDBACK_DOMAIN;
 
-export async function SubmitToGitHub(c, formType, body) {
+export async function SubmitToGitHub(
+	c: AppContext,
+	formType: string,
+	body: Record<string, unknown>,
+) {
 	const env = c.env;
 
 	if (env.GITHUB_APP_ID === undefined || env.GITHUB_PRIVATE_KEY === undefined)
@@ -44,14 +49,22 @@ export async function SubmitToGitHub(c, formType, body) {
 			url: data.html_url,
 			number: data.number,
 		};
-	} catch (error) {
+	} catch (error: unknown) {
 		console.error("GitHub issue creation failed:", error);
-		if (error.status === 401) return TemporaryError(c, "Github Not Setup");
+
+		// Octokit throws a RequestError with the HTTP status of the failed call.
+		if (getErrorStatus(error) === 401)
+			return TemporaryError(c, "Github Not Setup");
 	}
 }
 
+function getErrorStatus(error: unknown) {
+	if (typeof error === "object" && error !== null && "status" in error)
+		return error.status;
+}
+
 // Get an Octokit authenticated as the App's installation on the issues repo
-async function getInstallationOctokit(env) {
+async function getInstallationOctokit(env: Env) {
 	const app = new App({
 		appId: env.GITHUB_APP_ID,
 		privateKey: env.GITHUB_PRIVATE_KEY,
@@ -66,28 +79,36 @@ async function getInstallationOctokit(env) {
 }
 
 // Map Us => GH labels
-function getLabels(formType) {
+function getLabels(formType: string): string[] {
 	if (formType === BUG) return ["bug"];
 	if (formType === FEATURE) return ["New Feature"];
+	return [];
 }
 
-function isAnonymous(reporter) {
-	if (reporter === null || reporter === undefined) return true;
-
-	if (reporter.length === 0) return true;
-
-	return false;
+function isAnonymous(reporter: unknown) {
+	return typeof reporter !== "string" || reporter.length === 0;
 }
 
 // TODO: check for any additional items we can specify here
-function convertToGitHub(formType, body, markdownBody) {
+function convertToGitHub(
+	formType: string,
+	body: Record<string, unknown>,
+	markdownBody: string,
+) {
 	const labels = [...getLabels(formType), ISSUE_LABEL];
 
 	const anonymous = isAnonymous(body.reporter);
 	if (anonymous) labels.push("Anonymous");
 
+	// Only bug and feature forms have a title. Without one GitHub rejects the
+	// issue, so fail here rather than make the API call.
+	const title = body.issueTitle || body.title;
+	if (typeof title !== "string") {
+		throw new Error(`No issue title for ${formType} submission`);
+	}
+
 	const issue = {
-		title: body.issueTitle || body.title,
+		title,
 		labels: labels,
 		body: markdownBody,
 	};
