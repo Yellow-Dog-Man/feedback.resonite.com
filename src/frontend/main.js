@@ -5,6 +5,7 @@ import { GetDefaultFormOptions } from "./DefaultFormOptions.js";
 import {
 	getTurnstileHeader,
 	initTurnstile,
+	TURNSTILE_FAILURE_EVENT,
 	TURNSTILE_SUCCESS_EVENT,
 } from "./turnstile.js";
 
@@ -47,25 +48,40 @@ function attachFreshTurnstileTokens(formsmd) {
 
 // Only build the forms once. Rebuilding on a later Turnstile success would
 // wipe whatever the user has typed so far.
+let formsStarted = false;
 document.addEventListener(TURNSTILE_SUCCESS_EVENT, initForms, { once: true });
 
+// Turnstile errors before the first token mean the forms never start, so
+// replace the spinner with an explanation. Turnstile may still recover and
+// fire a success later, which builds the forms as normal.
+document.addEventListener(TURNSTILE_FAILURE_EVENT, () => {
+	if (formsStarted) return;
+	for (const el of document.querySelectorAll(".formsMDTarget")) {
+		showFormError(
+			el,
+			"We couldn't check that you're not a robot. Please refresh the page to try again.",
+		);
+	}
+});
+
 function initForms() {
+	formsStarted = true;
 	document.querySelectorAll(".formsMDTarget").forEach(async (el) => {
 		const templatePath = el.getAttribute("data-form-template");
 		const id = el.getAttribute("data-form-type");
 
-		const limit = await checkLimit(id);
-		if (limit) {
-			limited();
-			return;
-		}
-
 		if (!templatePath) {
-			window.showModal("Invalid form setup");
+			showFormError("Invalid form setup");
 			return;
 		}
 		try {
+			if (await checkLimit(id)) {
+				limited();
+				return;
+			}
+
 			const response = await fetch(templatePath);
+			if (!response.ok) throw new Error(`Template fetch: ${response.status}`);
 			const text = await response.text();
 			const formsmd = new Formsmd(text, el, GetDefaultFormOptions());
 			attachFreshTurnstileTokens(formsmd);
@@ -74,8 +90,14 @@ function initForms() {
 			formsmd.getSubmissionErrors = getSubmissionErrors;
 		} catch (err) {
 			console.error("Failed to initialize form:", err);
+			showFormError("The form failed to load. Please refresh the page to try again.");
 		}
 	});
+}
+
+// Replaces the loading spinner (or anything else in the form target) with a message.
+function showFormError(message) {
+	window.showModal(message);
 }
 
 function limited() {
@@ -112,7 +134,8 @@ function getSubmissionErrors(json) {
 	return messages;
 }
 
-document.getElementById("restart").addEventListener("click", () => {
+// Only the form and limited pages have a restart button.
+document.getElementById("restart")?.addEventListener("click", () => {
 	window.location = `/${LANDING}`;
 });
 
