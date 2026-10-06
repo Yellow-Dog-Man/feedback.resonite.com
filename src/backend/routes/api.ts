@@ -231,7 +231,9 @@ async function processLanding(c: AppContext, body: LandingBody) {
 
 	const date = new Date().toISOString();
 
-	if (body.more && body.type === TEXT) {
+	// feedback is optional in the schema, so there's nothing to check or save
+	// when it's missing or empty.
+	if (body.more && body.type === TEXT && body.feedback) {
 		if (containsProfanity(body.feedback)) {
 			return BadRequest(c, "Issue contains profanity");
 		}
