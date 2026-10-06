@@ -1,6 +1,7 @@
 // Vendored from https://github.com/XDelta/LogRedactor/blob/main/logRedactor.js
 // Commit: https://github.com/XDelta/LogRedactor/commit/f8027848620fb69ea00fdc76843c0be3076003e9
 // License: MIT (see LICENSE at that repo)
+// Deliberately JavaScript.
 
 const redactionString = "<Redacted>";
 
