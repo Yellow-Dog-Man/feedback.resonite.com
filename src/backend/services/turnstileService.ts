@@ -38,7 +38,7 @@ async function submitTurnstileToken(
 	);
 	const verifyOutcome: TurnstileResponse = await verifyRes.json();
 	if (!verifyOutcome.success) {
-		return turnstileFail();
+		return turnstileFail(verifyOutcome);
 	}
 
 	// I think I need to use Cloudflare, https://developers.cloudflare.com/turnstile/tutorials/fraud-detection-with-ephemeral-ids/
