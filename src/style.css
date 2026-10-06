@@ -1,3 +1,5 @@
+/* biome-ignore-all lint/complexity/noImportantStyles: root style sheet */
+
 :root {
 	--color-neutrals-dark: #11151d;
 	--color-neutrals-mid: #2b2f35;

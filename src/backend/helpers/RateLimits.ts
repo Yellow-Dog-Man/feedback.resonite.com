@@ -1,10 +1,10 @@
-import type { AppContext, AppEnv } from "../types";
 import { rateLimiter } from "hono-rate-limiter";
-import { hmacSha256Hex } from "../services/hashService.js";
-import { GetClientIp } from "./CloudflareHelpers";
-import { isDev } from "./EnvHelpers";
 import { FORM, LANDING } from "../../shared/FormHelpers";
 import { FeedbackKVStore } from "../lib/FeedbackKVStore.js";
+import { hmacSha256Hex } from "../services/hashService.js";
+import type { AppContext, AppEnv } from "../types";
+import { GetClientIp } from "./CloudflareHelpers";
+import { isDev } from "./EnvHelpers";
 
 //TODO: we should be using Cloudflare's built-in rate limits, but this only supports windows of 10 or 60 seconds right now.
 // This is great for Bots and DDOS, but it is not ok for limits that have longer windows, which... filing a form does.
@@ -17,10 +17,21 @@ import { FeedbackKVStore } from "../lib/FeedbackKVStore.js";
 // binding = "RATE_LIMIT_KV"
 // id = "your-namespace-id"
 
+function getFormLimit(key: string, dev: boolean) {
+	if (dev) return 100;
+
+	// 4 (100 in DEV)
+	if (key === LANDING) return 4;
+
+	if (key === FORM) return 4;
+
+	return 0;
+}
+
 export function getLimitSettings(cx: AppContext, key: string): LimitSettings {
 	return {
 		windowMs: 3_600_000, // 1 Hour
-		limit: isDev(cx.env) ? 100 : 4, // 4 (100 in DEV)
+		limit: getFormLimit(key, isDev(cx.env)),
 	};
 }
 

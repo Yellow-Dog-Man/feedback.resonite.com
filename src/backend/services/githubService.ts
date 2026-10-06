@@ -6,9 +6,9 @@ import { App } from "@octokit/app";
 import { FEEDBACK_DOMAIN, REPO, REPO_OWNER } from "../../config/index.js";
 import { BUG, FEATURE } from "../../shared/FormHelpers.js";
 import { BadRequest, TemporaryError } from "../helpers/HttpHelpers.js";
+import type { AppContext } from "../types.js";
 import { containsEmail, containsProfanity } from "./filterService.js";
 import { formatIssue } from "./markdownTemplateService.js";
-import type { AppContext } from "../types.js";
 
 const ISSUE_LABEL = FEEDBACK_DOMAIN;
 

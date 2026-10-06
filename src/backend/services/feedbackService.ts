@@ -1,10 +1,10 @@
 import type { AppContext } from "../types";
 import { sha256Hex } from "./hashService";
 import {
-	translateToEnglish,
 	detectLanguage,
-	SUPPORTED_LANGUAGES,
 	isSupported,
+	SUPPORTED_LANGUAGES,
+	translateToEnglish,
 } from "./translationService";
 
 // A row of the feedback table (see /migrations).

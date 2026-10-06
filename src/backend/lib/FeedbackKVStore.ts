@@ -1,6 +1,6 @@
 import { WorkersKVStore } from "@hono-rate-limiter/cloudflare";
-import type { AppEnv } from "../types";
 import type { ClientRateLimitInfo } from "hono-rate-limiter";
+import type { AppEnv } from "../types";
 
 // The KV Store we use here is deprecated: https://honohub.dev/docs/rate-limiter/stores/cloudflare#workers-kv-store-legacy
 // We should move to: https://unstorage.unjs.io/drivers/cloudflare#cloudflare-kv-binding

@@ -1,10 +1,10 @@
 import type { Next } from "hono";
-import type { AppContext } from "../types";
 import { TURNSTILE_HEADER } from "../../shared/Turnstile.js";
 import { IP_HEADER } from "../helpers/CloudflareHelpers.js";
 import { isDev } from "../helpers/EnvHelpers.js";
 import { getTurnstileSecretKey } from "../helpers/TurnstileConfig.js";
 import { verifyTurnstileToken } from "../services/turnstileService.js";
+import type { AppContext } from "../types";
 
 export function turnstileMiddleware() {
 	return async (c: AppContext, next: Next) => {

@@ -11,11 +11,11 @@ export async function verifyTurnstileToken(
 	token: string | undefined,
 	ip: string | undefined,
 ) {
-	if (!token) return turnstileFail();
+	if (!token) return turnstileFail("no token");
 	try {
 		return await submitTurnstileToken(secret, token, ip);
 	} catch (err) {
-		return turnstileFail();
+		return turnstileFail(err);
 	}
 }
 
@@ -54,8 +54,8 @@ async function submitTurnstileToken(
 	return turnstilePassed(hash);
 }
 
-function turnstileFail() {
-	return { success: false, attestation: null };
+function turnstileFail(err: unknown) {
+	return { success: false, attestation: null, message: err };
 }
 
 function turnstilePassed(attestation: string) {

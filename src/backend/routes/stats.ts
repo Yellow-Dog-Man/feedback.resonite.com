@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import type { AppEnv } from "../types";
 import { cache } from "hono/cache";
 import { getScore } from "../services/scoreService";
+import type { AppEnv } from "../types";
 
 export const statsApp = new Hono<AppEnv>();
 
