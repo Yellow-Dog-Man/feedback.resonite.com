@@ -22,7 +22,7 @@ Check it out live at [feedback.resonite.com](https://feedback.resonite.com)
 ### Multi-Dimensional Feedback
 <img width="1081" height="708" alt="image" src="https://github.com/user-attachments/assets/cacd8a29-3856-45e0-8506-8e6fad4e06c0" />
 
-Many platforms have removed options to apply multi-dimensional sentiment. We're exploring that with our [first question](https://github.com/Yellow-Dog-Man/feedback.resonite.com/blob/main/src/main.js#L33-L47). You can also read more about multi-dimensional sentiment on our [issue discussing it](https://github.com/Yellow-Dog-Man/feedback.resonite.com/issues/2)
+Many platforms have removed options to apply multi-dimensional sentiment. We're exploring that with the first question on Feedback.resonite.com. You can also read more about multi-dimensional sentiment on our [issue discussing it](https://github.com/Yellow-Dog-Man/feedback.resonite.com/issues/2)
 
 ## Tech Stack
 
@@ -54,11 +54,11 @@ This project uses several Cloudflare environment variables, bindings, and secret
 
 ### 1. Wrangler Variables (`[vars]` in `wrangler.toml`)
 * **`ENVIRONMENT`**: The environment mode (e.g., `"production"` or `"development"`).
-* **`ACCOUNT_ID`**: Your Cloudflare Account ID. Required if you are querying the Workers Analytics Engine SQL API (used in `scoreService.js`).
+* **`ACCOUNT_ID`**: Your Cloudflare Account ID. Required if you are querying the Workers Analytics Engine SQL API (used in `scoreService.ts`).
 
 ### 2. Secrets (Configured via Wrangler or `.dev.vars` for local dev)
 Set these using `npx wrangler secret put <NAME>` or inside your local `.dev.vars` file (copy `.dev.vars.example` to start). When you add a secret or change `wrangler.toml`, add it to `.dev.vars.example` too and run `npm run types` to regenerate `worker-configuration.d.ts`; CI fails if that file is out of date. `npm run typecheck` checks the backend and frontend separately.
-* **`GITHUB_APP_ID`** / **`GITHUB_PRIVATE_KEY`**: GitHub App credentials used to submit feedback issues via `githubService.js`. The App must be installed on the issues repo with Issues read & write permission. See [GitHub App](#github-app).
+* **`GITHUB_APP_ID`** / **`GITHUB_PRIVATE_KEY`**: GitHub App credentials used to submit feedback issues via `githubService.ts`. The App must be installed on the issues repo with Issues read & write permission. See [GitHub App](#github-app).
 * **`API_TOKEN`**: A Cloudflare API Token with **Account Analytics Read** permissions (required for querying the Workers Analytics Engine SQL API).
 * **`TURNSTILE_SECRET_KEY`**: Cloudflare Turnstile secret key used for validating bot protection challenges on form submissions. (Falls back to a test key if not provided).
 * **`IP_HASH_SECRET`**: Random secret used to HMAC client IPs before they're used as rate limit keys in KV, so no real IP addresses are stored. Required in production; falls back to a fixed value in dev. Generate one with `openssl rand -hex 32`.
