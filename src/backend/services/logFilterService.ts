@@ -1,3 +1,4 @@
+import { HTTPException } from "hono/http-exception";
 import { processLog } from "../helpers/LogRedactor.js";
 
 export async function anonymizeLogs(log: File): Promise<File> {
@@ -10,7 +11,7 @@ export async function anonymizeLogs(log: File): Promise<File> {
 		});
 	} catch (err) {
 		console.error("Failed to anonymize log file:", err);
-		return log;
+		throw new HTTPException(503, {message:"Failed to anonymize logs, failing submission to protect privacy"});
 	}
 }
 
