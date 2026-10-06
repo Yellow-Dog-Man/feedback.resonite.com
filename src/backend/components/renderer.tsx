@@ -1,6 +1,5 @@
 import { jsxRenderer } from "hono/jsx-renderer";
 import { Link, Script, ViteClient } from "vite-ssr-components/hono";
-import { TURNSTILE_SITE_KEY } from "../helpers/TurnstileConfig";
 import { MessageDialog } from "./MessageDialog";
 
 export const renderer = jsxRenderer(({ children }) => {
