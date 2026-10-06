@@ -1,4 +1,4 @@
-import { AppContext } from "../types";
+import type { AppContext } from "../types";
 import { sha256Hex } from "./hashService";
 import {
 	translateToEnglish,
@@ -7,24 +7,34 @@ import {
 	isSupported,
 } from "./translationService";
 
+// A row of the feedback table (see /migrations).
 export type FeedbackRow = {
-	id: string,
-	content: string,
-	content_translated: string,
-	language: string,
-	hash: string
-}
+	id: number;
+	content: string;
+	created_at: string;
+	// NULL until translated, or when the language is unknown or unsupported.
+	content_translated: string | null;
+	// NULL when the language couldn't be detected.
+	language: string | null;
+	// NULL for rows saved before migration 0002, until the backfill runs.
+	hash: string | null;
+};
 
 // The feedback table is created by D1 migrations in /migrations.
 // Run `npm run db:migrate:local` (dev) or `npm run db:migrate:remote` (prod).
 
-export async function saveFeedbackText(c:AppContext, body: string, date: Date) {
+// date is an ISO string, as D1 can't bind Date objects.
+export async function saveFeedbackText(
+	c: AppContext,
+	body: string,
+	date: string,
+) {
 	const db = c.env.DB;
 	if (!db) throw new Error("DB is not setup correctly");
 
 	const language = detectLanguage(body);
 
-	let rowId;
+	let rowId: number;
 	try {
 		const hash = await sha256Hex(body);
 		const result = await db
@@ -32,7 +42,7 @@ export async function saveFeedbackText(c:AppContext, body: string, date: Date) {
 				`INSERT INTO feedback (content, created_at, hash, language) VALUES (?, ?, ?, ?)`,
 			)
 			.bind(body, date, hash, language)
-			.run<FeedbackRow>();
+			.run();
 
 		rowId = result.meta.last_row_id;
 	} catch (dbErr) {
@@ -68,7 +78,7 @@ export async function backfillTranslations(env: Env) {
 		.all<FeedbackRow>();
 
 	for (const row of results) {
-		let language: String | null = row.language;
+		let language = row.language;
 		if (row.hash === null) {
 			const hash = await sha256Hex(row.content);
 			language = detectLanguage(row.content);
@@ -84,7 +94,12 @@ export async function backfillTranslations(env: Env) {
 	console.log(`Translation backfill processed ${results.length} rows`);
 }
 
-async function saveTranslation(env: Env, id: string, body: string, language: string | null) {
+async function saveTranslation(
+	env: Env,
+	id: number,
+	body: string,
+	language: string | null,
+) {
 	try {
 		const translated = await translateToEnglish(env.AI, body, language);
 		if (translated === null) return;

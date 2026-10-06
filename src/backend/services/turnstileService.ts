@@ -1,11 +1,17 @@
 import { sha256Hex } from "./hashService";
 
 type TurnstileResponse = {
-	success: boolean,
-	challenge_ts: string,
-}
+	success: boolean;
+	challenge_ts: string;
+};
 
-export async function verifyTurnstileToken(secret: string, token: string, ip: string | null) {
+// token and ip come from request headers, so either may be missing.
+export async function verifyTurnstileToken(
+	secret: string,
+	token: string | undefined,
+	ip: string | undefined,
+) {
+	if (!token) return turnstileFail();
 	try {
 		return await submitTurnstileToken(secret, token, ip);
 	} catch (err) {
@@ -13,7 +19,11 @@ export async function verifyTurnstileToken(secret: string, token: string, ip: st
 	}
 }
 
-async function submitTurnstileToken(secret: string, turnstileToken: string, ip: string | null) {
+async function submitTurnstileToken(
+	secret: string,
+	turnstileToken: string,
+	ip: string | undefined,
+) {
 	const formData = new FormData();
 	formData.append("secret", secret);
 	formData.append("response", turnstileToken);
@@ -26,7 +36,7 @@ async function submitTurnstileToken(secret: string, turnstileToken: string, ip: 
 			body: formData,
 		},
 	);
-	const verifyOutcome:TurnstileResponse = await verifyRes.json();
+	const verifyOutcome: TurnstileResponse = await verifyRes.json();
 	if (!verifyOutcome.success) {
 		return turnstileFail();
 	}
