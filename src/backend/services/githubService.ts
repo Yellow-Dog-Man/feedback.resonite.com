@@ -8,6 +8,7 @@ import { BUG, FEATURE } from "../../shared/FormHelpers.js";
 import { TemporaryError } from "../helpers/HttpHelpers.js";
 import type { AppContext } from "../types.js";
 import { formatIssue } from "./markdownTemplateService.js";
+import { Octokit } from "@octokit/core";
 
 const ISSUE_LABEL = FEEDBACK_DOMAIN;
 
@@ -16,6 +17,8 @@ export function isGitHubSetup(env: Env) {
 		env.GITHUB_APP_ID !== undefined && env.GITHUB_PRIVATE_KEY !== undefined
 	);
 }
+
+
 
 // Callers check the content for profanity and email addresses first, before
 // uploading any files, so a rejected submission doesn't leave uploads behind.
@@ -29,7 +32,7 @@ export async function SubmitToGitHub(
 	const markdownBody = formatIssue(formType, body); // Create Markdown representation of issue
 
 	try {
-		const octokit = await getInstallationOctokit(c.env);
+		const octokit = await getOctokit(c.env);
 		const { data } = await octokit.request(
 			"POST /repos/{owner}/{repo}/issues",
 			{
@@ -56,6 +59,14 @@ export async function SubmitToGitHub(
 function getErrorStatus(error: unknown) {
 	if (typeof error === "object" && error !== null && "status" in error)
 		return error.status;
+}
+
+let _octokit: Octokit | null = null;
+async function getOctokit(env: Env) {
+	if (_octokit === null)
+		_octokit = await getInstallationOctokit(env);
+
+	return _octokit;
 }
 
 // Get an Octokit authenticated as the App's installation on the issues repo
