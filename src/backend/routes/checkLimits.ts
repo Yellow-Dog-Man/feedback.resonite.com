@@ -20,11 +20,7 @@ checkLimitsApp.get("/", async (c) => {
 	const formSettings = getLimitSettings(c, FORM);
 	const landingSettings = getLimitSettings(c, LANDING);
 
-	// Initialize store window settings required by FeedbackKVStore
-	store.init(formSettings as any); //TODO
 	const formRecord = await store.get(formKey);
-
-	store.init(landingSettings as any); //TODO
 	const landingRecord = await store.get(landingKey);
 
 	return c.json({
