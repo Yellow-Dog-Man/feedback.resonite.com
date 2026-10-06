@@ -1,15 +1,15 @@
-import { WorkersKVStore } from "@hono-rate-limiter/cloudflare";
 import { Hono } from "hono";
 import type { AppEnv } from "../types";
 import type { ClientRateLimitInfo } from "hono-rate-limiter";
 import { GetClientIp } from "../helpers/CloudflareHelpers.js";
 import { FORM, LANDING } from "../../shared/FormHelpers.js";
 import { GetRateLimitKey, getLimitSettings } from "../helpers/RateLimits.js";
+import { FeedbackKVStore } from "../lib/FeedbackKVStore.js";
 
 export const checkLimitsApp = new Hono<AppEnv>();
 
 checkLimitsApp.get("/", async (c) => {
-	const store = new WorkersKVStore({
+	const store = new FeedbackKVStore({
 		namespace: c.env.RATE_LIMIT_KV,
 	});
 
@@ -20,7 +20,7 @@ checkLimitsApp.get("/", async (c) => {
 	const formSettings = getLimitSettings(c, FORM);
 	const landingSettings = getLimitSettings(c, LANDING);
 
-	// Initialize store window settings required by WorkersKVStore
+	// Initialize store window settings required by FeedbackKVStore
 	store.init(formSettings as any); //TODO
 	const formRecord = await store.get(formKey);
 
