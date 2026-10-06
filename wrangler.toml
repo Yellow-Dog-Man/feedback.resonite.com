@@ -1,5 +1,5 @@
 name = "feedback-resonite-com"
-main = "./src/backend/main.js"
+main = "./src/backend/main.ts"
 compatibility_date = "2026-03-11"
 compatibility_flags = [ "nodejs_compat" ]
 
