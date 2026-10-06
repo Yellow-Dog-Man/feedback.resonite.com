@@ -12,6 +12,14 @@ export function saveScore(
 	question: string = "happiness",
 ) {
 	const score = boolToScore(bool);
+	
+	// Don't actually score in Dev, but log for testing.
+	if (!c.env.SCORE)
+	{
+		console.log(`Recording a score of: ${score}`);
+		return;
+	}
+	
 	c.env.SCORE.writeDataPoint({
 		doubles: [score],
 		indexes: [question], //TODO: see Survey.md
