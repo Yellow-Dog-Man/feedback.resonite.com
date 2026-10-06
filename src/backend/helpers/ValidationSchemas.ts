@@ -16,7 +16,7 @@ const MAX_LOG_FILE_BYTES = 10 * MB;
 const MAX_IMAGE_FILE_BYTES = 25 * MB;
 
 // Landing text feedback, keep in sync with maxlength in public/forms/LANDING.md
-const FEEDBACK_LENGTH = 1000;
+const FEEDBACK_LENGTH = 5000;
 
 const shortText = z.string().min(MIN_TEXT).max(SHORT_LENGTH);
 const longText = z.string().min(MIN_TEXT).max(LONG_LENGTH);
