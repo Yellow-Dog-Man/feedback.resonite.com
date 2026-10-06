@@ -21,9 +21,8 @@ jobs:
 
       - run: npm ci
 
-      # Not `npm run lint`, which applies fixes instead of failing.
-      - name: Lint
-        run: npx @biomejs/biome lint
+      - name: Check
+        run: npx @biomejs/biome check
 
       - name: Check generated Worker types are up to date
         run: npm run types -- --check
