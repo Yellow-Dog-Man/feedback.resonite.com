@@ -5,33 +5,28 @@
 import { App } from "@octokit/app";
 import { FEEDBACK_DOMAIN, REPO, REPO_OWNER } from "../../config/index.js";
 import { BUG, FEATURE } from "../../shared/FormHelpers.js";
-import { BadRequest, TemporaryError } from "../helpers/HttpHelpers.js";
+import { TemporaryError } from "../helpers/HttpHelpers.js";
 import type { AppContext } from "../types.js";
-import { containsEmail, containsProfanity } from "./filterService.js";
 import { formatIssue } from "./markdownTemplateService.js";
 
 const ISSUE_LABEL = FEEDBACK_DOMAIN;
 
+export function isGitHubSetup(env: Env) {
+	return (
+		env.GITHUB_APP_ID !== undefined && env.GITHUB_PRIVATE_KEY !== undefined
+	);
+}
+
+// Callers check the content for profanity and email addresses first, before
+// uploading any files, so a rejected submission doesn't leave uploads behind.
 export async function SubmitToGitHub(
 	c: AppContext,
 	formType: string,
 	body: Record<string, unknown>,
 ) {
-	const env = c.env;
-
-	if (env.GITHUB_APP_ID === undefined || env.GITHUB_PRIVATE_KEY === undefined)
-		return TemporaryError(c, "Github Not Setup");
+	if (!isGitHubSetup(c.env)) return TemporaryError(c, "Github Not Setup");
 
 	const markdownBody = formatIssue(formType, body); // Create Markdown representation of issue
-
-	// TODO: filter should not be in this method or file.
-	if (containsProfanity(markdownBody)) {
-		return BadRequest(c, "Issue contains profanity");
-	}
-
-	if (containsEmail(markdownBody)) {
-		return BadRequest(c, "Issue contains an email address");
-	}
 
 	try {
 		const octokit = await getInstallationOctokit(c.env);

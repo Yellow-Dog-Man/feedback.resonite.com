@@ -12,19 +12,21 @@ import {
 	VALID_FORMS,
 } from "../../shared/FormHelpers";
 import { shouldSubmitToGitHub } from "../helpers/EnvHelpers";
-import { BadRequest } from "../helpers/HttpHelpers";
+import { BadRequest, TemporaryError } from "../helpers/HttpHelpers";
 import { formLimiter, landingLimiter } from "../helpers/RateLimits";
 import { getFormSchema, landingSchema } from "../helpers/ValidationSchemas";
 import { turnstileMiddleware } from "../middleware/TurnstileMiddleware";
+import {
+	type Attachments,
+	checkAttachments,
+	uploadAttachments,
+} from "../services/attachmentService";
 import { saveFeedbackText } from "../services/feedbackService";
 import { containsEmail, containsProfanity } from "../services/filterService";
-import { SubmitToGitHub } from "../services/githubService";
+import { isGitHubSetup, SubmitToGitHub } from "../services/githubService";
 import { sha256Hex } from "../services/hashService";
-import {
-	anonymizeLogs,
-	shouldAnonymizeLog,
-} from "../services/logFilterService";
-import { uploadFileToR2 } from "../services/r2Service";
+import { formatIssue } from "../services/markdownTemplateService";
+import { deleteFromR2 } from "../services/r2Service";
 import { saveScore } from "../services/scoreService";
 import type { AppContext, AppEnv } from "../types";
 import { checkLimitsApp } from "./checkLimits";
@@ -40,8 +42,8 @@ apiApp.route("/checklimits", checkLimitsApp);
 // Stats endpoints
 apiApp.route("/stats", statsApp);
 
-// A validated form after transformFormBody: "yes"/"no" are booleans and file
-// fields hold their R2 URL.
+// A validated form after transformFormBody: "yes"/"no" are booleans. File
+// fields get their R2 URL from uploadAttachments, once every check has passed.
 type FormBody = Record<string, unknown>;
 
 type LandingBody = {
@@ -72,44 +74,20 @@ function validationError(c: Context, error: z.core.$ZodError) {
 const RECORD_ID_KEY = "_rid";
 const HASHED_RECORD_ID_KEY = "hashedRid";
 
-async function processFile(
-	c: AppContext,
-	formBody: FormBody,
-	key: string,
-	file: File,
-	filePrefix: string,
-) {
-	if (c.env.BUCKET && file.size > 0) {
-		try {
-			if (shouldAnonymizeLog(file.name, formBody)) {
-				file = await anonymizeLogs(file);
-			}
-			const r2Key = await uploadFileToR2(c.env.BUCKET, filePrefix, file);
-			formBody[key] = r2Key;
-			formBody[`${key}_name`] = file.name;
-		} catch (uploadErr) {
-			console.error(`Failed to upload file for ${key}:`, uploadErr);
-			formBody[key] = null;
-		}
-	} else {
-		formBody[key] = null;
-	}
-}
-
-// Helper to pre-process parsed form body values (booleans, files)
-async function transformFormBody(
-	rawBody: Record<string, unknown>,
-	c: AppContext,
-): Promise<FormBody> {
+// Helper to pre-process parsed form body values (booleans, record ID). Files
+// are returned separately and not uploaded yet.
+async function transformFormBody(rawBody: Record<string, unknown>) {
 	const body: FormBody = {};
-	const files: [string, File][] = [];
+	const files: Attachments = [];
 	// Groups this submission's uploads in R2. Empty means each file gets a random ID.
 	let filePrefix = "";
 	for (const [key, value] of Object.entries(rawBody)) {
 		if (value === "yes") body[key] = true;
 		else if (value === "no") body[key] = false;
 		else if (isFile(value)) {
-			files.push([key, value]);
+			// An optional file input that was left empty.
+			if (value.size > 0) files.push([key, value]);
+			else body[key] = null;
 		} else if (key === RECORD_ID_KEY) {
 			// Hash the incoming _rid from Forms.md, this prevents it from being edited by the client.
 			filePrefix = await sha256Hex(String(value));
@@ -118,11 +96,28 @@ async function transformFormBody(
 			body[key] = value;
 		}
 	}
+	return { body, files, filePrefix };
+}
 
-	for (const [key, file] of files) {
-		await processFile(c, body, key, file, filePrefix);
-	}
-	return body;
+// Profanity and email checks on everything that ends up in the issue. Files
+// aren't uploaded yet, so this renders the issue without them and adds their
+// names, which the issue also shows. The title isn't in the template, as it's
+// sent to GitHub separately, so it's added too.
+function checkIssueContent(
+	c: AppContext,
+	formType: string,
+	body: FormBody,
+	files: Attachments,
+) {
+	const text = [
+		String(body.issueTitle ?? body.title ?? ""),
+		formatIssue(formType, body),
+		...files.map(([, file]) => file.name),
+	].join("\n");
+
+	if (containsProfanity(text)) return BadRequest(c, "Issue contains profanity");
+	if (containsEmail(text))
+		return BadRequest(c, "Issue contains an email address");
 }
 
 apiApp.use(`/${LANDING}`, async (c, next) => {
@@ -137,7 +132,7 @@ apiApp.post(
 	}),
 	async (c) => {
 		const rawValidated = c.req.valid("form");
-		const body = await transformFormBody(rawValidated, c);
+		const { body } = await transformFormBody(rawValidated);
 
 		const res = await processLanding(c, body as LandingBody);
 		if (res) return res;
@@ -167,35 +162,59 @@ apiApp.post("/:formType", async (c) => {
 	);
 	if (!parsed.success) return validationError(c, parsed.error);
 
+	// Don't send Junk to GitHub
+	if (!VALID_FORMS.includes(formType)) return BadRequest(c, "Unknown form");
+
+	// Checks run cheapest first, and nothing is uploaded until they all pass,
+	// so a rejected submission doesn't leave files in R2.
+	let uploadedKeys: string[] = [];
 	try {
-		const body = await transformFormBody(parsed.data, c);
-		const SUBMIT_TO_GITHUB = shouldSubmitToGitHub(c.env);
-		if (SUBMIT_TO_GITHUB) {
-			const gitHubResult = await processFormBodyForGitHub(c, formType, body);
-			// SubmitToGitHub returns an error Response (e.g. profanity, not setup) when it rejects a submission
-			if (gitHubResult instanceof Response) return gitHubResult;
-			if (gitHubResult) {
-				const finalResult = {
-					success: true,
-					message: `Successfully received submission for ${formType}`,
-					receivedAt: new Date().toISOString(),
-					formResult: body,
-					number: gitHubResult.number,
-					...redirectTo(gitHubResult.url),
-				};
-				return c.json(finalResult);
-			} else {
-				return BadRequest(c, "Github was unhappy, check logs");
-			}
-		} else {
+		const { body, files, filePrefix } = await transformFormBody(parsed.data);
+		const submitToGitHub = shouldSubmitToGitHub(c.env);
+		if (submitToGitHub && !isGitHubSetup(c.env))
+			return TemporaryError(c, "Github Not Setup");
+
+		const blocked = checkIssueContent(c, formType, body, files);
+		if (blocked) return blocked;
+
+		const checkedFiles = await checkAttachments(files);
+		if (typeof checkedFiles === "string") return BadRequest(c, checkedFiles);
+
+		// Testing mode runs every check, but doesn't upload or create an issue.
+		if (!submitToGitHub) {
 			return c.json({
 				success: true,
 				message: "In testing mode",
 				...redirectTo("/cheese"),
 			});
 		}
+
+		uploadedKeys = await uploadAttachments(
+			c.env.BUCKET,
+			body,
+			checkedFiles,
+			filePrefix,
+		);
+		const gitHubResult = await SubmitToGitHub(c, formType, body);
+		// SubmitToGitHub returns an error Response (e.g. not setup) when it rejects a submission
+		if (gitHubResult instanceof Response || !gitHubResult) {
+			await deleteFromR2(c.env.BUCKET, uploadedKeys);
+			return gitHubResult instanceof Response
+				? gitHubResult
+				: BadRequest(c, "Github was unhappy, check logs");
+		}
+
+		return c.json({
+			success: true,
+			message: `Successfully received submission for ${formType}`,
+			receivedAt: new Date().toISOString(),
+			formResult: body,
+			number: gitHubResult.number,
+			...redirectTo(gitHubResult.url),
+		});
 	} catch (err) {
 		console.error(`Error processing form post ${formType}:`, err);
+		await deleteFromR2(c.env.BUCKET, uploadedKeys);
 		const message = `Error processing form post for ${formType}`;
 		return c.json({ success: false, error: message }, 400);
 	}
@@ -243,16 +262,4 @@ async function processLanding(c: AppContext, body: LandingBody) {
 		}
 		await saveFeedbackText(c, body.feedback, date);
 	}
-}
-
-async function processFormBodyForGitHub(
-	c: AppContext,
-	formType: string,
-	body: FormBody,
-) {
-	// Don't send Junk to GitHub
-	if (!VALID_FORMS.includes(formType)) return;
-
-	// ALL Other forms use redirects and come back here, so far no processing
-	return await SubmitToGitHub(c, formType, body);
 }

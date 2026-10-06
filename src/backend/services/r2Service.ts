@@ -5,10 +5,13 @@ function processKey(key: string) {
 	return key.replaceAll(" ", "");
 }
 
+// contentType comes from fileValidationService, never from the client, since
+// blob.feedback.resonite.com serves files with it.
 export async function uploadFileToR2(
 	bucket: R2Bucket,
 	filePrefix: string,
 	file: File,
+	contentType: string,
 ) {
 	if (!file || typeof file === "string" || !(file instanceof File))
 		throw new Error(`Invalid file: ${file}`);
@@ -22,10 +25,18 @@ export async function uploadFileToR2(
 
 	//TODO: errors
 	await bucket.put(key, file.stream(), {
-		httpMetadata: {
-			contentType: file.type || "application/octet-stream",
-		},
+		httpMetadata: { contentType },
 	});
 
-	return BLOB_URL + key;
+	return { key, url: BLOB_URL + key };
+}
+
+// Removes uploads from a submission that didn't make it into an issue.
+export async function deleteFromR2(bucket: R2Bucket, keys: string[]) {
+	if (keys.length === 0) return;
+	try {
+		await bucket.delete(keys);
+	} catch (err) {
+		console.error("Failed to delete orphaned uploads:", keys, err);
+	}
 }
