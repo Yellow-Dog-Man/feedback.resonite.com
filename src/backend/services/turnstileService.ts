@@ -1,19 +1,25 @@
 import { sha256Hex } from "./hashService";
 
+// https://developers.cloudflare.com/turnstile/get-started/server-side-validation/
 type TurnstileResponse = {
 	success: boolean;
 	challenge_ts: string;
+	// The site the widget was solved on.
+	hostname: string;
+	"error-codes": string[];
 };
 
 // token and ip come from request headers, so either may be missing.
+// hostname is the site the token must have been issued for.
 export async function verifyTurnstileToken(
 	secret: string,
 	token: string | undefined,
 	ip: string | undefined,
+	hostname: string,
 ) {
 	if (!token) return turnstileFail("Missing Token");
 	try {
-		return await submitTurnstileToken(secret, token, ip);
+		return await submitTurnstileToken(secret, token, ip, hostname);
 	} catch (err) {
 		return turnstileFail("Submission Failure", err);
 	}
@@ -23,6 +29,7 @@ async function submitTurnstileToken(
 	secret: string,
 	turnstileToken: string,
 	ip: string | undefined,
+	hostname: string,
 ) {
 	const formData = new FormData();
 	formData.append("secret", secret);
@@ -38,7 +45,18 @@ async function submitTurnstileToken(
 	);
 	const verifyOutcome: TurnstileResponse = await verifyRes.json();
 	if (!verifyOutcome.success) {
-		return turnstileFail("TurnStile Failed", verifyOutcome);
+		return turnstileFail(
+			"TurnStile Failed",
+			verifyOutcome["error-codes"]?.join(", "),
+		);
+	}
+
+	// A valid token solved on another site isn't valid here.
+	if (verifyOutcome.hostname !== hostname) {
+		return turnstileFail(
+			"Hostname Mismatch",
+			`expected ${hostname}, got ${verifyOutcome.hostname}`,
+		);
 	}
 
 	// I think I need to use Cloudflare, https://developers.cloudflare.com/turnstile/tutorials/fraud-detection-with-ephemeral-ids/

@@ -19,6 +19,7 @@ export function turnstileMiddleware() {
 			getTurnstileSecretKey(c),
 			c.req.header(TURNSTILE_HEADER),
 			c.req.header(IP_HEADER),
+			new URL(c.req.url).hostname,
 		);
 		if (!verification.success) {
 			return c.json(
