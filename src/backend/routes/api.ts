@@ -196,7 +196,7 @@ apiApp.post("/:formType", async (c) => {
 		}
 	} catch (err) {
 		console.error(`Error processing form post ${formType}:`, err);
-		const message = err instanceof Error ? err.message : String(err);
+		const message = `Error processing form post for ${formType}`;
 		return c.json({ success: false, error: message }, 400);
 	}
 });

@@ -11,11 +11,11 @@ export async function verifyTurnstileToken(
 	token: string | undefined,
 	ip: string | undefined,
 ) {
-	if (!token) return turnstileFail("no token");
+	if (!token) return turnstileFail("Missing Token");
 	try {
 		return await submitTurnstileToken(secret, token, ip);
 	} catch (err) {
-		return turnstileFail(err);
+		return turnstileFail("Submission Failure", err);
 	}
 }
 
@@ -38,7 +38,7 @@ async function submitTurnstileToken(
 	);
 	const verifyOutcome: TurnstileResponse = await verifyRes.json();
 	if (!verifyOutcome.success) {
-		return turnstileFail(verifyOutcome);
+		return turnstileFail("TurnStile Failed", verifyOutcome);
 	}
 
 	// I think I need to use Cloudflare, https://developers.cloudflare.com/turnstile/tutorials/fraud-detection-with-ephemeral-ids/
@@ -54,8 +54,9 @@ async function submitTurnstileToken(
 	return turnstilePassed(hash);
 }
 
-function turnstileFail(err: unknown) {
-	return { success: false, attestation: null, message: err };
+function turnstileFail(message: string, err?: unknown) {
+	console.log(`Turnstile failed with: ${message} and error: ${err}`);
+	return { success: false, attestation: null, message: message };
 }
 
 function turnstilePassed(attestation: string) {
