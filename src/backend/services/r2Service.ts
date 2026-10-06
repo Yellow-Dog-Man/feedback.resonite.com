@@ -1,15 +1,13 @@
 import { BLOB_URL } from "../../config";
 
 //TODO: config
-function processKey(key) {
+function processKey(key: string) {
 	return key.replaceAll(" ", "");
 }
 
-export async function uploadFileToR2(bucket, filePrefix, file) {
+export async function uploadFileToR2(bucket: R2Bucket, filePrefix: string, file: File) {
 	if (
-		!file ||
-		typeof file === "string" ||
-		!(file instanceof File || file instanceof Blob)
+		!file || typeof file === "string" || !(file instanceof File)
 	)
 		throw new Error(`Invalid file: ${file}`);
 
