@@ -1,5 +1,4 @@
 import "./../style.css";
-import "formsmd/dist/css/formsmd.min.css";
 import { Formsmd } from "formsmd";
 import { LANDING } from "../shared/FormHelpers.js";
 import { GetDefaultFormOptions } from "./DefaultFormOptions.js";
