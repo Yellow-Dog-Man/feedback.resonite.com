@@ -28,17 +28,16 @@ Many platforms have removed options to apply multi-dimensional sentiment. We're 
 
 Also see Resources.
 
-- [Forms MD](https://github.com/formsmd/formsmd)
-- [Clouflare Workers](https://developers.cloudflare.com/workers/)
-- [Vite](https://vite.dev/)
-- [Water.css](https://github.com/kognise/water.css)
-- [Hono](https://hono.dev/)
-- [Mustache](https://mustache.github.io/)
-- Cloudflare D1 for Text Feedback
-- Cloudflare Analytics Engine for +1, -1 recording
-- TODO: Explain the following two items, they are some small items of glue that really make a difference here.
-- `vite-ssr-components`
-- `@cloudflare/vite-plugin`
+- [Forms MD](https://github.com/formsmd/formsmd) - Easy to render and handle forms. Core principle of this project
+- [Clouflare Workers](https://developers.cloudflare.com/workers/) - Severless compute platform. Prime hates servers.
+- [Vite](https://vite.dev/) - The only Bundler you should be using in 2026
+- [Water.css](https://github.com/kognise/water.css) - Basic CSS Framework, gives us what we need and gets out of the way.
+- [Hono](https://hono.dev/) - For Routing and Overall Flow
+- [Mustache](https://mustache.github.io/) - To Render out GitHub Issue Bodies.
+- [Cloudflare D1](https://developers.cloudflare.com/d1/) for Text Feedback
+- [Cloudflare Analytics Engine](https://developers.cloudflare.com/analytics/analytics-engine/) for statistics recording.
+- [`vite-ssr-components`](https://github.com/yusukebe/vite-ssr-components) - Adds JSX and SSR Support for Vite.
+- [`@cloudflare/vite-plugin`](https://developers.cloudflare.com/workers/vite-plugin/) - Links Cloudflare Workers to Vite in a really cool way.
 
 ## Translations
 
