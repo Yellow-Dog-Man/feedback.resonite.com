@@ -5,6 +5,7 @@ import { MODERATION_URL } from "../../config/index";
 import {
 	BUG,
 	FEATURE,
+	FRICTION,
 	LANDING,
 	MODERATION,
 	SECURITY,
@@ -238,6 +239,7 @@ function addLandingMetadata(body: LandingBody) {
 	// For the rest, we need to redirect somewhere else.
 	if (redirectType === BUG) return redirectTo("/bug");
 	if (redirectType === FEATURE) return redirectTo("/feature");
+	if (redirectType === FRICTION) return redirectTo("/friction");
 
 	if (redirectType === MODERATION || redirectType === SECURITY)
 		return redirectTo(MODERATION_URL);

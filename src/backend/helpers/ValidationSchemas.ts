@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
 	BUG,
 	FEATURE,
+	FRICTION,
 	LANDING,
 	VALID_FEEDBACK_TYPES,
 } from "../../shared/FormHelpers.js";
@@ -78,6 +79,18 @@ export const featureSchema = z.object({
 	_rid: z.string().optional().nullable(),
 });
 
+export const frictionSchema = z.object({
+	issueTitle: shortText,
+	goal: longText,
+	steps: longText,
+	frictionPoint: longText,
+	workingPoint: optionalFeedbackText,
+	screenshots: imageFile.optional().nullable(),
+	relatedIssues: optionalFeedbackText,
+	reporter: optionalShortText,
+	_rid: z.string().optional().nullable(),
+});
+
 export function getFormSchema(formType: string) {
 	switch (formType) {
 		case LANDING:
@@ -86,6 +99,8 @@ export function getFormSchema(formType: string) {
 			return bugSchema;
 		case FEATURE:
 			return featureSchema;
+		case FRICTION:
+			return frictionSchema;
 		default:
 			return z.object();
 	}

@@ -5,7 +5,7 @@
 import { App } from "@octokit/app";
 import type { Octokit } from "@octokit/core";
 import { FEEDBACK_DOMAIN, REPO, REPO_OWNER } from "../../config/index.js";
-import { BUG, FEATURE } from "../../shared/FormHelpers.js";
+import { BUG, FEATURE, FRICTION } from "../../shared/FormHelpers.js";
 import { TemporaryError } from "../helpers/HttpHelpers.js";
 import type { AppContext } from "../types.js";
 import { formatIssue } from "./markdownTemplateService.js";
@@ -85,6 +85,7 @@ async function getInstallationOctokit(env: Env) {
 function getLabels(formType: string): string[] {
 	if (formType === BUG) return ["bug"];
 	if (formType === FEATURE) return ["New Feature"];
+	if (formType === FRICTION) return ["friction point"];
 	return [];
 }
 
@@ -103,7 +104,7 @@ function convertToGitHub(
 	const anonymous = isAnonymous(body.reporter);
 	if (anonymous) labels.push("Anonymous");
 
-	// Only bug and feature forms have a title. Without one GitHub rejects the
+	// Only bug, feature and friction forms have a title. Without one GitHub rejects the
 	// issue, so fail here rather than make the API call.
 	const title = body.issueTitle || body.title;
 	if (typeof title !== "string") {
