@@ -3,7 +3,7 @@ import type { FC } from "hono/jsx";
 export const Cheese: FC = () => {
 	return (
 		<div>
-			<p>Thank you for testing an INFINITE, cheese to you.</p>
+			<p>Thank you for testing and INFINITE, cheese to you.</p>
 			<img src="/images/cheese.png" alt="CHEESE" />
 			<p>
 				However due to testing, we're not submitting GH issues today. However,
