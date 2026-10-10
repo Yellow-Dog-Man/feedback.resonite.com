@@ -107,8 +107,11 @@ TODO: Don't recommend this anymore. Will update with recommended template later
     - Will wait for Deploy
 - [ ] Resonite Account OAuth
     - Use the OAuth Middleware: https://github.com/honojs/middleware/tree/main/packages/oauth-providers
+    - We can hook this into Credits.
 - [ ] Bans 
     - https://hono.dev/docs/middleware/builtin/ip-restriction
+    - HMAC(ip, key) => Bans Table
+    - Does the HMAC exist in ban table => no feedback.
     - I think rate limits and filtering should do enough here.
     - But we'll need some ban functionality.
     - I'll just keep the limits high to start
@@ -118,6 +121,7 @@ TODO: Don't recommend this anymore. Will update with recommended template later
         - Hmm, take each new entry and send it to Discord/Mattermost?
     - You can access the feedback via D1 Dashboard atm
     - Will do more here after launch
+    - CSV -> Email to the Team.
 - [X] Filtering
     - Do some basic safety filtering for profanity etc.
     - See what Cloudflare has natively.
