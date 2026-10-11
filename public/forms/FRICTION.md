@@ -12,10 +12,9 @@
 # 🧱 Friction Point Observation
 
 ⚠️ Information entered into this form, will be submitted to our [📢Public Issue Tracker](github.com/Yellow-Dog-Man/Resonite-Issues)!
+⚠️ This report is **NOT** a place to vent. Please, keep the report objective and **free of emotion**.
 
 Use this when you observed a friction point when using Resonite, either for yourself or for another user - e.g. something that was particularly difficult or you did not figure out how to achieve.
-
-**IMPORTANT:** This report is **NOT** a place to vent. Keep the report objective and **free of emotion** - otherwise it will be closed immediately.
 
 To learn more about this issue type, [check the document & video here!](https://github.com/Yellow-Dog-Man/Resonite-Issues/blob/main/OBSERVATION_ISSUES.md)
 
