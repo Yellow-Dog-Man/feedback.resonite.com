@@ -63,6 +63,7 @@ reporter = TextInput(
     | autofocus
 )
 
+⚠️ Information entered into this form, will be submitted to our [📢Public Issue Tracker](github.com/Yellow-Dog-Man/Resonite-Issues)!
 ⚠️ DO NOT INCLUDE E-Mail Addresses
 This question is *optional*, however if you do not fill it in, we might not be able to work on your issue and we may have to close it.
 
