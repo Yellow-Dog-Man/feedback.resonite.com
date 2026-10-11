@@ -1,16 +1,22 @@
 import Mustache from "mustache";
 
-// Import template using Vite's ?raw loader, which works seamlessly in Vite-bundled workers/SSR!
-// TODO: I think these get squished at compile time into our source code, which doesn't seem ideal. So try to load them at Runtime later.
-import bugTemplate from "../../../public/templates/BUG.md?raw";
-import featureTemplate from "../../../public/templates/FEATURE.md?raw";
-import frictionTemplate from "../../../public/templates/FRICTION.md?raw";
+// Every template in public/templates is bundled at build time, keyed by its
+// lowercase file name (BUG.md => bug), so new templates need no code changes.
+const templateFiles = import.meta.glob<string>(
+	"../../../public/templates/*.md",
+	{
+		query: "?raw",
+		import: "default",
+		eager: true,
+	},
+);
 
-const templates: Record<string, string> = {
-	bug: bugTemplate,
-	feature: featureTemplate,
-	friction: frictionTemplate,
-};
+const templates: Record<string, string> = Object.fromEntries(
+	Object.entries(templateFiles).map(([path, template]) => [
+		path.split("/").pop()?.replace(/\.md$/, "").toLowerCase(),
+		template,
+	]),
+);
 
 export function formatIssue(issueType: string, body: Record<string, unknown>) {
 	const template = templates[issueType];
